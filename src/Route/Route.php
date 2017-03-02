@@ -7,16 +7,8 @@
 namespace Dida;
 
 /**
- * Request 类
+ * Route 类
  */
-class Request
+class Route
 {
-    public function isCli()
-    {
-    }
-
-
-    public function isAjax()
-    {
-    }
 }
