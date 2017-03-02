@@ -87,7 +87,7 @@ class Loader
          */
         $target = "{$dir}/{$cls}.php";
         if (file_exists($target) && is_file($target)) {
-            require ($target);
+            require($target);
         } else {
             $array = explode('\\', $cls);
             $base = array_pop($array);
@@ -97,7 +97,7 @@ class Loader
                 $target = $dir . "/{$base}/{$base}.php";
             }
             if (file_exists($target) && is_file($target)) {
-                require ($target);
+                require($target);
             } else {
                 return false;
             }

@@ -11,5 +11,5 @@ namespace Dida;
  */
 class Dispatcher
 {
-
+    use SingletonTrait;     // 本类为单例模式
 }

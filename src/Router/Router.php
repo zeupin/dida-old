@@ -11,5 +11,5 @@ namespace Dida;
  */
 class Router
 {
-
+    use SingletonTrait;     // Router类为单例模式
 }

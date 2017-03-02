@@ -11,5 +11,4 @@ namespace Dida;
  */
 class Container
 {
-    
 }

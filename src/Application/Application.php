@@ -11,22 +11,17 @@ namespace Dida;
  */
 final class Application
 {
-
-
     public function __construct()
     {
-
     }
 
 
     public function bootstrap()
     {
-
     }
 
 
     public function run()
     {
-
     }
 }
