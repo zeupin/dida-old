@@ -16,7 +16,6 @@ abstract class Staticall
     protected static $staticalls = [];      // 映射 Foo 到容器中的 service_id
     protected static $fqcns = [];           // 映射 Namespace\FooStaticall 到 Foo
     private static $registerd = false;
-    private static $eval_enabled = false;
 
 
     /**
@@ -40,9 +39,6 @@ abstract class Staticall
             static::$cachepath = null;
         }
 
-        // checks eval() enabled
-        static::$eval_enabled = function_exists('eval');
-
         // register
         static::$registerd = spl_autoload_register([get_called_class(), 'autoload']);
     }
@@ -62,23 +58,23 @@ abstract class Staticall
     /**
      * 载入指定的 Staticall 类
      *
-     * 如果服务器上eval()函数没有被禁用，那么直接用eval()函数来生成FooStaticall的类定义。这种方法最便捷。
-     * 如果eval()函数被禁用了，那么就只能先生成一个FooStaticall类文件，再require这个文件。这种方法适应性强。
+     * 如果服务器上eval()语句没有被禁用，那么直接用eval来生成FooStaticall的类定义。这种方法轻巧便捷。
+     * 如果eval()被禁用了，那么就只能先生成一个叫FooStaticall类文件，再require这个文件。这种方法适应性强。
+     * 注意：eval()不是函数，而是一个语法结构，因此无法通过function_exists()来判断是否被禁用的。
      *
      * @param string $class
      */
     private static function loadStaticallClass($class)
     {
-        $fqcn = "Staticall\\{$class}Staticall";
-
-        $def = static::createStaticallClass($class);
+        $def = static::createStaticallClass($class); // 类定义
+        $fqcn = "Staticall\\{$class}Staticall"; // 自定义的FQCN格式的类全名
 
         if (is_null(self::$cachepath)) {
             eval($def);
         } else {
             $cachepath = self::$cachepath;
             if ($cachepath === null || !file_exists($cachepath) || !is_dir($cachepath)) {
-                throw new \Exception("目录不存在，无法创建{$class}Staticall类文件");
+                throw new \Exception("缓存目录不存在，无法创建{$class}Staticall类文件");
                 return false;
             }
 
@@ -86,7 +82,8 @@ abstract class Staticall
             $target_file = $cachepath . '/' . $fqcn . '.php'; // 目标文件
 
             if (!file_exists($target_file)) {
-                // 如果目标目录不存在，则先创建一个
+
+                // 如果目标目录不存在，则先创建之
                 if (!file_exists($target_dir)) {
                     @mkdir($target_dir, 0777);
                 }
@@ -99,6 +96,7 @@ abstract class Staticall
                 }
             }
 
+            // 引用生成的php文件
             require $target_file;
         }
 
