@@ -5,6 +5,7 @@
  */
 define('DIDA_ROOT', realpath(__DIR__ . '/../src') . '/');
 define('COMPOSER_ROOT', realpath(__DIR__ . '/../vendor') . '/');
-define('APP_ROOT', realpath(__DIR__ . '/../app') . '/');
+define('APP_ROOT', realpath(__DIR__ . '/../App') . '/');
+define('VAR_ROOT', realpath(__DIR__ . '/../Var') . '/');
 
 require(DIDA_ROOT . 'index.php');
