@@ -212,7 +212,7 @@ class Config implements \ArrayAccess
      *
      * @return bool success/fail
      */
-    public function load($filepath, $group = null)
+    public function load($filepath, $group = '')
     {
         $require = function () use ($filepath) {
             if (file_exists($filepath)) {
@@ -227,7 +227,7 @@ class Config implements \ArrayAccess
             return false;
         }
 
-        if ($group === null) {
+        if ($group === '' || !is_string($group)) {
             $groupname = '';
         } else {
             $groupname = $group . '.';
