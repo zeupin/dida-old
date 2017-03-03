@@ -17,7 +17,7 @@ final class Application extends Container
 
     public function __construct()
     {
-        $this->setConfig(new Config);
+        $this->config = new Config;
     }
 
 
@@ -27,12 +27,26 @@ final class Application extends Container
     }
 
 
-    private function bootstrap()
+    public function start()
     {
+        $this->bootstrap();
+        $this->run();
     }
 
 
-    public function run()
+    private function bootstrap()
+    {
+        $bootstrap = function (&$app) {
+            $target = APP_ROOT . 'Bootstrap/index.php';
+            if (file_exists($target) && is_file($target)) {
+                require $target;
+            }
+        };
+        $bootstrap($this);
+    }
+
+
+    private function run()
     {
     }
 }

@@ -9,4 +9,4 @@ require __DIR__ . '/autoload.php';
 $app = new Dida\Application();
 
 /* 开始运行 */
-$app->run();
+$app->start();
