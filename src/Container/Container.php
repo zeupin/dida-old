@@ -16,9 +16,6 @@ class Container implements \ArrayAccess
     const CLOSURE_TYPE = 'closure';         // 闭包
     const INSTANCE_TYPE = 'instance';       // 服务实例
 
-    /* 服务容器的配置参数 */
-    public $conf = null;
-
     /* 所有服务的keys */
     private $_keys = [];
 
@@ -28,18 +25,13 @@ class Container implements \ArrayAccess
     private $_instances = [];   // 已生成的实例
     private $_singletons = [];  // 单例服务
 
-
-    public function __construct(Config &$conf = null)
-    {
-        $this->conf = $conf;
-    }
-
-
     /**
      * 实现ArrayAccess。检查键值是否存在。
      *
      * @param string $id
      */
+
+
     public function offsetExists($id)
     {
         return $this->has($id);

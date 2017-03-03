@@ -5,12 +5,6 @@
  */
 require __DIR__ . '/autoload.php';
 
-/* Config就位 */
-$conf = new \Dida\Config();
-
-/* Container就位 */
-
-require DIDA_ROOT . 'Application/Application.php';
+/* 生成app实例 */
 $app = new Dida\Application();
-
-print_r(\Dida\Dispatcher::getInstance());
+$app->run();
