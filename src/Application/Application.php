@@ -21,32 +21,47 @@ final class Application extends Container
     }
 
 
-    public function setConfig(Config &$config)
-    {
-        $this->config = $config;
-    }
-
-
     public function start()
     {
+        $this['app'] = $this;
+
+        // 启动Staticall机制
+        Staticall::init($this, VAR_ROOT);
+        Staticall::link('App', 'app');
+
+        $this->loadAppConfig();
         $this->bootstrap();
         $this->run();
     }
 
 
+    private function loadAppConfig()
+    {
+        $target = APP_ROOT . 'Config/App.php';
+        if (file_exists($target) && is_file($target)) {
+            $this->config->load($target);
+        }
+    }
+
+
     private function bootstrap()
     {
-        $bootstrap = function (&$app) {
-            $target = APP_ROOT . 'Bootstrap/index.php';
-            if (file_exists($target) && is_file($target)) {
-                require $target;
-            }
-        };
-        $bootstrap($this);
+        $app = $this;
+
+        $target = APP_ROOT . 'Bootstrap/index.php';
+        if (file_exists($target) && is_file($target)) {
+            require $target;
+        }
     }
 
 
     private function run()
     {
+    }
+
+
+    public function getConfig()
+    {
+        return $this->config;
     }
 }
