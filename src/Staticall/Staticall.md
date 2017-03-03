@@ -1,4 +1,4 @@
-# Dida\Staticall
+# Dida\Staticall 类
 
 Staticall实现了在程序中无需声明就直接进行静态调用的功能，类似于Laravel的Facade，但是更加清晰简洁。
 
