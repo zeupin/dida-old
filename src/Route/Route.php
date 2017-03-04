@@ -9,13 +9,6 @@ namespace Dida;
 /**
  * Route 类
  */
-class Route
+abstract class Route implements RouteInterface
 {
-    protected $app = null;
-
-
-    public function __construct(Application &$app)
-    {
-        $this->app = $app;
-    }
 }
