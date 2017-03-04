@@ -42,7 +42,7 @@ final class Application extends Container
 
     private function loadAppConfig()
     {
-        $target = APP_ROOT . 'Config/App.php';
+        $target = APP_ROOT . 'Config/App.' . APP_ENVIRON . '.php';
         if (file_exists($target) && is_file($target)) {
             $this->config->load($target);
         }
