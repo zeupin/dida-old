@@ -32,6 +32,9 @@ final class Application extends Container
         // 载入app配置
         $this->loadAppConfig();
 
+        // 载入App函数库
+        $this->loadAppFunctions();
+
         // 依次载入app的bootstraps
         $this->bootstrap();
 
@@ -45,6 +48,15 @@ final class Application extends Container
         $target = APP_ROOT . 'Config/App.' . APP_ENVIRON . '.php';
         if (file_exists($target) && is_file($target)) {
             $this->config->load($target);
+        }
+    }
+
+
+    private function loadAppFunctions()
+    {
+        $target = APP_ROOT . 'Functions/index.php';
+        if (file_exists($target) && is_file($target)) {
+            require $target;
         }
     }
 

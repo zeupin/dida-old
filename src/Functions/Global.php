@@ -6,25 +6,6 @@
 
 
 /**
- * 将$app转化为一个全局可见的引用
- */
-function App($service_id = null)
-{
-    global $app;
-
-    if ($service_id === null) {
-        return $app;
-    }
-
-    if ($app->has($service_id)) {
-        return $app($service_id);
-    } else {
-        return null;
-    }
-}
-
-
-/**
  * 停止执行程序
  */
 function dida_halt($msg, $mode = 'html')
