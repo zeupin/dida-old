@@ -6,9 +6,9 @@
 
 
 /**
- * 将$app转化为一个全局可见的引用
+ * 将$app转化为一个全局可见的函数
  */
-function App($service_id = null)
+function app($service_id = null)
 {
     global $app;
 
