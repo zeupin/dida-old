@@ -13,7 +13,7 @@ define('IS_CLI', PHP_SAPI === 'cli');
 require DIDA_ROOT . 'Functions/Global.php';
 
 /* 加载autoload机制 */
-require __DIR__ . '/autoload.php';
+require __DIR__ . '/Autoload.php';
 
 /* 生成app实例 */
 $app = new Dida\Application();
