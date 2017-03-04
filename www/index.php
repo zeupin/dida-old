@@ -9,4 +9,4 @@ define('APP_ROOT', realpath(__DIR__ . '/../App') . '/');
 define('VAR_ROOT', realpath(__DIR__ . '/../Var') . '/');
 define('APP_ENVIRON', 'dev');
 
-require(DIDA_ROOT . 'index.php');
+require(DIDA_ROOT . 'Index.php');
