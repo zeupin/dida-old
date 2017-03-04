@@ -1,6 +1,7 @@
 <?php
+
 namespace Dida;
 
-$app['request'] = function () {
-  $request = new Request();
+$app['request'] = function ()  {
+    return new Request();
 };

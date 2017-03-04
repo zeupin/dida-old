@@ -11,4 +11,11 @@ namespace Dida;
  */
 class Route
 {
+    protected $app = null;
+
+
+    public function __construct(Application &$app)
+    {
+        $this->app = $app;
+    }
 }
