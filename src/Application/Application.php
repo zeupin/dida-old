@@ -27,7 +27,7 @@ final class Application extends Container
 
         // 启动Staticall机制
         Staticall::init($this, VAR_ROOT);
-        Staticall::link('App', 'app');
+        Staticall::link('App', 'app');      // 链接App伪类到$app['app']
 
         // 载入app配置
         $this->loadAppConfig();
@@ -38,7 +38,7 @@ final class Application extends Container
         // 依次载入app的bootstraps
         $this->bootstrap();
 
-        // 准备工作就绪，开始正式运行
+        // 准备工作就绪，正式处理用户发起的请求
         $this->run();
     }
 
