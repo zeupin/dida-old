@@ -29,8 +29,13 @@ final class Application extends Container
         Staticall::init($this, VAR_ROOT);
         Staticall::link('App', 'app');
 
+        // 载入app配置
         $this->loadAppConfig();
+
+        // 依次载入app的bootstraps
         $this->bootstrap();
+
+        // 准备工作就绪，开始正式运行
         $this->run();
     }
 
