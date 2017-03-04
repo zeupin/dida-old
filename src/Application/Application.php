@@ -54,7 +54,7 @@ final class Application extends Container
 
     private function loadAppFunctions()
     {
-        $target = APP_ROOT . 'Functions/index.php';
+        $target = APP_ROOT . 'Functions/Index.php';
         if (file_exists($target) && is_file($target)) {
             require $target;
         }
@@ -65,7 +65,7 @@ final class Application extends Container
     {
         $app = $this;
 
-        $target = APP_ROOT . 'Bootstrap/index.php';
+        $target = APP_ROOT . 'Bootstrap/Index.php';
         if (file_exists($target) && is_file($target)) {
             require $target;
         }
@@ -74,6 +74,7 @@ final class Application extends Container
 
     private function run()
     {
+        require APP_ROOT . 'Index.php';
     }
 
 
