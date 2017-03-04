@@ -11,12 +11,4 @@ namespace Dida;
  */
 class Request
 {
-    public function isCli()
-    {
-    }
-
-
-    public function isAjax()
-    {
-    }
 }
