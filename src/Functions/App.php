@@ -17,7 +17,7 @@ function app($service_id = null)
     }
 
     if ($app->has($service_id)) {
-        return $app($service_id);
+        return $app->get($service_id);
     } else {
         return null;
     }

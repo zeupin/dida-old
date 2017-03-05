@@ -42,7 +42,7 @@ class Request
         // 采用默认定义
         if (isset($_SERVER['REQUEST_METHOD'])) {
             $method = strtoupper($_SERVER['REQUEST_METHOD']);
-            return $methd;
+            return $method;
         }
 
         // 都没有就返回null
