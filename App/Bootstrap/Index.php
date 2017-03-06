@@ -1,13 +1,13 @@
 <?php
 
-namespace Dida;
+namespace App;
 
-$app['request'] = function ()  {
-    return new Request();
+$app['request'] = function () {
+    return new \Dida\RequestHttp();
 };
 
 $app['router'] = function () {
-    $router = new Router();
-    $router->addRoute(new App\Routes\DefaultRoute);
+    $router = new \Dida\Router();
+    $router->addRoute(new \App\Routes\DefaultRoute);
     return $router;
 };

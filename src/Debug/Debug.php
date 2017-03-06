@@ -72,6 +72,7 @@ class Debug
     {
         $glue = PHP_EOL;
         $spaces = str_repeat(' ', $leading);    // 前导空格
+        
         // 找出最大字符长度的key
         $maxlen = 0;
         $keys = array_keys($array);

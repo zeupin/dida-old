@@ -13,8 +13,6 @@ class Router
 {
     protected $routes = [];
 
-    use SingletonTrait;     // Router类为单例模式
-
 
     public function addRoute(Route $route)
     {
@@ -27,8 +25,10 @@ class Router
         foreach ($this->routes as $route) {
             if ($route->match()) {
                 $route->route();
-                break;
+                return;
             }
         }
+
+        throw new \Exception('404 Not Found');
     }
 }

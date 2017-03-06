@@ -4,7 +4,7 @@
  * http://dida.zeupin.com
  */
 
-namespace Dida;
+namespace Dida\Route;
 
 /**
  * Route 接口
@@ -13,5 +13,5 @@ interface RouteInterface
 {
     public function match();
     public function route();
-    public function assemble($controller, $action, array $parameters=[]);
+    public function assemble($controller, $action, array $parameters = []);
 }

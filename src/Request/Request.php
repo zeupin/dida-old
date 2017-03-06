@@ -7,8 +7,8 @@
 namespace Dida;
 
 /**
- * Request 类
+ * Request 抽象类
  */
-class Request
+abstract class Request
 {
 }

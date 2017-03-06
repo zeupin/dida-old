@@ -3,4 +3,6 @@
  * Dida Framework --Powered by Zeupin LLC
  * http://dida.zeupin.com
  */
-app('router')->route();
+return [
+    '/' => ['Index', 'Index'],
+];
