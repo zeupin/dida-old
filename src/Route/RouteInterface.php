@@ -4,7 +4,7 @@
  * http://dida.zeupin.com
  */
 
-namespace Dida\Route;
+namespace Dida;
 
 /**
  * Route 接口
