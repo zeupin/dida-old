@@ -11,6 +11,7 @@ namespace Dida;
  */
 class Loader
 {
+    private $_classmaps = [];       // 已注册的类名对照表文件
     private $_namespaces = [];      // 已注册的名称空间列表
     private $_aliases = [];         // 已注册的别名列表
     private $_queue = [];           // 待查询队列
@@ -33,6 +34,12 @@ class Loader
     {
         foreach ($this->_queue as $item) {
             switch ($item['type']) {
+                case 'classmap':
+                    $result = $this->loadClassMap($class, $item['mapfile']);
+                    if ($result) {
+                        return true;
+                    }
+                    break;
                 case 'namespace':
                     $result = $this->loadNamespace($class, $item['namespace'], $item['directory']);
                     if ($result) {
@@ -50,6 +57,61 @@ class Loader
 
         // 对$class没有查到匹配记录，返回false
         return false;
+    }
+
+
+    /**
+     * 尝试从类名对照表中查找类的定义文件
+     *
+     * @param type $class
+     * @param type $mapfile
+     * @return boolean
+     */
+    private function loadClassMap($class, $mapfile)
+    {
+        if (is_null($this->_classmaps[$mapfile])) {
+            // 如果是第一次执行，则先载入mapfile文件。这样后面就不用重复载入文件，直接查就行了。
+            if (!file_exists($mapfile) || !is_file($mapfile)) {
+                $this->_classmaps[$mapfile] = [];
+                return false;
+            }
+
+            // 载入classmap文件
+            $map = require($mapfile);
+
+            // 检查载入的文件是否合法
+            if (!is_array($map)) {
+                $this->_classmaps[$mapfile] = [];
+                return false;
+            }
+
+            // 保存
+            $this->_classmaps[$mapfile] = $map;
+        } elseif (!is_array($this->_classmaps[$mapfile])) {
+            return false;
+        }
+        if (empty($this->_classmaps[$mapfile])) {
+            return false;
+        }
+
+        $classmap = $this->_classmaps[$mapfile];
+
+        if (!array_key_exists($class, $classmap)) {
+            return false;
+        }
+
+        $mapdir = dirname($mapfile) . '/';
+        $target = $mapdir . $classmap[$class];
+        if (file_exists($target) && is_file($target)) {
+            require $target;
+        }
+
+        // 确认是否$class已经成功载入
+        if (class_exists($class)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 
@@ -128,6 +190,23 @@ class Loader
         } else {
             return false;
         }
+    }
+
+
+    /**
+     *
+     * @param string $mapfile 类的地图文件
+     */
+    public function regClassMap($mapfile)
+    {
+        $this->_classmaps [$mapfile] = null;
+
+        $this->_queue[] = [
+            'type'    => 'classmap',
+            'mapfile' => $mapfile,
+        ];
+
+        return $this;
     }
 
 
