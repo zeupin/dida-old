@@ -4,3 +4,5 @@
 
 官网 <http://dida.zeupin.com>  
 源码 <https://github.com/zeupin/dida>
+
+Dida的运行环境要求PHP5.5以上。
