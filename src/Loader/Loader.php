@@ -105,14 +105,10 @@ class Loader
         $target = $mapdir . $classmap[$class];
         if (file_exists($target) && is_file($target)) {
             require $target;
+            return true;
         }
 
-        // 确认是否$class已经成功载入
-        if (class_exists($class)) {
-            return true;
-        } else {
-            return false;
-        }
+        return false;
     }
 
 
@@ -139,35 +135,40 @@ class Loader
         }
         $dir = realpath($directory);
 
-        // 去除$class中的名称空间部分
+        // 去除$class中的命名空间后的剩余部分
         $cls = substr($class, $len + 1);
 
         /*
          * 依次检查：
-         * 1. <根目录>/Foo/Class.php 是否存在？
-         * 2. <根目录>/Foo/Class/Class.php 是否存在？
+         * 1. <根目录>/Dir/Class.php 是否存在？
+         * 2. <根目录>/Dir/Class/Class.php 是否存在？
          * 先找到哪个就加载哪个，要都找不到就退出
          */
         $target = "{$dir}/{$cls}.php";
         if (file_exists($target) && is_file($target)) {
-            require($target);
-        } else {
-            $array = explode('\\', $cls);
-            $base = array_pop($array);
-            if (count($array)) {
-                $target = $dir . '/' . ((count($array)) ? implode('/', $array) : '') . "/{$base}/{$base}.php";
-            } else {
-                $target = $dir . "/{$base}/{$base}.php";
-            }
+            require $target;
+            return true;
+        }
+
+        // 如果 $cls 中不包含 \
+        if (strpos($cls, '\\') === false) {
+            $target = $dir . "/{$cls}/{$cls}.php";
             if (file_exists($target) && is_file($target)) {
-                require($target);
+                require $target;
+                return true;
             } else {
                 return false;
             }
         }
 
-        // 确认是否$class已经成功载入
-        if (class_exists($class)) {
+        // 如果 $cls 中包含 \
+        $array = explode('\\', $cls);
+        $name = array_pop($array);
+        $base = implode('\\', $array);
+        $target = "{$dir}/{$base}/{$name}.php";
+        $target = $dir . "/{$cls}/{$cls}.php";
+        if (file_exists($target) && is_file($target)) {
+            require $target;
             return true;
         } else {
             return false;
@@ -242,8 +243,8 @@ class Loader
     /**
      * 注册一个别名类
      *
-     * @param string $alias \a\class\alias\FQCN
-     * @param string $real its\real\FQCN
+     * @param string $alias  \A\Class\Alias\FQCN
+     * @param string $real   \Its\Real\FQCN
      *
      * @return \Dida\Loader 链式执行
      */
