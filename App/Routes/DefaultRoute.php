@@ -20,15 +20,8 @@ class DefaultRoute extends \Dida\Route
         $request = app('request');
         $path = explode('/', $request->path, 3);
 
-        $controller = '';
-        $action = '';
-
-        if (isset($path[0])) {
-            $controller = $path[0];
-            if (isset($path[1])) {
-                $action = $path[1];
-            }
-        }
+        $controller = (isset($path[0])) ? isset($path[0]) : '';
+        $action = (isset($path[1])) ? isset($path[1]) : '';
 
         $main =strtolower("$controller/$action");
 
