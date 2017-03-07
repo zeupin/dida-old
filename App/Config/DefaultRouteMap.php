@@ -4,5 +4,5 @@
  * http://dida.zeupin.com
  */
 return [
-    '/' => ['Index', 'Index'],
+    '/' => ['Default', 'default'],
 ];

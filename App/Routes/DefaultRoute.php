@@ -11,32 +11,33 @@ namespace App\Routes;
  */
 class DefaultRoute extends \Dida\Route
 {
-    public $controller = '';
-    public $action = '';
-
-
     public function match()
     {
-        $request = app('request');
-        $path = explode('/', $request->path, 3);
+        $path = explode('/', $this->request->path, 3);
 
-        $controller = (isset($path[0])) ? isset($path[0]) : '';
-        $action = (isset($path[1])) ? isset($path[1]) : '';
+        $controller = (isset($path[0])) ? $path[0] : '';
+        $action = (isset($path[1])) ? $path[1] : '';
 
-        $main =strtolower("$controller/$action");
+        $entry = strtolower("{$controller}/{$action}");
 
-        app()->config->load(APP_ROOT . 'Config/RouteMap.php');
-
-        return true;
+        // 检查routemap中是否定义了这个文件
+        if (array_key_exists($entry, $this->routemap)) {
+            list($this->controller, $this->action) = $this->routemap[$entry];
+            return true;
+        } else {
+            return false;
+        }
     }
 
 
     public function route()
     {
+        \Dida\Dispatcher::dispatch();
     }
 
 
-    public function assemble($controller, $action, array $parameters = array())
+    public static function assemble($controller, $action, array $parameters = array())
     {
+        return str_replace('\\', '/', "$controller/$action");
     }
 }

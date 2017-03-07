@@ -14,7 +14,7 @@ class Dispatcher
     use SingletonTrait;     // 本类为单例模式
 
 
-    public function dispatch()
+    public static function dispatch()
     {
     }
 }

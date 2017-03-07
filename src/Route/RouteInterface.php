@@ -13,5 +13,5 @@ interface RouteInterface
 {
     public function match();
     public function route();
-    public function assemble($controller, $action, array $parameters = []);
+    public static function assemble($controller, $action, array $parameters = []);
 }
