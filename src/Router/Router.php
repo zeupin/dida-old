@@ -17,12 +17,14 @@ class Router
     public function addRoute(Route $route)
     {
         $this->routes[] = $route;
+        return $this;
     }
 
 
-    public function route()
+    public function route(Request $request)
     {
         foreach ($this->routes as $route) {
+            $route->setRequest($request);
             if ($route->match()) {
                 $route->route();
                 return;
