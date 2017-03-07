@@ -139,7 +139,7 @@ class Container implements \ArrayAccess
      * @param string $id
      * @param string|closure|object $service
      *
-     * @return bool 成功返回true
+     * @return Container $this 链式调用
      */
     public function set($id, $service)
     {
@@ -163,7 +163,7 @@ class Container implements \ArrayAccess
         }
 
         // 服务注册成功
-        return true;
+        return $this;
     }
 
 
@@ -219,13 +219,17 @@ class Container implements \ArrayAccess
 
     /**
      * 注册一个单例服务
+     *
+     * @param string $id
+     * @param string|closure|object $service
+     *
+     * @return Container $this 链式调用
      */
     public function singleton($id, $service)
     {
-        $result = $this->bind($id, $service);
-        if ($result) {
-            $this->_singletons[$id] = true;
-        }
+        $this->set($id, $service);
+        $this->_singletons[$id] = true;
+        return $this;
     }
 
 
