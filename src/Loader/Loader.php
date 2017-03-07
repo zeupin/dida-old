@@ -61,11 +61,12 @@ class Loader
 
 
     /**
-     * 尝试从类名对照表中查找类的定义文件
+     * 从类名对照表文件中，查找类文件的所在路径
      *
      * @param type $class
      * @param type $mapfile
-     * @return boolean
+     *
+     * @return bool
      */
     private function loadClassMap($class, $mapfile)
     {
@@ -116,7 +117,7 @@ class Loader
 
 
     /**
-     * 尝试从命名空间对应的目录
+     * 从namespace对应的目录中，，查找类文件的所在路径
      *
      * @param string $class 要载入的类名（FQCN格式）
      * @param string $namespace 命名空间（Your\Namespace）
@@ -194,8 +195,11 @@ class Loader
 
 
     /**
+     * 注册一个类名对照表文件
      *
-     * @param string $mapfile 类的地图文件
+     * @param string $mapfile 类的对照表文件
+     *
+     * @return \Dida\Loader 链式执行
      */
     public function regClassMap($mapfile)
     {
@@ -215,6 +219,8 @@ class Loader
      *
      * @param string $namespace  命名空间，形如：'your\\namespace'
      * @param string $directory  对应目录，形如：'/your/namespace/root/directory/'
+     *
+     * @return \Dida\Loader 链式执行
      */
     public function regNamespace($namespace, $directory)
     {
@@ -239,7 +245,7 @@ class Loader
      * @param string $alias \a\class\alias\FQCN
      * @param string $real its\real\FQCN
      *
-     * @return Dida\Loader 链式执行
+     * @return \Dida\Loader 链式执行
      */
     public function regAlias($alias, $real)
     {
