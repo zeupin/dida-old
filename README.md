@@ -49,7 +49,7 @@ PHP：v5.5及以上，v7.0及以上。
 
 3. MVC的设计原则是：瘦Controller，胖Model，这样可以尽可能增强代码的可重用性。
 
-4. require, include, require_once, include_once 文件时，推荐以不加括号的形式。
+4. require, include, require_once, include_once 文件时，推荐用不加括号的形式。
 
   > 推荐写法：   `require 'target_file_name.php'`;  
   > 不推荐写法： `require('target_file_name.php')`;  
