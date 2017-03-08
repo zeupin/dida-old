@@ -21,18 +21,20 @@ class DefaultRoute extends \Dida\Route
         $entry = strtolower("{$controller}/{$action}");
 
         // 检查routemap中是否定义了这个文件
-        if (array_key_exists($entry, $this->routemap)) {
-            list($this->controller, $this->action) = $this->routemap[$entry];
-            return true;
-        } else {
+        if (!array_key_exists($entry, $this->routemap)) {
             return false;
         }
+
+        list($this->controller, $this->action) = $this->routemap[$entry];
+        return true;
     }
 
 
     public function route()
     {
-        \Dida\Dispatcher::dispatch();
+        app()->set('controller', $this->controller);
+        $callback = [app('controller'), $this->action];
+        return call_user_func_array($callback, $this->parameters);
     }
 
 

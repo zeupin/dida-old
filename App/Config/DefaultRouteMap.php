@@ -4,5 +4,5 @@
  * http://dida.zeupin.com
  */
 return [
-    '/' => ['Default', 'default'],
+    '/' => ['App\Controllers\DefaultController', 'index'],
 ];
