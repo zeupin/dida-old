@@ -31,7 +31,7 @@ PHP：v5.5及以上，v7.0及以上。
 
 ### 全局函数
 
-* 函数名以小写字母和下划线，例如：`foo_bar()`。
+* 函数名以小写字母和下划线组成，例如：`foo_bar()`。
 * Dida框架的全局函数以 `dida_` 开头，例如：`dida_halt()`。
 * App级别的全局函数以 `appf_`开头，例如：`appf_dump_array()`。
 
@@ -41,7 +41,7 @@ PHP：v5.5及以上，v7.0及以上。
 
 ## 编码规范
 
-1. Dida框架目录的所有内容都应该是和项目无关的，和项目有关的文件都应该放到App目录中。
+1. Dida框架目录的所有文件都应该是和具体项目无关的，和项目有关的文件都应该放到App目录中。
 
   > 在决定一个文件究竟应该放到Dida目录还是放到App目录时，问自己一个问题：这个文件可以用于所有项目还是只能用于当前项目？
 
@@ -56,17 +56,16 @@ PHP：v5.5及以上，v7.0及以上。
 
 ## 处理流程
 
-1. 服务器把用户请求rewrite到入口文件 **index.php**。
+1. 服务器把用户请求rewrite到Web入口文件 **<www>/index.php**。
 
-2. 在 **index.php** 设置好各个核心目录的文件路径，然后加载DIDA框架的入口文件 **DIDA_ROOT/Index.php**。
+2. 在 **index.php** 文件中设置好各个关键目录的文件路径，然后加载DIDA框架的入口文件 **DIDA_ROOT/Index.php**。
 
-3. 在 **DIDA框架的入口文件** 设置好基础运行环境：加载常量，加载autoload机制，加载全局函数库，生成$app实例，然后启动app：`$app->start()`。
-
-4. app准备好必要的工作环境。
+3. 在 **DIDA框架的入口文件Index.php** 设置好基础运行环境：加载常量，加载autoload机制，加载全局函数库，生成$app实例等，然后启动app的bootstrap()，进行app启动准备：`$app->start()`。
 	1. 载入 **App/Config/App.dev.php** 配置文件。
 	2. 载入 **App/Functions/** 中的函数库（如果有的话）。
 	3. 载入 **App/Bootstrap/Index.php** ，对App环境和可能用到的服务进行初始配置。
-	4. 工作环境ready，执行**app->run()**，正式开始处理Reuqest。
+
+4. 工作环境ready，执行**app->run()**，正式开始处理Reuqest。
 
 5. 中间件环境初始化。
 
