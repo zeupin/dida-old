@@ -13,11 +13,13 @@ final class Application extends Container
 {
     /* 服务容器的配置参数 */
     public $config = null;
+    public $response = null;
 
 
     public function __construct()
     {
         $this->config = new Config;
+        $this->response = new Response;
     }
 
 
@@ -28,7 +30,6 @@ final class Application extends Container
         // 启动Staticall机制
         Staticall::init($this, VAR_ROOT);
         Staticall::link('App', 'app');      // 链接App伪类到$app['app']
-        
         // 载入app配置
         $this->loadAppConfig();
 
@@ -75,11 +76,5 @@ final class Application extends Container
     private function run()
     {
         require APP_ROOT . 'Index.php';
-    }
-
-
-    public function getConfig()
-    {
-        return $this->config;
     }
 }
