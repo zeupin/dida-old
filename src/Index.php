@@ -3,6 +3,9 @@
  * Dida Framework --Powered by Zeupin LLC
  * http://dida.zeupin.com
  */
+
+namespace Dida;
+
 /* 开始计时 */
 define('DIDA_START_TIME', microtime(true));
 
@@ -16,15 +19,15 @@ require __DIR__ . '/Autoload.php';
 require DIDA_ROOT . 'Functions/Global.php';
 
 /* 生成app实例 */
-$app = new Dida\Application();
+$app = new Application();
 
 /* 载入App相关函数库 */
 require DIDA_ROOT . 'Functions/App.php';
 
 /* 启动Staticall机制 */
-\Dida\Staticall::init();
-\Dida\Staticall::bind('App', $app);
-\Dida\Staticall::bind('Response', $app->response);
+Staticall::init();
+Staticall::bind('App', $app);
+Staticall::bind('Response', $app->response);
 
 /* 开始运行 */
 $app->start();
