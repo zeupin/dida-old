@@ -21,5 +21,10 @@ $app = new Dida\Application();
 /* 载入App相关函数库 */
 require DIDA_ROOT . 'Functions/App.php';
 
+/* 启动Staticall机制 */
+\Dida\Staticall::init();
+\Dida\Staticall::bind('App', $app);
+\Dida\Staticall::bind('Response', $app->response);
+
 /* 开始运行 */
 $app->start();

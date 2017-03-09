@@ -25,11 +25,6 @@ final class Application extends Container
 
     public function start()
     {
-        $this['app'] = $this;
-
-        // 启动Staticall机制
-        Staticall::init($this, VAR_ROOT);
-        Staticall::link('App', 'app');      // 链接App伪类到$app['app']
         // 载入app配置
         $this->loadAppConfig();
 
