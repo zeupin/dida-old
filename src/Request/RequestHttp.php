@@ -30,8 +30,8 @@ class RequestHttp extends Request
         $url = parse_url($_SERVER['REQUEST_URI']);
 
         if (isset($url['path'])) {
-            // 去除WWW_ROOT后的部分
-            $this->path = substr($url['path'], strlen(WWW_ROOT));
+            // 去除WEB_BASE后的部分
+            $this->path = substr($url['path'], strlen(WEB_BASE));
         }
         if (isset($url['query'])) {
             $this->query = $url['query'];

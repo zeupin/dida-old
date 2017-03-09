@@ -27,8 +27,8 @@ if (!IS_CLI) {
         define('REQUEST_METHOD', '');
     }
 
-    /* WWW_ROOT */
-    defined('WWW_ROOT') || define('WWW_ROOT', str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'])));
+    /* WEB_BASE */
+    defined('WEB_BASE') || define('WEB_BASE', str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'])));
 
     /* IS_AJAX */
     define('IS_AJAX', isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest');

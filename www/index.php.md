@@ -9,7 +9,7 @@ define('VAR_ROOT', realpath(__DIR__ . '/../Var') . '/');
 define('APP_ENVIRON', 'dev');
 
 define('DIDA_DEBUG_MODE', true);
-define('WWW_ROOT', '/');
+define('WEB_BASE', '/');
 
 require(DIDA_ROOT . 'Index.php');
 ```
@@ -37,7 +37,7 @@ APP_ENVIRON         指明APP的当前运行环境。
 ```
 DIDA_DEBUG_MODE     指明是否开启调试模式，值为true或者false。默认是开启true。
                         开启后，会显示所有错误信息。
-WWW_ROOT            指明www的根路径。默认是入口文件所在的www路径。
+WEB_BASE            指明www的根路径。默认是入口文件所在的www路径。
                         一般这个值为/，虚拟目录则可能为/foo/，最后一个字符应为/。
-						程序在路由时，会忽略网址中WWW_ROOT对应的开头部分，以获取一个和主机无关的WEB路径。
+						程序在路由时，会忽略网址中WEB_BASE对应的开头部分，以获取一个和主机无关的WEB路径。
 ```
