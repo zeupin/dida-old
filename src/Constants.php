@@ -13,10 +13,13 @@ if (DIDA_DEBUG_MODE) {
     error_reporting(0);
 }
 
+
+/* 沙箱目录的文件路径 */
+defined('SANDBOX_ROOT') || define('SANDBOX_ROOT', VAR_ROOT);
+
+
 /* 是否是CLI模式 */
 define('IS_CLI', PHP_SAPI === 'cli');
-
-
 if (!IS_CLI) {
     /* REQUEST_METHOD，值为：GET，POST，PUT，PATCH，DELETE，OPTIONS，HEAD */
     if (isset($_POST['_method'])) {
