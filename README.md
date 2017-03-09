@@ -68,16 +68,16 @@ PHP：v5.5及以上，v7.0及以上。
 	3. 载入 **App/Bootstrap/Index.php** ，对App环境和可能用到的服务进行初始配置。
 	4. 工作环境ready，执行**app->run()**，正式开始处理Reuqest。
 
-5. **Middleware**，可以对Request以及环境做些前期处理。
+5. 中间件环境初始化。
 
-6. **Router** 逐一用登记的 **路由规则route** 去解析 **Request**，检查Request是否可以匹配这个规则route。
+6. **Middleware处理**，可以对Request以及环境做些前期处理。
 
-7. 如果可以匹配，则执行 **route->route()**。
+7. **Router** 逐一用登记的 **路由规则route** 去解析 **Request**，检查Request是否可以匹配这个规则route。
 
-8. 执行标准的**MVC流程**，**Controller** 从 **Model** 取数据，赋值给 **View**。
+8. 如果可以匹配，则执行 **route->route()**。
 
-9. **Middleware**，可以对View做些后期处理。
+9. 执行标准的**MVC流程**，**Controller** 从 **Model** 取数据，赋值给 **View**。
 
-10. **app()->response->output()** 输出最终内容给用户。
+10. **Middlewarec处理**，可以对View做些后期处理。
 
-8. 执行中间件处理。
+11. **app()->response->output()** 输出最终内容给用户。
