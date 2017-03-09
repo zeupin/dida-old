@@ -13,12 +13,13 @@ class Response
 {
     protected $head = [];
     protected $body = [];
-    protected $format = 'html';
     protected $encoding = 'utf-8';
+    protected $contentType = '';
 
 
-    public function output()
+    public function output($delimiter = '')
     {
+        echo implode($delimiter, $this->body);
     }
 
 
@@ -45,19 +46,6 @@ class Response
     }
 
 
-    public function setFormat($format)
-    {
-        $this->format = $format;
-        return $this;
-    }
-
-
-    public function getFormat()
-    {
-        return $this->format;
-    }
-
-
     public function setEncoding($encoding)
     {
         $this->encoding = $encoding;
@@ -68,5 +56,18 @@ class Response
     public function getEncoding()
     {
         return $this->encoding;
+    }
+
+
+    public function setContentType($contentType)
+    {
+        $this->contentType = $contentType;
+        return $this;
+    }
+
+
+    public function getContentType()
+    {
+        return $this->contentType;
     }
 }
