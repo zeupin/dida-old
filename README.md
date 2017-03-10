@@ -43,7 +43,7 @@ PHP：v5.5及以上，v7.0及以上。
 
 1. Dida框架目录的所有文件都应该是和具体项目无关的，和项目有关的文件都应该放到App目录中。
 
-  > 在决定一个文件究竟应该放到Dida目录还是放到App目录时，问自己一个问题：这个文件可以用于所有项目还是只能用于当前项目？
+    > 在决定一个文件究竟应该放到Dida目录还是放到App目录时，问自己一个问题：这个文件可以用于所有项目还是只能用于当前项目？
 
 2. Dida框架的命名空间统一用`Dida`，App的命名空间用`App`。
 
@@ -51,8 +51,8 @@ PHP：v5.5及以上，v7.0及以上。
 
 4. require, include, require_once, include_once 文件时，推荐用不加括号的形式。
 
-  > 推荐的写法：   `require 'target_file_name.php'`;  
-  > 不推荐写法： `require('target_file_name.php')`;  
+    > 推荐的写法：   `require 'target_file_name.php'`;  
+    > 不推荐写法： `require('target_file_name.php')`;  
 
 ## 处理流程
 
