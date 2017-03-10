@@ -60,10 +60,11 @@ PHP：v5.5及以上，v7.0及以上。
 
 2. 在 **index.php** 文件中设置好各个关键目录的文件路径，然后加载DIDA框架的入口文件 **DIDA_ROOT/Index.php**。
 
-3. 在 **DIDA框架的入口文件Index.php** 设置好基础运行环境：加载常量，加载autoload机制，加载全局函数库，生成$app实例等，然后启动**$app->bootstrap()**，进行app启动准备。
-	1. 载入 **App/Config/App.dev.php** 配置文件。
-	2. 载入 **App/Functions/** 中的函数库（如果有的话）。
-	3. 载入 **App/Bootstrap/Index.php** ，对App环境和可能用到的服务进行初始配置。
+3. 在 **DIDA框架的入口文件Index.php** 设置好基础运行环境：加载常量，加载autoload机制，加载全局函数库，生成$app实例等，然后启动**$app->init()**，进行app初始化工作。
+
+    1. 载入 **App/Config/App.dev.php** 配置文件。
+    2. 载入 **App/Functions/** 中的函数库（如果有的话）。
+    3. 载入 **App/Bootstraps/Index.php** ，对App环境和可能用到的服务进行初始配置。
 
 4. 工作环境ready，执行**$app->run()**，正式开始处理Reuqest。
 
@@ -75,7 +76,7 @@ PHP：v5.5及以上，v7.0及以上。
 
 8. 如果可以匹配，则执行 **route->route()**。
 
-9. 执行标准的**MVC流程**，**Controller** 从 **Model** 取数据，赋值给 **View**。
+9. 执行标准的**MVC流程**：**Controller** 从 **Model** 取数据，赋值给 **View**。
 
 10. **Middlewarec处理**，可以对View做些后期处理。
 

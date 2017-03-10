@@ -23,7 +23,7 @@ final class Application extends Container
     }
 
 
-    public function start()
+    public function init()
     {
         // 载入app配置
         $this->loadAppConfig();
@@ -31,8 +31,8 @@ final class Application extends Container
         // 载入App函数库
         $this->loadAppFunctions();
 
-        // 依次载入app的bootstraps
-        $this->bootstrap();
+        // 依次载入App的bootstraps
+        $this->loadAppBootstraps();
 
         // 准备工作就绪，正式处理用户发起的请求
         $this->run();
@@ -57,7 +57,7 @@ final class Application extends Container
     }
 
 
-    private function bootstrap()
+    private function loadAppBootstraps()
     {
         $app = $this;
 
@@ -72,4 +72,7 @@ final class Application extends Container
     {
         require APP_ROOT . 'Index.php';
     }
+
+
+
 }
