@@ -39,6 +39,9 @@ final class Application extends Container
     }
 
 
+    /**
+     * 根据不同的APP_ENVIRON载入不同的配置文件
+     */
     private function loadAppConfig()
     {
         $target = APP_ROOT . 'Config/App.' . APP_ENVIRON . '.php';
@@ -72,7 +75,4 @@ final class Application extends Container
     {
         require APP_ROOT . 'Index.php';
     }
-
-
-
 }
