@@ -31,6 +31,12 @@ class Router
             }
         }
 
+        $this->notFound();
+    }
+
+
+    public function notFound()
+    {
         throw new \Exception('404 Not Found');
     }
 }
