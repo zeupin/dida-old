@@ -11,13 +11,22 @@ namespace Dida;
  */
 class Foundation
 {
+    private static $initialized = false;
+
+
     public static function init()
     {
+        // 确保本函数只执行一次
+        if (self::$initialized) return;
+
         self::handleErrorsAndExceptions();
+        self::loadFunctions();
+        
+        self::$initialized = true;
     }
 
 
-    private function handleErrorsAndExceptions()
+    private static function handleErrorsAndExceptions()
     {
         if (DIDA_DEBUG_MODE) {
             // 报告所有 PHP 错误，参见 PHP 的 error_reporting() 文档
@@ -26,5 +35,11 @@ class Foundation
             // 关闭所有 PHP 错误报告
             error_reporting(0);
         }
+    }
+
+
+    private static function loadFunctions()
+    {
+        require DIDA_ROOT . 'Functions/Global.php';
     }
 }

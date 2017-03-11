@@ -33,7 +33,7 @@ abstract class Staticall
         static::$fqcns = [];
 
         if (!is_string($writeable) || file_exists($writeable) || !is_dir($writeable)) {
-            self::$writeable = VAR_ROOT;
+            self::$writeable = DIDA_VAR_ROOT;
         } else {
             self::$writeable = realpath($writeable) . '/';
         }

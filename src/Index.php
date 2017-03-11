@@ -15,6 +15,9 @@ require __DIR__ . '/Constants.php';
 /* 加载autoload机制 */
 require __DIR__ . '/Autoload.php';
 
+/* 基础环境初始化 */
+\Dida\Foundation::init();
+
 /* 导入全局函数库 */
 require DIDA_ROOT . 'Functions/Global.php';
 

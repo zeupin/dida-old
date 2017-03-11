@@ -14,9 +14,9 @@ $dida_loader->regClassMap(DIDA_ROOT . 'ClassMap.php');
 $dida_loader->regNamespace('Dida', DIDA_ROOT);
 
 /* 登记App命名空间 */
-$dida_loader->regNamespace('App', APP_ROOT);
+$dida_loader->regNamespace('App', DIDA_APP_ROOT);
 
 /* Composer的autoload机制就位 */
-if (file_exists(COMPOSER_ROOT . 'autoload.php')) {
-    require COMPOSER_ROOT . 'autoload.php';
+if (file_exists(DIDA_COMPOSER_ROOT . 'autoload.php')) {
+    require DIDA_COMPOSER_ROOT . 'autoload.php';
 }

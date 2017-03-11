@@ -40,11 +40,11 @@ final class Application extends Container
 
 
     /**
-     * 根据不同的APP_ENVIRON载入不同的配置文件
+     * 根据不同的DIDA_ENVIRON载入不同的配置文件
      */
     private function loadAppConfig()
     {
-        $target = APP_ROOT . 'Config/App.' . APP_ENVIRON . '.php';
+        $target = DIDA_APP_ROOT . 'Config/App.' . DIDA_ENVIRON . '.php';
         if (file_exists($target) && is_file($target)) {
             $this->config->load($target);
         }
@@ -53,7 +53,7 @@ final class Application extends Container
 
     private function loadAppFunctions()
     {
-        $target = APP_ROOT . 'Functions/Index.php';
+        $target = DIDA_APP_ROOT . 'Functions/Index.php';
         if (file_exists($target) && is_file($target)) {
             require $target;
         }
@@ -64,7 +64,7 @@ final class Application extends Container
     {
         $app = $this;
 
-        $target = APP_ROOT . 'Bootstrap/Index.php';
+        $target = DIDA_APP_ROOT . 'Bootstrap/Index.php';
         if (file_exists($target) && is_file($target)) {
             require $target;
         }
@@ -73,6 +73,6 @@ final class Application extends Container
 
     private function run()
     {
-        require APP_ROOT . 'Index.php';
+        require DIDA_APP_ROOT . 'Index.php';
     }
 }
