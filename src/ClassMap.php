@@ -11,6 +11,7 @@ return [
     'Dida\\Debug'          => 'Debug/Debug.php',
     'Dida\\Dispatcher'     => 'Dispatcher/Dispatcher.php',
     'Dida\\Exception'      => 'Exception/Exception.php',
+    'Dida\\Foundation'     => 'Foundation/Foundation.php',
     'Dida\\Loader'         => 'Loader/Loader.php',
     'Dida\\Model'          => 'Model/Model.php',
     'Dida\\Request'        => 'Request/Request.php',
