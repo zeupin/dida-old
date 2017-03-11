@@ -11,15 +11,27 @@ namespace Dida;
  */
 class Loader
 {
-    private $_classmaps = [];       // 已注册的类名对照表文件
-    private $_namespaces = [];      // 已注册的名称空间列表
-    private $_aliases = [];         // 已注册的别名列表
-    private $_queue = [];           // 待查询队列
+    private static $initialized = false;
+
+    /* 已经登记的loader队列 */
+    private static $_queue = [];           // 待查询队列
+
+    /* 不同的查询类型 */
+    private static $_classmaps = [];       // 已注册的类名对照表文件
+    private static $_namespaces = [];      // 已注册的名称空间列表
+    private static $_aliases = [];         // 已注册的别名列表
 
 
-    public function __construct()
+    public static function init()
     {
-        spl_autoload_register([$this, 'autoload']);
+        // 确保本函数仅执行一次
+        if (self::$initialized) return;
+
+        // 注册autoload回调函数
+        spl_autoload_register([__CLASS__, 'autoload']);
+
+        // 确保本函数仅执行一次
+        self::$initialized = true;
     }
 
 
@@ -30,24 +42,24 @@ class Loader
      *
      * @return bool 载入成功返回true，载入失败返回false
      */
-    protected function autoload($class)
+    protected static function autoload($class)
     {
-        foreach ($this->_queue as $item) {
+        foreach (self::$_queue as $item) {
             switch ($item['type']) {
                 case 'classmap':
-                    $result = $this->loadClassMap($class, $item['mapfile']);
+                    $result = self::loadClassmap($class, $item['classmapfile'], $item['root']);
                     if ($result) {
                         return true;
                     }
                     break;
                 case 'namespace':
-                    $result = $this->loadNamespace($class, $item['namespace'], $item['directory']);
+                    $result = self::loadNamespace($class, $item['namespace'], $item['directory']);
                     if ($result) {
                         return true;
                     }
                     break;
                 case 'alias':
-                    $result = $this->loadAlias($class, $item['alias'], $item['real']);
+                    $result = self::loadAlias($class, $item['alias'], $item['real']);
                     if ($result) {
                         return true;
                     }
@@ -63,46 +75,46 @@ class Loader
     /**
      * 从类名对照表文件中，查找类文件的所在路径
      *
-     * @param type $class
-     * @param type $mapfile
+     * @param string $class     要查询的类名
+     * @param string $classmap  类索引对照表的文件名
+     * @param string $root      对应的根目录
      *
      * @return bool
      */
-    private function loadClassMap($class, $mapfile)
+    private static function loadClassmap($class, $classmapfile, $root)
     {
-        if (is_null($this->_classmaps[$mapfile])) {
-            // 如果是第一次执行，则先载入mapfile文件。这样后面就不用重复载入文件，直接查就行了。
-            if (!file_exists($mapfile) || !is_file($mapfile)) {
-                $this->_classmaps[$mapfile] = [];
+        // 如果是第一次执行，则先载入classmap文件。这样后面就不用重复载入文件，直接查就行了。
+        if (is_null(self::$_classmaps[$classmapfile])) {
+            if (!file_exists($classmapfile) || !is_file($classmapfile)) {
+                // 如果文件不存在，直接返回false
+                self::$_classmaps[$classmapfile] = [];
                 return false;
             }
 
-            // 载入classmap文件
-            $map = require($mapfile);
+            // 载入classmap文件的内容
+            $classmap = require($classmapfile);
 
-            // 检查载入的文件是否合法
-            if (!is_array($map)) {
-                $this->_classmaps[$mapfile] = [];
+            // 检查载入的内容是否合法
+            if (!is_array($classmap)) {
+                self::$_classmaps[$classmapfile] = [];
                 return false;
             }
 
             // 保存
-            $this->_classmaps[$mapfile] = $map;
-        } elseif (!is_array($this->_classmaps[$mapfile])) {
-            return false;
-        }
-        if (empty($this->_classmaps[$mapfile])) {
-            return false;
+            self::$_classmaps[$classmapfile] = $classmap;
         }
 
-        $classmap = $this->_classmaps[$mapfile];
+        $classmap = self::$_classmaps[$classmapfile];
+        if (count($classmap) == 0) {
+            return false;
+        }
 
         if (!array_key_exists($class, $classmap)) {
             return false;
         }
 
-        $mapdir = dirname($mapfile) . '/';
-        $target = $mapdir . $classmap[$class];
+        $classmapdir = realpath($root) . '/';
+        $target = $classmapdir . $classmap[$class];
         if (file_exists($target) && is_file($target)) {
             require $target;
             return true;
@@ -121,7 +133,7 @@ class Loader
      *
      * @return bool
      */
-    private function loadNamespace($class, $namespace, $directory)
+    private static function loadNamespace($class, $namespace, $directory)
     {
         // 检查$class是否属于$namespace?
         $len = strlen($namespace);
@@ -185,7 +197,7 @@ class Loader
      *
      * @return bool
      */
-    private function loadAlias($class, $alias, $real)
+    private static function loadAlias($class, $alias, $real)
     {
         if ($class === $alias) {
             return class_alias($real, $alias);
@@ -198,20 +210,23 @@ class Loader
     /**
      * 注册一个类名对照表文件
      *
-     * @param string $mapfile 类的对照表文件
-     *
-     * @return \Dida\Loader 链式执行
+     * @param string $classmapfile  类的对照表文件路径
+     * @param string $root          根目录路径
      */
-    public function regClassMap($mapfile)
+    public static function registerClassmap($classmapfile, $root)
     {
-        $this->_classmaps [$mapfile] = null;
+        // 确保Loader已经init()
+        self::init();
 
-        $this->_queue[] = [
-            'type'    => 'classmap',
-            'mapfile' => $mapfile,
+        // register时，先简单把初始值设置为null
+        // 第一次使用时，再去require实际文件
+        self::$_classmaps [$classmapfile] = null;
+
+        self::$_queue[] = [
+            'type'         => 'classmap',
+            'classmapfile' => $classmapfile,
+            'root'         => $root,
         ];
-
-        return $this;
     }
 
 
@@ -223,20 +238,21 @@ class Loader
      *
      * @return \Dida\Loader 链式执行
      */
-    public function regNamespace($namespace, $directory)
+    public static function registerNamespace($namespace, $directory)
     {
+        // 确保Loader已经init()
+        self::init();
+
         // 对参数$namespace进行标准化，去除其前后的空白字符以及字符'\'
         $namespace = trim($namespace, "\\ \t\n\r\0\x0B");
 
-        $this->_namespaces[$namespace] = $directory;
+        self::$_namespaces[$namespace] = $directory;
 
-        $this->_queue[] = [
+        self::$_queue[] = [
             'type'      => 'namespace',
             'namespace' => $namespace,
             'directory' => $directory,
         ];
-
-        return $this;
     }
 
 
@@ -248,20 +264,21 @@ class Loader
      *
      * @return \Dida\Loader 链式执行
      */
-    public function regAlias($alias, $real)
+    public static function registerAlias($alias, $real)
     {
-        if (array_key_exists($alias, $this->_aliases)) {
+        // 确保Loader已经init()
+        self::init();
+
+        if (array_key_exists($alias, self::$_aliases)) {
             throw new \Exception('重复注册别名类');
         }
 
-        $this->_aliases[$alias] = $real;
+        self::$_aliases[$alias] = $real;
 
-        $this->_queue[] = [
+        self::$_queue[] = [
             'type'  => 'alias',
             'alias' => $alias,
             'real'  => $real,
         ];
-
-        return $this;
     }
 }
