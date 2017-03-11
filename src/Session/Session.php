@@ -9,6 +9,6 @@ namespace Dida;
 /**
  * Session 类
  */
-class Session
+abstract class Session implements \ArrayAccess
 {
 }
