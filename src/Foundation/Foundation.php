@@ -11,6 +11,12 @@ namespace Dida;
  */
 class Foundation
 {
+    public static function init()
+    {
+        self::handleErrorsAndExceptions();
+    }
+
+
     private function handleErrorsAndExceptions()
     {
         if (DIDA_DEBUG_MODE) {
