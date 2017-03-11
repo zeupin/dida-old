@@ -6,6 +6,9 @@
 /* 是否开启调试模式 */
 defined('DIDA_DEBUG_MODE') || define('DIDA_DEBUG_MODE', true); // 默认开启所有错误提示
 
+/* APP的名称空间 */
+defined('DIDA_APP_NAMESPACE') || define('DIDA_APP_NAMESPACE','App'); // 默认APP的命名空间为App
+
 /* 沙箱目录的文件路径 */
 defined('DIDA_SANDBOX_ROOT') || define('DIDA_SANDBOX_ROOT', DIDA_VAR_ROOT);
 
