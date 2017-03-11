@@ -64,7 +64,7 @@ final class Application extends Container
     {
         $app = $this;
 
-        $target = DIDA_APP_ROOT . 'Bootstrap/Index.php';
+        $target = DIDA_APP_ROOT . 'Bootstraps/Index.php';
         if (file_exists($target) && is_file($target)) {
             require $target;
         }
