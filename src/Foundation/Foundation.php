@@ -21,7 +21,8 @@ class Foundation
 
         self::handleErrorsAndExceptions();
         self::loadFunctions();
-        
+
+        // 确保本函数只执行一次
         self::$initialized = true;
     }
 
@@ -40,6 +41,6 @@ class Foundation
 
     private static function loadFunctions()
     {
-        require DIDA_ROOT . 'Functions/Global.php';
+        require DIDA_ROOT . 'Functions/Index.php';
     }
 }
