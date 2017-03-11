@@ -73,6 +73,82 @@ class Loader
 
 
     /**
+     * 注册一个类名对照表文件
+     *
+     * @param string $classmapfile  类的对照表文件路径
+     * @param string $root          根目录路径
+     */
+    public static function registerClassmap($classmapfile, $root)
+    {
+        // 确保Loader已经init()
+        self::init();
+
+        // register时，先简单把初始值设置为null
+        // 第一次使用时，再去require实际文件
+        self::$_classmaps [$classmapfile] = null;
+
+        self::$_queue[] = [
+            'type'         => 'classmap',
+            'classmapfile' => $classmapfile,
+            'root'         => $root,
+        ];
+    }
+
+
+    /**
+     * 注册一个命名空间
+     *
+     * @param string $namespace  命名空间，形如：'your\\namespace'
+     * @param string $directory  对应目录，形如：'/your/namespace/root/directory/'
+     *
+     * @return \Dida\Loader 链式执行
+     */
+    public static function registerNamespace($namespace, $directory)
+    {
+        // 确保Loader已经init()
+        self::init();
+
+        // 对参数$namespace进行标准化，去除其前后的空白字符以及字符'\'
+        $namespace = trim($namespace, "\\ \t\n\r\0\x0B");
+
+        self::$_namespaces[$namespace] = $directory;
+
+        self::$_queue[] = [
+            'type'      => 'namespace',
+            'namespace' => $namespace,
+            'directory' => $directory,
+        ];
+    }
+
+
+    /**
+     * 注册一个别名类
+     *
+     * @param string $alias  \A\Class\Alias\FQCN
+     * @param string $real   \Its\Real\FQCN
+     *
+     * @return \Dida\Loader 链式执行
+     */
+    public static function registerAlias($alias, $real)
+    {
+        // 确保Loader已经init()
+        self::init();
+
+        if (array_key_exists($alias, self::$_aliases)) {
+            throw new \Exception('重复注册别名类');
+        }
+
+        self::$_aliases[$alias] = $real;
+
+        self::$_queue[] = [
+            'type'  => 'alias',
+            'alias' => $alias,
+            'real'  => $real,
+        ];
+    }
+
+
+    /**
      * 从类名对照表文件中，查找类文件的所在路径
      *
      * @param string $class     要查询的类名
@@ -104,23 +180,26 @@ class Loader
             self::$_classmaps[$classmapfile] = $classmap;
         }
 
+        // 获取classmap数组
         $classmap = self::$_classmaps[$classmapfile];
         if (count($classmap) == 0) {
             return false;
         }
 
+        // 检查$class是否在$classmap数组中
         if (!array_key_exists($class, $classmap)) {
             return false;
         }
 
+        // 导入对应的php文件
         $classmapdir = realpath($root) . '/';
         $target = $classmapdir . $classmap[$class];
         if (file_exists($target) && is_file($target)) {
             require $target;
             return true;
+        } else {
+            return false;
         }
-
-        return false;
     }
 
 
@@ -204,81 +283,5 @@ class Loader
         } else {
             return false;
         }
-    }
-
-
-    /**
-     * 注册一个类名对照表文件
-     *
-     * @param string $classmapfile  类的对照表文件路径
-     * @param string $root          根目录路径
-     */
-    public static function registerClassmap($classmapfile, $root)
-    {
-        // 确保Loader已经init()
-        self::init();
-
-        // register时，先简单把初始值设置为null
-        // 第一次使用时，再去require实际文件
-        self::$_classmaps [$classmapfile] = null;
-
-        self::$_queue[] = [
-            'type'         => 'classmap',
-            'classmapfile' => $classmapfile,
-            'root'         => $root,
-        ];
-    }
-
-
-    /**
-     * 注册一个命名空间
-     *
-     * @param string $namespace  命名空间，形如：'your\\namespace'
-     * @param string $directory  对应目录，形如：'/your/namespace/root/directory/'
-     *
-     * @return \Dida\Loader 链式执行
-     */
-    public static function registerNamespace($namespace, $directory)
-    {
-        // 确保Loader已经init()
-        self::init();
-
-        // 对参数$namespace进行标准化，去除其前后的空白字符以及字符'\'
-        $namespace = trim($namespace, "\\ \t\n\r\0\x0B");
-
-        self::$_namespaces[$namespace] = $directory;
-
-        self::$_queue[] = [
-            'type'      => 'namespace',
-            'namespace' => $namespace,
-            'directory' => $directory,
-        ];
-    }
-
-
-    /**
-     * 注册一个别名类
-     *
-     * @param string $alias  \A\Class\Alias\FQCN
-     * @param string $real   \Its\Real\FQCN
-     *
-     * @return \Dida\Loader 链式执行
-     */
-    public static function registerAlias($alias, $real)
-    {
-        // 确保Loader已经init()
-        self::init();
-
-        if (array_key_exists($alias, self::$_aliases)) {
-            throw new \Exception('重复注册别名类');
-        }
-
-        self::$_aliases[$alias] = $real;
-
-        self::$_queue[] = [
-            'type'  => 'alias',
-            'alias' => $alias,
-            'real'  => $real,
-        ];
     }
 }
