@@ -78,6 +78,8 @@ class Loader
      *
      * @param string $classmapfile  类的对照表文件路径
      * @param string $rootpath      根目录路径
+     *
+     * @return bool 成功返回true，有问题返回false
      */
     public static function addClassmap($classmapfile, $rootpath)
     {
@@ -153,12 +155,12 @@ class Loader
 
 
     /**
-     * 注册一个命名空间
+     * 新增命名空间
      *
      * @param string $namespace  命名空间，形如：'your\\namespace'
-     * @param string $rootpath  对应目录，形如：'/your/namespace/root/rootpath/'
+     * @param string $rootpath   对应目录，形如：'/your/namespace/root/rootpath/'
      *
-     * @return \Dida\Loader 链式执行
+     * @return bool 成功返回true，有问题返回false
      */
     public static function addNamespace($namespace, $rootpath)
     {
@@ -256,6 +258,8 @@ class Loader
      *
      * @param string $alias  Your\Class\Alias
      * @param string $real   \Its\Real\FQCN
+     *
+     * @return bool 成功返回true，有问题返回false
      */
     public static function addAlias($alias, $real)
     {
