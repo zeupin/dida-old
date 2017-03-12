@@ -7,7 +7,7 @@
 namespace Dida;
 
 /**
- * View 类
+ * View 基类
  */
 class View
 {

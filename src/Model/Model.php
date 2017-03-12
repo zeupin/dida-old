@@ -7,7 +7,7 @@
 namespace Dida;
 
 /**
- * Model 类
+ * Model 基类
  */
 class Model
 {

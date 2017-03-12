@@ -7,7 +7,7 @@
 namespace Dida;
 
 /**
- * Controller 类
+ * Controller 基类
  */
 class Controller
 {
