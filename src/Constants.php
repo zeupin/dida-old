@@ -9,9 +9,6 @@ defined('DIDA_DEBUG_MODE') || define('DIDA_DEBUG_MODE', true); // 默认开启�
 /* APP的名称空间 */
 defined('DIDA_APP_NAMESPACE') || define('DIDA_APP_NAMESPACE', 'App'); // 默认值为App
 
-/* 沙箱目录的文件路径 */
-defined('DIDA_SANDBOX_ROOT') || define('DIDA_SANDBOX_ROOT', DIDA_VAR_ROOT); // 默认值为DIDA_VAR_ROOT
-
 /* 是否是CLI模式 */
 define('DIDA_IS_CLI', PHP_SAPI === 'cli');
 

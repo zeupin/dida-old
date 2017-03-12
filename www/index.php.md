@@ -2,15 +2,21 @@
 
 ## 入口文件示例
 ```php
-define('DIDA_ROOT',     realpath(__DIR__ . '/../src') . '/');
-define('COMPOSER_ROOT', realpath(__DIR__ . '/../vendor') . '/');
-define('APP_ROOT',      realpath(__DIR__ . '/../App') . '/');
-define('VAR_ROOT',      realpath(__DIR__ . '/../Var') . '/');
-define('APP_ENVIRON',   'dev');
+<?php
+/* 必填的常量 */
+define('DIDA_ROOT',           realpath(__DIR__ . '/../src') . '/');
+define('DIDA_COMPOSER_ROOT',  realpath(__DIR__ . '/../vendor') . '/');
+define('DIDA_APP_ROOT',       realpath(__DIR__ . '/../App') . '/');
+define('DIDA_VAR_ROOT',       realpath(__DIR__ . '/../Var') . '/');
+define('DIDA_WEB_ROOT',       __DIR__ . '/');
+define('DIDA_ENVIRON',        'dev');
 
-define('DIDA_DEBUG_MODE', true);
-define('DIDA_WWW', '/');
+/* 选填的常量 */
+define('DIDA_WWW',            '/');
+define('DIDA_DEBUG_MODE',     true);
+define('DIDA_APP_NAMESPACE',  'App');
 
+/* 开始 */
 require(DIDA_ROOT . 'Index.php');
 ```
 
@@ -42,14 +48,12 @@ DIDA_ENVIRON            指明APP的当前运行环境。
 ### 选填的常量
 
 ```
-DIDA_DEBUG_MODE         指明是否开启调试模式，值为true或者false。默认是开启true。
-                            开启后，会显示所有错误信息。
-
 DIDA_WWW                指明web的根路径，默认是入口文件所在的web路径。
                             一般这个值为/，虚拟目录则可能为/foo/，最后一个字符应为/。
                             程序在路由时，会忽略网址中 DIDA_WWW 对应的开头部分，以获取一个和主机无关的web路径。
 
-DIDA_SANDBOX_ROOT       指明沙箱目录的文件路径。默认和DIDA_VAR_ROOT一致。
-                            沙箱目录用于隔离安全性不明確的文件，如客户上传的文件等。
-                            这个目录要有可写权限。
+DIDA_DEBUG_MODE         指明是否开启调试模式，值为true或者false。默认是开启true。
+                            开启后，会显示所有错误信息。
+
+DIDA_APP_NAMESPACE      指明App的命名空间，默认是App。
 ```

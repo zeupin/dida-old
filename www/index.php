@@ -12,10 +12,9 @@ define('DIDA_WEB_ROOT', __DIR__ . '/');
 define('DIDA_ENVIRON', 'dev');
 
 /* 选填的常量 */
-define('DIDA_APP_NAMESPACE', 'App');
-define('DIDA_DEBUG_MODE', true);
 define('DIDA_WWW', '/');
-define('DIDA_SANDBOX_ROOT', realpath(__DIR__ . '/../Sandbox') . '/');
+define('DIDA_DEBUG_MODE', true);
+define('DIDA_APP_NAMESPACE', 'App');
 
 /* 开始 */
 require(DIDA_ROOT . 'Index.php');
