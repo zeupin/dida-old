@@ -17,7 +17,9 @@ class Foundation
     public static function init()
     {
         // 确保本函数只执行一次
-        if (self::$initialized) return;
+        if (self::$initialized) {
+            return;
+        }
 
         self::handleErrorsAndExceptions();
         self::loadFunctions();
