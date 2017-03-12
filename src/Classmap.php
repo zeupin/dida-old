@@ -13,6 +13,7 @@ return [
     'Dida\\Exception'      => 'Exception/Exception.php',
     'Dida\\Foundation'     => 'Foundation/Foundation.php',
     'Dida\\Loader'         => 'Loader/Loader.php',
+    'Dida\\Middleware'     => 'Middleware/Middleware.php',
     'Dida\\Model'          => 'Model/Model.php',
     'Dida\\Request'        => 'Request/Request.php',
     'Dida\\RequestHttp'    => 'Request/RequestHttp.php',
