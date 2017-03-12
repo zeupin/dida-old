@@ -11,17 +11,16 @@ namespace Dida;
  */
 class Loader
 {
+    /* 初始化标志 */
     private static $initialized = false;
 
-    /* 已经登记的loader队列 */
-    private static $_queue = [];           // 待查询队列
-
-    /* 不同的查询类型 */
-    private static $_classmaps = [];       // 已注册的类名对照表文件
-    private static $_namespaces = [];      // 已注册的名称空间列表
-    private static $_aliases = [];         // 已注册的别名列表
+    /* 查询队列 */
+    private static $_queue = [];
 
 
+    /**
+     * 初始化
+     */
     public static function init()
     {
         // 确保本函数仅执行一次
@@ -55,7 +54,7 @@ class Loader
                     }
                     break;
                 case 'namespace':
-                    $result = self::matchNamespace($class, $item['namespace'], $item['directory']);
+                    $result = self::matchNamespace($class, $item['namespace'], $item['rootpath'], $item['len']);
                     if ($result) {
                         return true;
                     }
@@ -97,10 +96,7 @@ class Loader
         $classmapfile = realpath($classmapfile);
         $rootpath = realpath($rootpath);
 
-        // add时，先简单把初始值设置为null
-        // 第一次运行时，才去require实际文件
-        self::$_classmaps[$classmapfile] = null;
-
+        // 加到查询队列中
         self::$_queue[] = [
             'type'         => 'classmap',
             'classmapfile' => $classmapfile,
@@ -160,88 +156,97 @@ class Loader
      * 注册一个命名空间
      *
      * @param string $namespace  命名空间，形如：'your\\namespace'
-     * @param string $directory  对应目录，形如：'/your/namespace/root/directory/'
+     * @param string $rootpath  对应目录，形如：'/your/namespace/root/rootpath/'
      *
      * @return \Dida\Loader 链式执行
      */
-    public static function addNamespace($namespace, $directory)
+    public static function addNamespace($namespace, $rootpath)
     {
         // 确保Loader已经init()
         self::init();
 
+        // 检查合法性
+        if (!file_exists($rootpath) || !is_dir($rootpath)) {
+            return false;
+        } else {
+            $rootpath = realpath($rootpath);
+        }
+
         // 对参数$namespace进行标准化，去除其前后的空白字符以及字符'\'
         $namespace = trim($namespace, "\\ \t\n\r\0\x0B");
 
-        self::$_namespaces[$namespace] = $directory;
-
+        // 加到查询队列中
         self::$_queue[] = [
             'type'      => 'namespace',
             'namespace' => $namespace,
-            'directory' => $directory,
+            'rootpath'  => $rootpath,
+            'len'       => strlen($namespace),
         ];
+
+        return true;
     }
 
 
     /**
-     * 从namespace对应的目录中，，查找类文件的所在路径
+     * 匹配命名空间
      *
-     * @param string $class 要载入的类名（FQCN格式）
+     * 对于Root\Your\Class类，检查：
+     * 1. <rootpath>/Your/Class.php 是否存在？
+     * 2. <rootpath>/Your/Class/Class.php 是否存在？
+     * 先找到哪个就加载哪个，要都找不到就返false
+     *
+     * @param string $class 要载入的类名，FQCN格式。
      * @param string $namespace 命名空间（Your\Namespace）
-     * @param string $directory 命名空间对应的目录位置
+     * @param string $rootpath 命名空间对应的目录位置
+     * @param int $len 值为strlen($namespace)
      *
      * @return bool
      */
-    private static function matchNamespace($class, $namespace, $directory)
+    private static function matchNamespace($class, $namespace, $rootpath, $len)
     {
         // 检查$class是否属于$namespace?
-        $len = strlen($namespace);
         if (strncmp($class, $namespace, $len) !== 0) {
             return false;
         }
-
-        // 检查namespace对应的目录是否存在
-        if (!file_exists($directory) || !is_dir($directory)) {
-            return false;
-        }
-        $dir = realpath($directory);
 
         // 去除$class中的命名空间后的剩余部分
         $cls = substr($class, $len + 1);
 
         /*
          * 依次检查：
-         * 1. <根目录>/Dir/Class.php 是否存在？
-         * 2. <根目录>/Dir/Class/Class.php 是否存在？
-         * 先找到哪个就加载哪个，要都找不到就退出
+         * 1. <rootpath>/Your/Class.php 是否存在？
+         * 2. <rootpath>/Your/Class/Class.php 是否存在？
+         * 先找到哪个就加载哪个，要都找不到就返false
          */
-        $target = "{$dir}/{$cls}.php";
-        if (file_exists($target) && is_file($target)) {
-            require $target;
-            return true;
-        }
-
-        // 如果 $cls 中不包含 \
         if (strpos($cls, '\\') === false) {
-            $target = $dir . "/{$cls}/{$cls}.php";
-            if (file_exists($target) && is_file($target)) {
-                require $target;
+            // 如果 $cls 中不包含 \
+            $target1 = "{$rootpath}/{$cls}.php";
+            $target2 = "{$rootpath}/{$cls}/{$cls}.php";
+            if (file_exists($target1) && is_file($target1)) {
+                require $target1;
+                return true;
+            } elseif (file_exists($target2) && is_file($target2)) {
+                require $target2;
                 return true;
             } else {
                 return false;
             }
-        }
-
-        // 如果 $cls 中包含 \
-        $array = explode('\\', $cls);
-        $name = array_pop($array);
-        $base = implode('\\', $array);
-        $target = "{$dir}/{$base}/{$name}.php";
-        $target = $dir . "/{$cls}/{$cls}.php";
-        if (file_exists($target) && is_file($target)) {
-            require $target;
-            return true;
         } else {
-            return false;
+            // 如果 $cls 中包含 \，则先把 $cls拆分成 $base + $name
+            $array = explode('\\', $cls);
+            $name = array_pop($array);
+            $base = implode('\\', $array);
+            $target1 = "{$rootpath}/{$base}/{$name}.php";
+            $target2 = "{$rootpath}/{$base}/{$name}/{$name}.php";
+            if (file_exists($target1) && is_file($target1)) {
+                require $target1;
+                return true;
+            } elseif (file_exists($target2) && is_file($target2)) {
+                require $target2;
+                return true;
+            } else {
+                return false;
+            }
         }
     }
 
@@ -257,12 +262,7 @@ class Loader
         // 确保Loader已经init()
         self::init();
 
-        if (array_key_exists($alias, self::$_aliases)) {
-            return false;
-        }
-
-        self::$_aliases[$alias] = $real;
-
+        // 加到查询队列中
         self::$_queue[] = [
             'type'  => 'alias',
             'alias' => $alias,
