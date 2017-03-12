@@ -49,19 +49,19 @@ class Loader
         foreach (self::$_queue as $item) {
             switch ($item['type']) {
                 case 'classmap':
-                    $result = self::loadClassmap($class, $item['classmapfile'], $item['rootpath']);
+                    $result = self::matchClassmap($class, $item['classmapfile'], $item['rootpath'], $item['classmap']);
                     if ($result) {
                         return true;
                     }
                     break;
                 case 'namespace':
-                    $result = self::loadNamespace($class, $item['namespace'], $item['directory']);
+                    $result = self::matchNamespace($class, $item['namespace'], $item['directory']);
                     if ($result) {
                         return true;
                     }
                     break;
                 case 'alias':
-                    $result = self::loadAlias($class, $item['alias'], $item['real']);
+                    $result = self::matchAlias($class, $item['alias'], $item['real']);
                     if ($result) {
                         return true;
                     }
@@ -75,7 +75,7 @@ class Loader
 
 
     /**
-     * 新增一个类名对照表文件
+     * 新增类对照表
      *
      * @param string $classmapfile  类的对照表文件路径
      * @param string $rootpath      根目录路径
@@ -105,7 +105,10 @@ class Loader
             'type'         => 'classmap',
             'classmapfile' => $classmapfile,
             'rootpath'     => $rootpath,
+            'classmap'     => null,
         ];
+
+        return true;
     }
 
 
@@ -118,27 +121,21 @@ class Loader
      *
      * @return bool
      */
-    private static function matchClassmap($class, $classmapfile, $rootpath)
+    private static function matchClassmap($class, $classmapfile, $rootpath, &$classmap)
     {
         // 如果是第一次执行，则先载入classmap文件。这样后面就不用重复载入文件，直接查就行了。
-        if (is_null(self::$_classmaps[$classmapfile])) {
+        if (is_null($classmap)) {
             // 载入classmap文件的内容
             $classmap = require($classmapfile);
 
             // 检查载入的内容是否合法
             if (!is_array($classmap)) {
-                self::$_classmaps[$classmapfile] = [];
+                $classmap = [];
                 return false;
             }
-
-            // 保存
-            self::$_classmaps[$classmapfile] = $classmap;
         }
 
-        // 获取classmap数组
-        if (!isset($classmap)) {
-            $classmap = self::$_classmaps[$classmapfile];
-        }
+        // 检查是否为空数组
         if (count($classmap) == 0) {
             return false;
         }
@@ -250,9 +247,9 @@ class Loader
 
 
     /**
-     * 新增一个别名
+     * 新增别名
      *
-     * @param string $alias  \A\Class\Alias\FQCN
+     * @param string $alias  Your\Class\Alias
      * @param string $real   \Its\Real\FQCN
      */
     public static function addAlias($alias, $real)
