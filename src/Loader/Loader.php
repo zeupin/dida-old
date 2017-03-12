@@ -110,59 +110,6 @@ class Loader
 
 
     /**
-     * 注册一个命名空间
-     *
-     * @param string $namespace  命名空间，形如：'your\\namespace'
-     * @param string $directory  对应目录，形如：'/your/namespace/root/directory/'
-     *
-     * @return \Dida\Loader 链式执行
-     */
-    public static function addNamespace($namespace, $directory)
-    {
-        // 确保Loader已经init()
-        self::init();
-
-        // 对参数$namespace进行标准化，去除其前后的空白字符以及字符'\'
-        $namespace = trim($namespace, "\\ \t\n\r\0\x0B");
-
-        self::$_namespaces[$namespace] = $directory;
-
-        self::$_queue[] = [
-            'type'      => 'namespace',
-            'namespace' => $namespace,
-            'directory' => $directory,
-        ];
-    }
-
-
-    /**
-     * 注册一个别名类
-     *
-     * @param string $alias  \A\Class\Alias\FQCN
-     * @param string $real   \Its\Real\FQCN
-     *
-     * @return \Dida\Loader 链式执行
-     */
-    public static function addAlias($alias, $real)
-    {
-        // 确保Loader已经init()
-        self::init();
-
-        if (array_key_exists($alias, self::$_aliases)) {
-            throw new \Exception('重复注册别名类');
-        }
-
-        self::$_aliases[$alias] = $real;
-
-        self::$_queue[] = [
-            'type'  => 'alias',
-            'alias' => $alias,
-            'real'  => $real,
-        ];
-    }
-
-
-    /**
      * 从类名对照表文件中，查找类文件的所在路径
      *
      * @param string $class     要查询的类名
@@ -171,7 +118,7 @@ class Loader
      *
      * @return bool
      */
-    private static function loadClassmap($class, $classmapfile, $rootpath)
+    private static function matchClassmap($class, $classmapfile, $rootpath)
     {
         // 如果是第一次执行，则先载入classmap文件。这样后面就不用重复载入文件，直接查就行了。
         if (is_null(self::$_classmaps[$classmapfile])) {
@@ -213,6 +160,32 @@ class Loader
 
 
     /**
+     * 注册一个命名空间
+     *
+     * @param string $namespace  命名空间，形如：'your\\namespace'
+     * @param string $directory  对应目录，形如：'/your/namespace/root/directory/'
+     *
+     * @return \Dida\Loader 链式执行
+     */
+    public static function addNamespace($namespace, $directory)
+    {
+        // 确保Loader已经init()
+        self::init();
+
+        // 对参数$namespace进行标准化，去除其前后的空白字符以及字符'\'
+        $namespace = trim($namespace, "\\ \t\n\r\0\x0B");
+
+        self::$_namespaces[$namespace] = $directory;
+
+        self::$_queue[] = [
+            'type'      => 'namespace',
+            'namespace' => $namespace,
+            'directory' => $directory,
+        ];
+    }
+
+
+    /**
      * 从namespace对应的目录中，，查找类文件的所在路径
      *
      * @param string $class 要载入的类名（FQCN格式）
@@ -221,7 +194,7 @@ class Loader
      *
      * @return bool
      */
-    private static function loadNamespace($class, $namespace, $directory)
+    private static function matchNamespace($class, $namespace, $directory)
     {
         // 检查$class是否属于$namespace?
         $len = strlen($namespace);
@@ -277,7 +250,34 @@ class Loader
 
 
     /**
-     * 载入一个类的别名
+     * 新增一个别名
+     *
+     * @param string $alias  \A\Class\Alias\FQCN
+     * @param string $real   \Its\Real\FQCN
+     */
+    public static function addAlias($alias, $real)
+    {
+        // 确保Loader已经init()
+        self::init();
+
+        if (array_key_exists($alias, self::$_aliases)) {
+            return false;
+        }
+
+        self::$_aliases[$alias] = $real;
+
+        self::$_queue[] = [
+            'type'  => 'alias',
+            'alias' => $alias,
+            'real'  => $real,
+        ];
+
+        return true;
+    }
+
+
+    /**
+     * 匹配别名
      *
      * @param string $class 要载入的类名（FQCN格式）
      * @param string $alias 类的别名（FQCN格式）
@@ -285,7 +285,7 @@ class Loader
      *
      * @return bool
      */
-    private static function loadAlias($class, $alias, $real)
+    private static function matchAlias($class, $alias, $real)
     {
         if ($class === $alias) {
             return class_alias($real, $alias);
