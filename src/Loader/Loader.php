@@ -25,7 +25,9 @@ class Loader
     public static function init()
     {
         // 确保本函数仅执行一次
-        if (self::$initialized) return;
+        if (self::$initialized) {
+            return;
+        }
 
         // 注册autoload回调函数
         spl_autoload_register([__CLASS__, 'autoload']);
@@ -47,7 +49,7 @@ class Loader
         foreach (self::$_queue as $item) {
             switch ($item['type']) {
                 case 'classmap':
-                    $result = self::loadClassmap($class, $item['classmapfile'], $item['root']);
+                    $result = self::loadClassmap($class, $item['classmapfile'], $item['rootpath']);
                     if ($result) {
                         return true;
                     }
@@ -73,24 +75,36 @@ class Loader
 
 
     /**
-     * 注册一个类名对照表文件
+     * 新增一个类名对照表文件
      *
      * @param string $classmapfile  类的对照表文件路径
-     * @param string $root          根目录路径
+     * @param string $rootpath      根目录路径
      */
-    public static function registerClassmap($classmapfile, $root)
+    public static function addClassmap($classmapfile, $rootpath)
     {
         // 确保Loader已经init()
         self::init();
 
-        // register时，先简单把初始值设置为null
-        // 第一次使用时，再去require实际文件
-        self::$_classmaps [$classmapfile] = null;
+        /* 检查参数合法性 */
+        if (!file_exists($classmapfile) || !is_file($classmapfile)) {
+            return false;
+        }
+        if (!file_exists($rootpath) || !is_dir($rootpath)) {
+            return false;
+        }
+
+        // 简单预处理一下
+        $classmapfile = realpath($classmapfile);
+        $rootpath = realpath($rootpath);
+
+        // add时，先简单把初始值设置为null
+        // 第一次运行时，才去require实际文件
+        self::$_classmaps[$classmapfile] = null;
 
         self::$_queue[] = [
             'type'         => 'classmap',
             'classmapfile' => $classmapfile,
-            'root'         => $root,
+            'rootpath'     => $rootpath,
         ];
     }
 
@@ -103,7 +117,7 @@ class Loader
      *
      * @return \Dida\Loader 链式执行
      */
-    public static function registerNamespace($namespace, $directory)
+    public static function addNamespace($namespace, $directory)
     {
         // 确保Loader已经init()
         self::init();
@@ -129,7 +143,7 @@ class Loader
      *
      * @return \Dida\Loader 链式执行
      */
-    public static function registerAlias($alias, $real)
+    public static function addAlias($alias, $real)
     {
         // 确保Loader已经init()
         self::init();
@@ -153,20 +167,14 @@ class Loader
      *
      * @param string $class     要查询的类名
      * @param string $classmap  类索引对照表的文件名
-     * @param string $root      对应的根目录
+     * @param string $rootpath      对应的根目录
      *
      * @return bool
      */
-    private static function loadClassmap($class, $classmapfile, $root)
+    private static function loadClassmap($class, $classmapfile, $rootpath)
     {
         // 如果是第一次执行，则先载入classmap文件。这样后面就不用重复载入文件，直接查就行了。
         if (is_null(self::$_classmaps[$classmapfile])) {
-            if (!file_exists($classmapfile) || !is_file($classmapfile)) {
-                // 如果文件不存在，直接返回false
-                self::$_classmaps[$classmapfile] = [];
-                return false;
-            }
-
             // 载入classmap文件的内容
             $classmap = require($classmapfile);
 
@@ -181,7 +189,9 @@ class Loader
         }
 
         // 获取classmap数组
-        $classmap = self::$_classmaps[$classmapfile];
+        if (!isset($classmap)) {
+            $classmap = self::$_classmaps[$classmapfile];
+        }
         if (count($classmap) == 0) {
             return false;
         }
@@ -192,8 +202,7 @@ class Loader
         }
 
         // 导入对应的php文件
-        $classmapdir = realpath($root) . '/';
-        $target = $classmapdir . $classmap[$class];
+        $target = $rootpath . '/' . $classmap[$class];
         if (file_exists($target) && is_file($target)) {
             require $target;
             return true;
