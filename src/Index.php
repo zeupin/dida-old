@@ -24,16 +24,8 @@ if (file_exists(DIDA_COMPOSER_ROOT . 'autoload.php')) {
     require DIDA_COMPOSER_ROOT . 'autoload.php';
 }
 
-/* 基础环境初始化 */
-Foundation::init();
-
 /* 生成app实例 */
 $app = new Application();
 
-/* 启动Staticall机制 */
-Staticall::init();
-Staticall::bind('App', $app);
-Staticall::bind('Response', $app->response);
-
 /* 开始运行 */
-$app->init();
+$app->start();

@@ -16,15 +16,18 @@ final class Application extends Container
     public $response = null;
 
 
-    public function __construct()
+    /**
+     * 启动
+     */
+    public function start()
     {
+        // 基础环境初始化
+        Foundation::init();
+
+        // 基础变量
         $this->config = new Config;
         $this->response = new Response;
-    }
 
-
-    public function init()
-    {
         // 载入app配置
         $this->loadAppConfig();
 
@@ -34,7 +37,7 @@ final class Application extends Container
         // 依次载入App的bootstraps
         $this->loadAppBootstraps();
 
-        // 准备工作就绪，正式处理用户发起的请求
+        // 准备工作就绪，正式处理用户请求
         $this->run();
     }
 
@@ -55,6 +58,7 @@ final class Application extends Container
     {
         $target = DIDA_APP_ROOT . 'Functions/Index.php';
         if (file_exists($target) && is_file($target)) {
+            $app = $this;
             require $target;
         }
     }
@@ -62,10 +66,9 @@ final class Application extends Container
 
     private function loadAppBootstraps()
     {
-        $app = $this;
-
         $target = DIDA_APP_ROOT . 'Bootstraps/Index.php';
         if (file_exists($target) && is_file($target)) {
+            $app = $this;
             require $target;
         }
     }
@@ -73,6 +76,7 @@ final class Application extends Container
 
     private function run()
     {
+        $app = $this;
         require DIDA_APP_ROOT . 'Index.php';
     }
 }
