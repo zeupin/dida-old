@@ -76,12 +76,12 @@ class Loader
     /**
      * 新增类对照表
      *
-     * @param string $classmapfile  类的对照表文件路径
-     * @param string $rootpath      根目录路径
+     * @param string $classmapfile  类的对照表文件路径。
+     * @param string $rootpath      根目录路径。默认使用classmapfile的所在目录作为rootpath。
      *
      * @return bool 成功返回true，有问题返回false
      */
-    public static function addClassmap($classmapfile, $rootpath)
+    public static function addClassmap($classmapfile, $rootpath = null)
     {
         // 确保Loader已经init()
         self::init();
@@ -89,14 +89,19 @@ class Loader
         /* 检查参数合法性 */
         if (!file_exists($classmapfile) || !is_file($classmapfile)) {
             return false;
-        }
-        if (!file_exists($rootpath) || !is_dir($rootpath)) {
-            return false;
+        } else {
+            $classmapfile = realpath($classmapfile);
         }
 
-        // 简单预处理一下
-        $classmapfile = realpath($classmapfile);
-        $rootpath = realpath($rootpath);
+        if (is_null($rootpath)) {
+            $rootpath = dirname($classmapfile);
+        } elseif (!is_string($rootpath)) {
+            return false;
+        } elseif (!file_exists($rootpath) || !is_dir($rootpath)) {
+            return false;
+        } else {
+            $rootpath = realpath($rootpath);
+        }
 
         // 加到查询队列中
         self::$_queue[] = [
@@ -192,9 +197,9 @@ class Loader
     /**
      * 匹配命名空间
      *
-     * 对于Root\Your\Class类，检查：
-     * 1. <rootpath>/Your/Class.php 是否存在？
-     * 2. <rootpath>/Your/Class/Class.php 是否存在？
+     * 对于Root\Your\Cool\Class类，检查：
+     * 1. <rootpath>/Your/Cool/Class.php 是否存在？
+     * 2. <rootpath>/Your/Cool/Class/Class.php 是否存在？
      * 先找到哪个就加载哪个，要都找不到就返false
      *
      * @param string $class 要载入的类名，FQCN格式。
