@@ -24,6 +24,7 @@ class Form extends Element
     {
         $this->actionSet($action)
             ->methodSet($method);
+        return $this;
     }
 
 

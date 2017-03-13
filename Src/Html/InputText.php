@@ -31,22 +31,27 @@ class InputText extends Element
     public function set($name, $value, $caption = '', $tooltip = '')
     {
         $this->name = $name;
-        $this->value = $value;
+        $this->attrSet(['name' => $name]);
+
+        $this->valueSet($value);
+
         $this->caption = $caption;
+
         $this->tooltip = $tooltip;
 
-        $this->attrSet(['name' => $name])
-            ->valueSet($value);
+        return $this;
     }
 
 
     private function valueSet($value)
     {
-        if (($value === null) || ($value === '')) {
+        if ($value === null) {
+            $this->value = null;
             $this->attrRemove('value');
             return $this;
         }
 
+        $this->value = $value;
         $this->attrSet(['value' => $value]);
         return $this;
     }
