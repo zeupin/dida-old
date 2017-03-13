@@ -7,7 +7,7 @@
 namespace Dida\Html;
 
 /**
- * Input 基类
+ * InputHidden 基类
  */
 class InputHidden extends Element
 {

@@ -16,23 +16,12 @@ abstract class Element
     protected $emptyContent = false;    // 是否是无内容元素，如<img/>,<br/>,<hr/>等
 
     /* 内部数据 */
-    protected $classes = [];            // class列表
     protected $attributes = [];         // 属性数组
     protected $styles = [];             // in-line样式
     protected $children = [];           // 子元素数组
 
     /* 标准的无值属性列表 */
-    const NoValueAttrList = ['checked', 'disabled', 'readonly', 'selected'];
-
-    protected $userNoValueAttrList = [];    // 用户自定义的无值属性列表
-
-
-    public function __construct($attrs = [])
-    {
-        foreach ($attrs as $attrName => $attrValue) {
-            $this->attrSet($attrName, $attrValue);
-        }
-    }
+    protected $noValueAttrList = ['checked', 'disabled', 'readonly', 'selected'];
 
 
     /**
@@ -41,9 +30,26 @@ abstract class Element
     public function html()
     {
         if ($this->emptyContent) {
-            return sprintf('<%s%s%s%s/>', $this->tag, $this->classesCombine(), $this->attributesCombine(), $this->stylesCombine());
+            return sprintf('<%s%s%s/>', $this->tag, $this->attributesCombine(), $this->stylesCombine());
         } else {
-            return sprintf('<%s%s%s%s>%s</%s>', $this->tag, $this->classesCombine(), $this->attributesCombine(), $this->stylesCombine(), $this->childrenCombine(), $this->tag);
+            return sprintf('<%s%s%s>%s</%s>', $this->tag, $this->attributesCombine(), $this->stylesCombine(), $this->childrenCombine(), $this->tag);
+        }
+    }
+
+
+    public function attr($attrName, $attrValue = null)
+    {
+        if ($attrValue === null) {
+            // 取值
+            return ($this->attrHas($attrName)) ? $this->attributes[$attrName] : null;
+        } else {
+            // 赋值
+            if (!is_string($attrName) || ($attrName === '')) {
+                // 非法
+                return $this;
+            }
+            $this->attrSet([$attrName => $attrValue]);
+            return $this;
         }
     }
 
@@ -85,14 +91,11 @@ abstract class Element
             return '';
         }
 
-        // 先把属性数组按照键值排序
-        ksort($this->attributes);
-
         // 逐一处理所有属性
         $result = [];
         foreach ($this->attributes as $name => $value) {
             $name = $this->stdAttrName($name);
-            if (in_array($name, self::NoValueAttrList) || in_array($name, $this->userNoValueAttrList)) {
+            if (in_array($name, $this->noValueAttrList)) {
                 if (!empty($value)) {
                     $result[] = sprintf(' %s', $name);
                 }
@@ -183,89 +186,10 @@ abstract class Element
         }
 
         $result = [];
-        ksort($this->styles);
         foreach ($this->styles as $styleName => $styleValue) {
             $result[] = "$styleName:$styleValue;";
         }
         return sprintf(' style="%s"', implode(' ', $result));
-    }
-
-
-    public function classSet($classes)
-    {
-        if (is_string($classes)) {
-            $this->classSetString($classes);
-            return $this;
-        }
-
-        if (is_array($className)) {
-            $this->classSetArray($classes);
-            return $this;
-        }
-
-        return $this;
-    }
-
-
-    private function classSetString($classes)
-    {
-        $classes = trim($classes);
-        $classes = explode(' ', $classes);
-
-        foreach ($classes as $class) {
-            if (is_string($class) && $class !== '') {
-                $this->classes[$class] = true;
-            }
-        }
-    }
-
-
-    private function classSetArray(array $classes)
-    {
-        foreach ($classes as $class) {
-            if (is_string($class) && $class !== '') {
-                $this->classes[$class] = true;
-            }
-        }
-    }
-
-
-    public function classRemove($className)
-    {
-        if (is_string($className)) {
-            unset($this->classes[$className]);
-            return $this;
-        }
-
-        if (is_array($className)) {
-            foreach ($className as $n) {
-                if (is_string($n)) {
-                    unset($this->classes[$n]);
-                }
-            }
-            return $this;
-        }
-
-        return $this;
-    }
-
-
-    public function classRemoveAll()
-    {
-        $this->classes = [];
-        return $this;
-    }
-
-
-    public function classesCombine()
-    {
-        $classes = array_keys($this->classes);
-        $classes = sort($classes);
-        if (empty($classes)) {
-            return '';
-        } else {
-            return sprintf(' class="%s"', implode(' ', $classes));
-        }
     }
 
 
@@ -274,10 +198,10 @@ abstract class Element
         if (is_null($name)) {
             $this->children[] = $child;
             return $this;
-        } elseif (!is_string($name)) {
-            $this->children[] = $child;
+        } elseif (is_string($name)) {
+            $this->children[$name] = $child;
             return $this;
-        } elseif ($name === '') {
+        } else {
             return $this;
         }
     }
