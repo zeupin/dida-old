@@ -15,17 +15,30 @@ class Form extends Element
     public $tag = 'form';
     public $emptyContent = false;
 
+    /* 元素属性 */
+    public $action;
+    public $method;
 
-    public function action($value)
+
+    public function set($action, $method = 'POST')
     {
+        $this->actionSet($action)
+            ->methodSet($method);
+    }
+
+
+    public function actionSet($value)
+    {
+        $this->action = $value;
         $this->attrSet(['action' => $value]);
         return $this;
     }
 
 
-    public function method($value)
+    public function methodSet($value)
     {
         if (!is_string($value)) {
+            // 无效值
             return $this;
         }
 
@@ -33,6 +46,7 @@ class Form extends Element
         switch ($value) {
             case 'POST':
             case 'GET':
+                $this->method = $value;
                 $this->attrSet(['method' => $value]);
                 return $this;
             case 'PUT':
@@ -40,20 +54,15 @@ class Form extends Element
             case 'DELETE':
             case 'HEAD':
             case 'OPTIONS':
+                $this->method = $value;
                 $this->attrSet(['method' => 'POST']);
                 $hidden = new InputHidden();
                 $hidden->attrSet(['name' => '_method', 'value' => $value]);
                 $this->childAdd($hidden, '_method');
                 return $this;
             default:
+                // 无效值
                 return $this;
         }
-    }
-
-
-    public function encrypt($value)
-    {
-        $this->attrSet(['encrypt' => $value]);
-        return $this;
     }
 }
