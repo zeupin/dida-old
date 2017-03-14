@@ -12,6 +12,9 @@ defined('DIDA_APP_NAMESPACE') || define('DIDA_APP_NAMESPACE', 'App'); // 默认�
 /* 是否是CLI模式 */
 define('DIDA_IS_CLI', PHP_SAPI === 'cli');
 
+/* 指示这是未设置的函数参数 */
+define('DIDA_NOT_SET', "\0");
+
 /* 如果不是CLI模式，则为HTTP模式 */
 if (!DIDA_IS_CLI) {
     /* DIDA_WWW */
