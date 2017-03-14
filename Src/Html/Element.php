@@ -33,7 +33,7 @@ abstract class Element
         $cnt = count($arguments);
 
         if ($cnt === 0) {
-            /* 没有参数，表明是要Get */
+            /* 没有参数，先猜测一下是不是想要Get */
 
             // 第一看看有没有xxxGet()函数
             $targetMethod = $name . 'Get';
@@ -61,7 +61,7 @@ abstract class Element
                 return $this->styles;
             }
         } else {
-            /* 有参数，表明是要Set */
+            /* 有参数，看看是否有匹配的Set */
             $targetMethod = $name . 'Set';
             if (method_exists($this, $targetMethod)) {
                 return call_user_func_array([$this, $targetMethod], $arguments);
@@ -79,30 +79,6 @@ abstract class Element
             return sprintf('<%s%s%s/>', $this->tag, $this->combineAttributes(), $this->combineStyles());
         } else {
             return sprintf('<%s%s%s>%s</%s>', $this->tag, $this->combineAttributes(), $this->combineStyles(), $this->combineChildren(), $this->tag);
-        }
-    }
-
-
-    public function attr($attrName, $attrValue = DIDA_NOT_SET)
-    {
-        if ($attrValue === DIDA_NOT_SET) {
-            // 取值
-            return ($this->hasAttr($attrName)) ? $this->attributes[$attrName] : null;
-        } else {
-            // 检查属性名合法性
-            if (!is_string($attrName) || ($attrName === '')) {
-                return $this;
-            }
-
-            // 为null时，删除此属性
-            if ($attrValue === null) {
-                $this->removeAttr($attrName);
-                return $this;
-            }
-
-            // 赋值
-            $this->setAttr([$attrName => $attrValue]);
-            return $this;
         }
     }
 
@@ -134,6 +110,13 @@ abstract class Element
     public function removeAttr($attrName)
     {
         unset($this->attributes[$attrName]);
+        return $this;
+    }
+
+
+    public function removeAllAttributes()
+    {
+        $this->attributes = [];
         return $this;
     }
 
@@ -257,6 +240,22 @@ abstract class Element
         } else {
             return $this;
         }
+    }
+
+
+    public function addFreeText($text)
+    {
+        $e = new FreeText($text);
+        $this->addChild($e);
+        return $this;
+    }
+
+
+    public function addFreeHtml($html)
+    {
+        $e = new FreeHtml($html);
+        $this->addChild($e);
+        return $this;
     }
 
 
