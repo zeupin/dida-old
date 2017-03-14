@@ -16,43 +16,52 @@ class InputText extends Element
     protected $emptyContent = true;
 
     /* 元素属性 */
-    public $name;           // 表单字段名
-    public $value;          // 默认值
-    public $caption;        // 标题
-    public $tooltip;        // 提示
+    protected $name;
+    protected $value;
 
 
     public function __construct()
     {
-        $this->setAttr(['type' => 'text']);
+        $this->setAttr([
+            'type' => 'text',
+        ]);
     }
 
 
-    public function set($name, $value, $caption = '', $tooltip = '')
+    public function set($name, $value)
     {
-        $this->name = $name;
-        $this->setAttr(['name' => $name]);
-
-        $this->valueSet($value);
-
-        $this->caption = $caption;
-
-        $this->tooltip = $tooltip;
-
+        $this->setAttr([
+            'name'  => $name,
+            'value' => $value,
+        ]);
         return $this;
     }
 
 
-    private function valueSet($value)
+    protected function nameSet($v)
     {
-        if ($value === null) {
-            $this->value = null;
-            $this->attrRemove('value');
-            return $this;
-        }
-
-        $this->value = $value;
-        $this->setAttr(['value' => $value]);
+        $this->name = $v;
+        $this->setAttr(['name' => $v]);
         return $this;
+    }
+
+
+    protected function nameGet()
+    {
+        return $this->name;
+    }
+
+
+    protected function valueSet($v)
+    {
+        $this->value = $v;
+        $this->setAttr(['value' => $v]);
+        return $this;
+    }
+
+
+    protected function valueGet()
+    {
+        return $this->value;
     }
 }

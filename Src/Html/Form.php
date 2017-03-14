@@ -28,7 +28,7 @@ class Form extends Element
     }
 
 
-    public function actionSet($value)
+    protected function actionSet($value)
     {
         $this->action = $value;
         $this->setAttr(['action' => $value]);
@@ -36,13 +36,13 @@ class Form extends Element
     }
 
 
-    public function actionGet()
+    protected function actionGet()
     {
         return $this->action;
     }
 
 
-    public function methodSet($value)
+    protected function methodSet($value)
     {
         if (!is_string($value)) {
             // 无效值
@@ -74,7 +74,7 @@ class Form extends Element
     }
 
 
-    public function methodGet()
+    protected function methodGet()
     {
         return $this->method;
     }
