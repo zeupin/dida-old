@@ -17,7 +17,8 @@ abstract class Element
 
     /* 内部数据 */
     protected $attributes = [];         // 属性数组
-    protected $styles = [];             // in-line样式
+    protected $classes = [];            // class数组
+    protected $styles = [];             // style数组
     protected $children = [];           // 子元素数组
 
     /* 标准的无值属性列表 */
@@ -60,6 +61,11 @@ abstract class Element
             if ($name === 'style') {
                 return $this->styles;
             }
+
+            // 第六看是不是class
+            if ($name === 'class') {
+                return $this->classes;
+            }
         } else {
             /* 有参数，看看是否有匹配的Set */
             $targetMethod = $name . 'Set';
@@ -76,9 +82,9 @@ abstract class Element
     public function html()
     {
         if ($this->emptyContent) {
-            return sprintf('<%s%s%s/>', $this->tag, $this->combineAttributes(), $this->combineStyles());
+            return sprintf('<%s%s%s%s/>', $this->tag, $this->combineAttributes(), $this->combineClasses(), $this->combineStyles());
         } else {
-            return sprintf('<%s%s%s>%s</%s>', $this->tag, $this->combineAttributes(), $this->combineStyles(), $this->combineChildren(), $this->tag);
+            return sprintf('<%s%s%s%s>%s</%s>', $this->tag, $this->combineAttributes(), $this->combineClasses(), $this->combineStyles(), $this->combineChildren(), $this->tag);
         }
     }
 
@@ -98,9 +104,17 @@ abstract class Element
     public function setAttr(array $attrs)
     {
         foreach ($attrs as $attrName => $attrValue) {
-            $attrName = trim($attrName);
-            if (is_string($attrName) && ($attrName !== '')) {
-                $this->attributes[$attrName] = $attrValue;
+            // 标准化
+            $attrName = $this->stdAttrName($attrName);
+
+            // 过滤一些特定属性
+            switch ($attrName) {
+                case 'class':
+                case 'style':
+                case '':
+                    break;
+                default:
+                    $this->attributes[$attrName] = $attrValue;
             }
         }
         return $this;
@@ -152,23 +166,25 @@ abstract class Element
      */
     private function stdAttrName($attrName)
     {
-        if (strncasecmp($attrName, 'data-', 5) === 0) {
+        $attrName = trim($attrName);
+        $std = strtolower($attrName);
+        if (strncasecmp($std, 'data-', 5) === 0) {
             return $attrName;
         }
 
-        return strtolower($attrName);
+        return $std;
     }
 
 
-    public function setStyles($styles)
+    public function setStyle($styles)
     {
         if (is_string($styles)) {
-            $this->setStylesString($styles);
+            $this->setStyleString($styles);
             return $this;
         }
 
         if (is_array($styles)) {
-            $this->setStylesArray($styles);
+            $this->setStyleArray($styles);
             return $this;
         }
 
@@ -176,7 +192,7 @@ abstract class Element
     }
 
 
-    private function setStylesArray(array $styles)
+    private function setStyleArray(array $styles)
     {
         foreach ($styles as $styleName => $styleValue) {
             $styleName = trim($styleName);
@@ -186,7 +202,7 @@ abstract class Element
     }
 
 
-    private function setStylesString($styles)
+    private function setStyleString($styles)
     {
         $styles = explode(';', $styles);
         foreach ($styles as $style) {
@@ -208,7 +224,7 @@ abstract class Element
     }
 
 
-    public function removeAllStyles()
+    public function clearStyles()
     {
         $this->styles = [];
         return $this;
@@ -266,5 +282,53 @@ abstract class Element
             $result[] = $item->html();
         }
         return implode('', $result);
+    }
+
+
+    public function setClass($classes)
+    {
+        if (is_string($classes)) {
+            $classes = trim($classes);
+            $classes = preg_split("/[\s]+/", $classes);
+        }
+        if (!is_array($classes)) {
+            return $this;
+        }
+        foreach ($classes as $class) {
+            $this->classes[$class] = true;
+        }
+        return $this;
+    }
+
+
+    public function removeClass($classes)
+    {
+        if (is_string($classes)) {
+            $classes = trim($classes);
+            $classes = preg_split("/[\s]+/", $classes);
+        }
+        if (!is_array($classes)) {
+            return $this;
+        }
+        foreach ($classes as $class) {
+            unset($this->classes[$class]);
+        }
+        return $this;
+    }
+
+
+    public function clearClasses()
+    {
+        $this->classes = [];
+        return $this;
+    }
+
+
+    public function combineClasses()
+    {
+        if (empty($this->classes)) {
+            return '';
+        }
+        return sprintf(' class="%s"', implode(' ', array_keys($this->classes)));
     }
 }
