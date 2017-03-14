@@ -7,8 +7,11 @@
 namespace Dida\Html;
 
 /**
- * Div
+ * Span
  */
-class Div extends Element
+class Span extends Element
 {
+    /* 必填属性 */
+    protected $tag = 'span';
+    protected $emptyContent = false;
 }
