@@ -12,8 +12,8 @@ namespace Dida\Html;
 class InputHidden extends Element
 {
     /* 必填属性 */
-    public $tag = 'input';
-    public $emptyContent = true;
+    private $tag = 'input';
+    private $emptyContent = true;
 
 
     public function __construct()

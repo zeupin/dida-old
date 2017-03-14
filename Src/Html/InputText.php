@@ -12,8 +12,8 @@ namespace Dida\Html;
 class InputText extends Element
 {
     /* 必填属性 */
-    public $tag = 'input';
-    public $emptyContent = true;
+    private $tag = 'input';
+    private $emptyContent = true;
 
     /* 元素属性 */
     public $name;           // 表单字段名

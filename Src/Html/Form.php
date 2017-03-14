@@ -12,12 +12,12 @@ namespace Dida\Html;
 class Form extends Element
 {
     /* 必填属性 */
-    public $tag = 'form';
-    public $emptyContent = false;
+    private $tag = 'form';
+    private $emptyContent = false;
 
     /* 元素属性 */
-    public $action;
-    public $method;
+    protected $action;
+    protected $method;
 
 
     public function set($action, $method = 'POST')
@@ -33,6 +33,12 @@ class Form extends Element
         $this->action = $value;
         $this->attrSet(['action' => $value]);
         return $this;
+    }
+
+
+    public function actionGet()
+    {
+        return $this->action;
     }
 
 
@@ -65,5 +71,11 @@ class Form extends Element
                 // 无效值
                 return $this;
         }
+    }
+
+
+    public function methodGet()
+    {
+        return $this->method;
     }
 }

@@ -12,8 +12,8 @@ namespace Dida\Html;
 abstract class Element
 {
     /* 必填 */
-    protected $tag;                     // tag
-    protected $emptyContent = false;    // 是否是无内容元素，如<img/>,<br/>,<hr/>等
+    private $tag;                     // tag
+    private $emptyContent = false;    // 是否是无内容元素，如<img/>,<br/>,<hr/>等
 
     /* 内部数据 */
     protected $attributes = [];         // 属性数组
@@ -22,6 +22,52 @@ abstract class Element
 
     /* 标准的无值属性列表 */
     protected $noValueAttrList = ['checked', 'disabled', 'readonly', 'selected'];
+
+
+    /**
+     * 如果调用了未定义方法
+     */
+    public function __call($name, $arguments)
+    {
+        // 获取参数个数
+        $cnt = count($arguments);
+
+        if ($cnt === 0) {
+            /* 没有参数，表明是要Get */
+
+            // 第一看看有没有xxxGet()函数
+            $targetMethod = $name . 'Get';
+            if (method_exists($this, $targetMethod)) {
+                return call_user_func([$this, $targetMethod]);
+            }
+
+            // 第二看属性是否存在
+            if ($this->attrHas($name)) {
+                return $this->attrGet($name);
+            }
+
+            // 第三看是不是children
+            if ($name === 'children') {
+                return $this->children;
+            }
+
+            // 第四看是不是attributes
+            if ($name === 'attributes') {
+                return $this->attributes;
+            }
+
+            // 第五看是不是style
+            if ($name === 'style') {
+                return $this->styles;
+            }
+        } else {
+            /* 有参数，表明是要Set */
+            $targetMethod = $name . 'Set';
+            if (method_exists($this, $targetMethod)) {
+                return call_user_func_array([$this, $targetMethod], $arguments);
+            }
+        }
+    }
 
 
     /**
@@ -37,17 +83,24 @@ abstract class Element
     }
 
 
-    public function attr($attrName, $attrValue = null)
+    public function attr($attrName, $attrValue = DIDA_NOT_SET)
     {
-        if ($attrValue === null) {
+        if ($attrValue === DIDA_NOT_SET) {
             // 取值
             return ($this->attrHas($attrName)) ? $this->attributes[$attrName] : null;
         } else {
-            // 赋值
+            // 检查属性名合法性
             if (!is_string($attrName) || ($attrName === '')) {
-                // 非法
                 return $this;
             }
+
+            // 为null时，删除此属性
+            if ($attrValue === null) {
+                $this->attrRemove($attrName);
+                return $this;
+            }
+
+            // 赋值
             $this->attrSet([$attrName => $attrValue]);
             return $this;
         }
@@ -193,9 +246,9 @@ abstract class Element
     }
 
 
-    public function childAdd(Element $child, $name = null)
+    public function childAdd(Element $child, $name = DIDA_NOT_SET)
     {
-        if (is_null($name)) {
+        if ($name === DIDA_NOT_SET) {
             $this->children[] = $child;
             return $this;
         } elseif (is_string($name)) {
