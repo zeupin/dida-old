@@ -12,8 +12,8 @@ namespace Dida\Html;
 class InputText extends Element
 {
     /* 必填属性 */
-    private $tag = 'input';
-    private $emptyContent = true;
+    protected $tag = 'input';
+    protected $emptyContent = true;
 
     /* 元素属性 */
     public $name;           // 表单字段名
@@ -24,14 +24,14 @@ class InputText extends Element
 
     public function __construct()
     {
-        $this->attrSet(['type' => 'text']);
+        $this->setAttr(['type' => 'text']);
     }
 
 
     public function set($name, $value, $caption = '', $tooltip = '')
     {
         $this->name = $name;
-        $this->attrSet(['name' => $name]);
+        $this->setAttr(['name' => $name]);
 
         $this->valueSet($value);
 
@@ -52,7 +52,7 @@ class InputText extends Element
         }
 
         $this->value = $value;
-        $this->attrSet(['value' => $value]);
+        $this->setAttr(['value' => $value]);
         return $this;
     }
 }

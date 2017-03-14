@@ -28,7 +28,7 @@ final class Application extends Container
         $this->config = new Config;
         $this->response = new Response;
 
-        // 载入app配置
+        // 载入App配置
         $this->loadAppConfig();
 
         // 载入App函数库

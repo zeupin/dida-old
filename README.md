@@ -5,9 +5,14 @@
 官网 <http://dida.zeupin.com>  
 源码 <https://github.com/zeupin/dida>
 
+
 ## 运行环境要求
 
-PHP：v5.5及以上，v7.0及以上。
+* PHP：v5.5及以上，v7.0及以上。
+
+> * 会用到PHP生成器Generator语法，以提高程序性能，需要PHP在5.5.0以上。
+> * 中国主流主机商（如阿里云、新网等），基本都能提供满足要求的主机产品。
+
 
 ## 命名规范
 
@@ -60,24 +65,34 @@ PHP：v5.5及以上，v7.0及以上。
 
 2. 在 **index.php** 文件中设置好各个关键目录的文件路径，然后加载DIDA框架的入口文件 **DIDA_ROOT/Index.php**。
 
-3. 在 **DIDA框架的入口文件Index.php** 设置好基础运行环境：加载常量，加载autoload机制，加载全局函数库，生成$app实例等，然后启动**$app->init()**，进行app初始化工作。
+3. 在 **DIDA框架的入口文件Index.php** 设置好基础运行环境：
 
-    1. 载入 **App/Config/App.dev.php** 配置文件。
-    2. 载入 **App/Functions/** 中的函数库（如果有的话）。
-    3. 载入 **App/Bootstraps/Index.php** ，对App环境和可能用到的服务进行初始配置。
+    3.1 设置全局常量
+    3.2 加载Dida的autoload机制
+    3.3 加载composer的autoload机制
+    3.4 生成$app实例
+    3.5 调用**$app->start()**，启动app，执行app初始化工作。
 
-4. 工作环境ready，执行**$app->run()**，正式开始处理Reuqest。
+4. app启动后：
 
-5. 中间件环境初始化。
+    4.1 先调用 **Foundation::init()** 执行基础环境初始化。
+    4.2 生成**基本对象**，`config`, `response`。
+    4.3 **载入App配置**， `App/Config/App.dev.php`。
+    4.4 **载入App函数库**， 按照 `App/Functions/Index.php` 要求，载入app级别的函数库（如果有的话）。
+    4.5 **载入App自举程序**，按照 `App/Bootstraps/Index.php` 要求，对app环境和可能用到的服务进行初始配置。
 
-6. **Middleware处理**，可以对Request以及环境做些前期处理。
+5. 工作环境ready，执行**$app->run()**，正式开始处理Reuqest。
 
-7. **Router** 逐一用登记的 **路由规则route** 去解析 **Request**，检查Request是否可以匹配这个规则route。
+6. 中间件环境初始化。
 
-8. 如果可以匹配，则执行 **route->route()**。
+7. **Middleware处理**，可以对Request以及环境做些前期处理。
 
-9. 执行标准的**MVC流程**：**Controller** 从 **Model** 取数据，赋值给 **View**。
+8. **Router** 逐一用登记的 **路由规则route** 去解析 **Request**，检查Request是否可以匹配这个规则route。
 
-10. **Middlewarec处理**，可以对View做些后期处理。
+9. 如果可以匹配，则执行 **route->route()**。
 
-11. **app()->response->output()** 输出最终内容给用户。
+10. 执行标准的**MVC流程**：**Controller** 从 **Model** 取数据，赋值给 **View**。
+
+11. **Middlewarec处理**，可以对View做些后期处理。
+
+12. **app()->response->output()** 输出最终内容给用户。

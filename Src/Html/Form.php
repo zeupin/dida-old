@@ -12,8 +12,8 @@ namespace Dida\Html;
 class Form extends Element
 {
     /* 必填属性 */
-    private $tag = 'form';
-    private $emptyContent = false;
+    protected $tag = 'form';
+    protected $emptyContent = false;
 
     /* 元素属性 */
     protected $action;
@@ -31,7 +31,7 @@ class Form extends Element
     public function actionSet($value)
     {
         $this->action = $value;
-        $this->attrSet(['action' => $value]);
+        $this->setAttr(['action' => $value]);
         return $this;
     }
 
@@ -54,7 +54,7 @@ class Form extends Element
             case 'POST':
             case 'GET':
                 $this->method = $value;
-                $this->attrSet(['method' => $value]);
+                $this->setAttr(['method' => $value]);
                 return $this;
             case 'PUT':
             case 'PATCH':
@@ -62,10 +62,10 @@ class Form extends Element
             case 'HEAD':
             case 'OPTIONS':
                 $this->method = $value;
-                $this->attrSet(['method' => 'POST']);
+                $this->setAttr(['method' => 'POST']);
                 $hidden = new InputHidden();
-                $hidden->attrSet(['name' => '_method', 'value' => $value]);
-                $this->childAdd($hidden, '_method');
+                $hidden->setAttr(['name' => '_method', 'value' => $value]);
+                $this->addChild($hidden, '_method');
                 return $this;
             default:
                 // 无效值

@@ -12,8 +12,8 @@ namespace Dida\Html;
 abstract class Element
 {
     /* 必填 */
-    private $tag;                     // tag
-    private $emptyContent = false;    // 是否是无内容元素，如<img/>,<br/>,<hr/>等
+    protected $tag;                        // tag
+    protected $emptyContent = false;       // 是否是无内容元素，如<img/>,<br/>,<hr/>等
 
     /* 内部数据 */
     protected $attributes = [];         // 属性数组
@@ -42,8 +42,8 @@ abstract class Element
             }
 
             // 第二看属性是否存在
-            if ($this->attrHas($name)) {
-                return $this->attrGet($name);
+            if ($this->hasAttr($name)) {
+                return $this->getAttr($name);
             }
 
             // 第三看是不是children
@@ -76,9 +76,9 @@ abstract class Element
     public function html()
     {
         if ($this->emptyContent) {
-            return sprintf('<%s%s%s/>', $this->tag, $this->attributesCombine(), $this->stylesCombine());
+            return sprintf('<%s%s%s/>', $this->tag, $this->combineAttributes(), $this->combineStyles());
         } else {
-            return sprintf('<%s%s%s>%s</%s>', $this->tag, $this->attributesCombine(), $this->stylesCombine(), $this->childrenCombine(), $this->tag);
+            return sprintf('<%s%s%s>%s</%s>', $this->tag, $this->combineAttributes(), $this->combineStyles(), $this->combineChildren(), $this->tag);
         }
     }
 
@@ -87,7 +87,7 @@ abstract class Element
     {
         if ($attrValue === DIDA_NOT_SET) {
             // 取值
-            return ($this->attrHas($attrName)) ? $this->attributes[$attrName] : null;
+            return ($this->hasAttr($attrName)) ? $this->attributes[$attrName] : null;
         } else {
             // 检查属性名合法性
             if (!is_string($attrName) || ($attrName === '')) {
@@ -96,30 +96,30 @@ abstract class Element
 
             // 为null时，删除此属性
             if ($attrValue === null) {
-                $this->attrRemove($attrName);
+                $this->removeAttr($attrName);
                 return $this;
             }
 
             // 赋值
-            $this->attrSet([$attrName => $attrValue]);
+            $this->setAttr([$attrName => $attrValue]);
             return $this;
         }
     }
 
 
-    public function attrHas($attrName)
+    public function hasAttr($attrName)
     {
         return array_key_exists($attrName, $this->attributes);
     }
 
 
-    public function attrGet($attrName)
+    public function getAttr($attrName)
     {
-        return ($this->attrHas($attrName)) ? $this->attributes[$attrName] : null;
+        return ($this->hasAttr($attrName)) ? $this->attributes[$attrName] : null;
     }
 
 
-    public function attrSet(array $attrs)
+    public function setAttr(array $attrs)
     {
         foreach ($attrs as $attrName => $attrValue) {
             $attrName = trim($attrName);
@@ -131,14 +131,14 @@ abstract class Element
     }
 
 
-    public function attrRemove($attrName)
+    public function removeAttr($attrName)
     {
         unset($this->attributes[$attrName]);
         return $this;
     }
 
 
-    public function attributesCombine()
+    public function combineAttributes()
     {
         if (count($this->attributes) === 0) {
             return '';
@@ -177,15 +177,15 @@ abstract class Element
     }
 
 
-    public function styleSet($styles)
+    public function setStyles($styles)
     {
         if (is_string($styles)) {
-            $this->styleSetString($styles);
+            $this->setStylesString($styles);
             return $this;
         }
 
         if (is_array($styles)) {
-            $this->styleSetArray($styles);
+            $this->setStylesArray($styles);
             return $this;
         }
 
@@ -193,7 +193,7 @@ abstract class Element
     }
 
 
-    private function styleSetArray(array $styles)
+    private function setStylesArray(array $styles)
     {
         foreach ($styles as $styleName => $styleValue) {
             $styleName = trim($styleName);
@@ -203,7 +203,7 @@ abstract class Element
     }
 
 
-    private function styleSetString($styles)
+    private function setStylesString($styles)
     {
         $styles = explode(';', $styles);
         foreach ($styles as $style) {
@@ -218,21 +218,21 @@ abstract class Element
     }
 
 
-    public function styleRemove($styleName)
+    public function removeStyle($styleName)
     {
         unset($this->styles[$styleName]);
         return $this;
     }
 
 
-    public function styleRemoveAll()
+    public function removeAllStyles()
     {
         $this->styles = [];
         return $this;
     }
 
 
-    public function stylesCombine()
+    public function combineStyles()
     {
         if (empty($this->styles)) {
             return '';
@@ -246,7 +246,7 @@ abstract class Element
     }
 
 
-    public function childAdd(Element $child, $name = DIDA_NOT_SET)
+    public function addChild(Element $child, $name = DIDA_NOT_SET)
     {
         if ($name === DIDA_NOT_SET) {
             $this->children[] = $child;
@@ -260,7 +260,7 @@ abstract class Element
     }
 
 
-    public function childrenCombine()
+    public function combineChildren()
     {
         $result = [];
         foreach ($this->children as $item) {

@@ -12,12 +12,12 @@ namespace Dida\Html;
 class InputHidden extends Element
 {
     /* 必填属性 */
-    private $tag = 'input';
-    private $emptyContent = true;
+    protected $tag = 'input';
+    protected $emptyContent = true;
 
 
     public function __construct()
     {
-        $this->attrSet(['type' => 'hidden']);
+        $this->setAttr(['type' => 'hidden']);
     }
 }
