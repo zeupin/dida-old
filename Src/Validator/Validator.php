@@ -9,6 +9,7 @@ namespace Dida\Validator;
 /**
  * Validator 基类
  */
-abstract class Validator implements ValidatorInterface
+abstract class Validator
 {
+    abstract public function validate();
 }
