@@ -1,6 +1,18 @@
 # Dida框架
 
-当你轻声说出“滴答”两个字的时候，工作已经完成！这就是Dida框架的目标。
+当你轻声说出“滴答”两个字的时候，工作已经完成！**效率，就是Dida框架努力追求的唯一目标**。
+
+我们努力做到：
+
+1. **开发快**。
+    * 自带应用代码生成器，开箱即用，让初级使用者也能轻松上手。
+    * 框架结构简单，流程清晰，方便高级使用者的深入研究。
+    * 面向项目，不过度编码。
+
+2. **运行快**。
+    * 系统轻巧。
+    * 按需加载。实际使用的时候才会生成实例。
+    * 优化执行流程。
 
 官网 <http://dida.zeupin.com>  
 源码 <https://github.com/zeupin/dida>
@@ -10,9 +22,10 @@
 
 * PHP：v5.5及以上，v7.0及以上。
 
-> * 会用到PHP生成器Generator语法，以提高程序性能，需要PHP在5.5.0以上。
-> * 中国主流主机商（如阿里云、新网等），基本都能提供满足要求的主机产品。
-
+> 为什么要PHP 5.5以上？
+> * 在中国主流主机商（如阿里云、新网等）的主流主机允许的范围内，尽可能选用较高的PHP版本。
+> * PHP v5.5以上的运行性能要明显优于较低PHP版本。有条件的话，建议运行在PHP v7.0中，性能会更好。
+> * 会用到PHP高级概念，比如生成器（Generator），以提高程序性能，为此需要PHP在5.5.0以上。
 
 ## 命名规范
 
@@ -28,6 +41,7 @@
 > * 这里所说的类包含：类Class、接口Interface、特性Trait。
 
 * 遵循PSR-4自动加载规范。
+* 对有特定意义的Class和method，一律采用后缀命名法，便于实现自动加载、按需加载。参见如下这些示例名称的后缀： `FooController`, `BarView`, `FooInterface`, `$conntroller->barAction()`, `$obj->fooSet()`, `$obj->barGet()` 等等。
 * 类名使用PascalCase规则，例如：`RouteRule`、`RouteInterface`。
 * 类的方法名使用camelCase规则，例如：`getUserIP()`。
 * 类的属性名使用camelCase规则，例如：`userName`。
@@ -50,7 +64,7 @@
 
     > 在决定一个文件究竟应该放到Dida目录还是放到App目录时，问自己一个问题：这个文件可以用于所有项目还是只能用于当前项目？
 
-2. Dida框架的命名空间统一用`Dida`，App的命名空间用`App`。
+2. Dida框架的命名空间统一用`Dida`，App的命名空间可由用户自定，默认为`App`。
 
 3. MVC的设计原则是：瘦Controller，胖Model，这样可以尽可能增强代码的可重用性。
 
@@ -61,7 +75,7 @@
 
 ## 处理流程
 
-1. 服务器把用户请求rewrite到Web入口文件 **<www>/index.php**。
+1. 服务器把用户请求rewrite到Web入口文件 `{your/web/root}/index.php`。
 
 2. 在 **index.php** 文件中设置好各个关键目录的文件路径，然后加载DIDA框架的入口文件 **DIDA_ROOT/Index.php**。
 
@@ -83,16 +97,16 @@
 
 5. 工作环境ready，执行**$app->run()**，正式开始处理Reuqest。
 
-6. 中间件环境初始化。
+6. **Middleware中间件环境初始化**。
 
-7. **Middleware处理**，可以对Request以及环境做些前期处理。
+7. Middleware对Request以及环境做些前期处理。
 
-8. **Router** 逐一用登记的 **路由规则route** 去解析 **Request**，检查Request是否可以匹配这个规则route。
+8. **Router** 逐一用登记的 **路由规则route** 去解析 **Request**，检查Request是否可以匹配这个规则route。如果匹配上，列出 **Controller** 和 **action**。
 
-9. 如果可以匹配，则执行 **route->route()**。
+9.  Middleware处理pre-action。比如进行身份认证等事务。
 
-10. 执行标准的**MVC流程**：**Controller** 从 **Model** 取数据，赋值给 **View**。
+10. 执行标准的**MVC流程**：**Controller** 从 **Model** 取数据，输出给 **View**。
 
-11. **Middlewarec处理**，可以对View做些后期处理。
+11. Middleware处理after-action，比如一些过滤和收尾工作。
 
 12. **app()->response->output()** 输出最终内容给用户。
