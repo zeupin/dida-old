@@ -84,19 +84,19 @@
 
 3. 在 **DIDA框架的入口文件Index.php** 设置好基础运行环境：
 
-    3.1 设置全局常量
-    3.2 加载Dida的autoload机制
-    3.3 加载composer的autoload机制
-    3.4 生成$app实例
-    3.5 调用**$app->start()**，启动app，执行app初始化工作。
+    3.1. 设置全局常量
+    3.2. 加载Dida的autoload机制
+    3.3. 加载composer的autoload机制
+    3.4. 生成$app实例
+    3.5. 调用**$app->start()**，启动app，执行app初始化工作。
 
 4. app启动后：
 
-    4.1 先调用 **Foundation::init()** 执行基础环境初始化。
-    4.2 生成**基本对象**，`config`, `response`。
-    4.3 **载入App配置**， `App/Config/App.dev.php`。
-    4.4 **载入App函数库**， 按照 `App/Functions/Index.php` 要求，载入app级别的函数库（如果有的话）。
-    4.5 **载入App自举程序**，按照 `App/Bootstraps/Index.php` 要求，对app环境和可能用到的服务进行初始配置。
+    4.1. 先调用 **Foundation::init()** 执行基础环境初始化。
+    4.2. 生成**基本对象**，`config`, `response`。
+    4.3. **载入App配置**， `App/Config/App.dev.php`。
+    4.4. **载入App函数库**， 按照 `App/Functions/Index.php` 要求，载入app级别的函数库（如果有的话）。
+    4.5. **载入App自举程序**，按照 `App/Bootstraps/Index.php` 要求，对app环境和可能用到的服务进行初始配置。
 
 5. 工作环境ready，执行**$app->run()**，正式开始处理Reuqest。
 
