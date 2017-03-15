@@ -1,6 +1,6 @@
 # Dida框架
 
-当你轻声说出“滴答”两个字的时候，工作已经完成！**效率，就是Dida框架努力追求的唯一目标**。
+当你轻声说出“滴答”两个字的时候，工作已经完成！效率，就是Dida框架努力追求的唯一目标。
 
 我们努力做到：
 
@@ -42,11 +42,13 @@
 
 * 遵循PSR-4自动加载规范。
 * 对有特定意义的Class和method，一律采用后缀命名法，便于实现自动加载、按需加载。参见如下这些示例名称的后缀： `FooController`, `BarView`, `FooInterface`, `$conntroller->barAction()`, `$obj->fooSet()`, `$obj->barGet()` 等等。
-* 类名使用PascalCase规则，例如：`RouteRule`、`RouteInterface`。
+* 类名使用PascalCase规则，例如：`RouteRule`。
 * 类的方法名使用camelCase规则，例如：`getUserIP()`。
 * 类的属性名使用camelCase规则，例如：`userName`。
 * 接口名要加上Interface后缀，例如：`RouteInterface`。
 * 特性名要加上Trait后缀，例如：`SingletonTrait`。
+* MVC的Controller、Model、View需要加上对应的后缀。
+* 对类变量的Set和Get分别加上Set和Get后缀。例如：`fooSet($value)`, `fooGet()`。
 
 ### 全局函数
 
@@ -57,6 +59,7 @@
 ### 常量
 
 * 常量以大写字母和下划线组成，例如：`DIDA_ROOT`。
+* DIDA框架级别的所有常量均以`DIDA_`开头，以避免和第三方常量发生冲突。
 
 ## 编码规范
 
