@@ -78,9 +78,9 @@
 
 ## 处理流程
 
-1. 服务器把用户请求rewrite到Web入口文件 `{your/web/root}/index.php`。
+1. 服务器把用户请求rewrite到 **Web入口文件** `{/your/www/}index.php`。
 
-2. 在 **index.php** 文件中设置好各个关键目录的文件路径，然后加载DIDA框架的入口文件 **DIDA_ROOT/Index.php**。
+2. 在Web入口文件中设置好各个关键目录的文件路径和必要的其它标记，然后加载 **DIDA框架的入口文件** `{/dida/framework/root/}Index.php`。
 
 3. 在 **DIDA框架的入口文件Index.php** 设置好基础运行环境：
 
@@ -106,10 +106,10 @@
 
 8. **Router** 逐一用登记的 **路由规则route** 去解析 **Request**，检查Request是否可以匹配这个规则route。如果匹配上，列出 **Controller** 和 **action**。
 
-9.  Middleware处理pre-action。比如进行身份认证等事务。
+9.  Middleware处理 pre-action，比如进行身份认证等工作。
 
 10. 执行标准的**MVC流程**：**Controller** 从 **Model** 取数据，输出给 **View**。
 
-11. Middleware处理after-action，比如一些过滤和收尾工作。
+11. Middleware处理 post-action，比如一些过滤和收尾工作。
 
 12. **app()->response->output()** 输出最终内容给用户。
