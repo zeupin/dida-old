@@ -19,9 +19,10 @@ abstract class Route implements RouteInterface
     /*
      * 要输出的变量
      */
-    protected $controller = '';     // Controller的名称，FQCN格式
+    protected $controller = '';     // Controller的FQCN名称
     protected $action = '';         // Action的名称
     protected $parameters = [];     // 参数数组
+    protected $flags = [];          // 会用到的标志位
 
     /*
      * 内部变量
@@ -29,6 +30,27 @@ abstract class Route implements RouteInterface
     protected $routemap = [];
 
 
+    /**
+     * 抽象方法，开始对设置的Request进行匹配
+     */
+    abstract public function match();
+
+
+    /**
+     * 抽象方法，如果匹配成功，分发对应的路由
+     */
+    abstract public function dispatch();
+
+
+    /**
+     * 抽象方法，组装一个路由
+     */
+    abstract public static function assemble($controller, $action, array $parameters = [], array $options = []);
+
+
+    /**
+     * 设置要匹配的Request
+     */
     public function setRequest(Request $request)
     {
         $this->request = $request;
@@ -37,7 +59,7 @@ abstract class Route implements RouteInterface
 
 
     /**
-     * 载入一个路由对应表文件
+     * 载入一个路由表文件
      *
      * @param string $routemapfile
      */
