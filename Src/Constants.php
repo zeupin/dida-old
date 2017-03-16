@@ -15,6 +15,10 @@ define('DIDA_IS_CLI', PHP_SAPI === 'cli');
 /* 指示这是未设置的函数参数 */
 define('DIDA_NOT_SET', "\0");
 
+/* 默认的Controller和Action */
+defined('DIDA_DEFAULT_CONTROLLER') || define('DIDA_DEFAULT_CONTROLLER', 'Index'); // DefaultController默认值为Index
+defined('DIDA_DEFAULT_ACTION') || define('DIDA_DEFAULT_ACTION', 'index'); // DefaultAction默认值为index
+
 /* 如果不是CLI模式，则为HTTP模式 */
 if (!DIDA_IS_CLI) {
     /* DIDA_WWW */
