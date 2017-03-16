@@ -11,9 +11,9 @@ namespace Dida;
  */
 class RequestHttp extends Request
 {
-    public $path = '';
-    public $query = '';
-    public $fragment = '';
+    protected $path = [];
+    protected $query = [];
+    protected $fragment = '';
 
 
     public function __construct()
@@ -31,7 +31,8 @@ class RequestHttp extends Request
 
         if (isset($url['path'])) {
             // 去除DIDA_WWW后的部分
-            $this->path = substr($url['path'], strlen(DIDA_WWW));
+            $path = substr($url['path'], strlen(DIDA_WWW));
+            $this->path = explode('/', $path);
         }
         if (isset($url['query'])) {
             $this->query = $url['query'];
