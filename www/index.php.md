@@ -12,9 +12,11 @@ define('DIDA_WEB_ROOT',       __DIR__ . '/');
 define('DIDA_ENVIRON',        'dev');
 
 /* 选填的常量 */
-define('DIDA_WWW',            '/');
-define('DIDA_DEBUG_MODE',     true);
-define('DIDA_APP_NAMESPACE',  'App');
+define('DIDA_WWW',                '/');
+define('DIDA_DEBUG_MODE',         true);
+define('DIDA_APP_NAMESPACE',      'App');
+define('DIDA_DEFAULT_CONTROLLER', 'Index');
+define('DIDA_DEFAULT_ACTION',     'index');
 
 /* 开始 */
 require(DIDA_ROOT . 'Index.php');
@@ -56,4 +58,9 @@ DIDA_DEBUG_MODE         指明是否开启调试模式，值为true或者false�
                             开启后，会显示所有错误信息。
 
 DIDA_APP_NAMESPACE      指明App的命名空间，默认是App。
+
+DIDA_DEFAULT_CONTROLLER 指明默认的Controller名称，默认是Index。
+
+DIDA_DEFAULT_ACTION     指明默认的Action名称，默认是index。
+                            default是PHP的保留关键字，不能使用。
 ```

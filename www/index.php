@@ -15,6 +15,8 @@ define('DIDA_ENVIRON', 'dev');
 define('DIDA_WWW', '/');
 define('DIDA_DEBUG_MODE', true);
 define('DIDA_APP_NAMESPACE', 'App');
+define('DIDA_DEFAULT_CONTROLLER', 'Index');
+define('DIDA_DEFAULT_ACTION', 'index');
 
 /* 开始 */
 require(DIDA_ROOT . 'Index.php');
