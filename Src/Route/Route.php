@@ -33,22 +33,31 @@ abstract class Route
 
     /**
      * 抽象方法，对Request进行路由匹配
-     * 
+     *
      * @return bool 匹配成功返回true，否则返回false
      */
     abstract public function match();
 
 
     /**
-     * 抽象方法，如果匹配成功，分发对应的路由
+     * 抽象方法，组装一个路由
      */
-    abstract public function dispatch();
+    abstract public static function assemble($controller, $action, array $parameters = []);
 
 
     /**
-     * 抽象方法，组装一个路由
+     * 分派任务
      */
-    abstract public static function assemble($controller, $action, array $parameters = [], array $options = []);
+    public function dispatch()
+    {
+        if ($this->matched) {
+            $callback = [$this->controller, $this->action];
+            call_user_func_array($callback, $this->parameters);
+            return;
+        } else {
+            throw new \Dida\Exception\InvalidDispatchException();
+        }
+    }
 
 
     /**
@@ -82,5 +91,41 @@ abstract class Route
             $this->routemap = [];
             return false;
         }
+    }
+
+
+    /**
+     * 把一个横线分隔的字符串按照PascalCase模式转换
+     * 例如：'foo-bar-baz' 会转化为 FooBarBaz
+     *
+     * @param string $string
+     */
+    public function usePascalCase($string)
+    {
+        $array = explode('-', $string);
+        foreach ($array as $k => $v) {
+            $array[$k] = ucfirst($v);
+        }
+        return implode('', $array);
+    }
+
+
+    /**
+     * 把一个横线分隔的字符串按照PascalCase模式转换
+     * 例如：'foo-bar-baz' 会转化为 fooBarBaz
+     *
+     * @param string $string
+     */
+    public function useCamelCase($string)
+    {
+        $array = explode('-', $string);
+        foreach ($array as $k => $v) {
+            if ($k === 0) {
+                $array[$k] = lcfirst($v);
+            } else {
+                $array[$k] = ucfirst($v);
+            }
+        }
+        return implode('', $array);
     }
 }
