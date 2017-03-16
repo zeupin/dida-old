@@ -4,11 +4,11 @@
  * http://dida.zeupin.com
  */
 
-namespace Dida;
+namespace Dida\Exception;
 
 /**
- * Exception 类
+ * 未找到指定事件
  */
-class Exception extends \Exception
+class EventNotFound extends \Dida\Exception
 {
 }
