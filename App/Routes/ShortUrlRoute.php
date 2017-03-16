@@ -19,12 +19,9 @@ class ShortUrlRoute extends \Dida\Route
     }
 
 
-    public function route()
-    {
-    }
-
-
     public static function assemble($controller, $action, array $parameters = array())
     {
+        // todo
+        return 'todo';
     }
 }

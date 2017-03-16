@@ -11,8 +11,6 @@ namespace Dida\Route;
  */
 class DefaultRoute extends \Dida\Route
 {
-
-
     public function match()
     {
         // 从url路径获取controller和action的原始值
