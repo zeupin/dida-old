@@ -104,7 +104,7 @@
 
 7. Middleware对Request以及环境做些前期处理。
 
-8. **Router** 逐一用登记的 **路由规则route** 去解析 **Request**，检查Request是否可以匹配这个规则route。如果成功，列出匹配出来的 **Controller** 和 **action**。
+8. **Router** 逐一用登记的 **路由规则route** 去解析 **Request**，检查Request是否可以匹配这个规则route。如果成功，把Request解析为[**route**, **arguments**, **options**]，其中route表达为[**Controller**, **action**]。
 
 9.  Middleware处理 pre-action，比如检查对应的Controller有没有这个action？用户是否有足够权限执行这个action？等等
 
