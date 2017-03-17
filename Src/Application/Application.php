@@ -11,9 +11,9 @@ namespace Dida;
  */
 final class Application extends Container
 {
-    /* 服务容器的配置参数 */
-    public $config = null;
-    public $response = null;
+    /* 公有变量 */
+    public $config = null;    // 配置
+    public $response = null;  // 响应
 
 
     /**
