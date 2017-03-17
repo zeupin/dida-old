@@ -33,20 +33,29 @@ class DefaultRoute extends \Dida\Route
             }
         }
 
-        // 如果Controller文件存在，就算匹配成功
-        $target = DIDA_APP_ROOT . 'Controllers/' . $controller . '.php';
-        if (file_exists($target) && is_file($target)) {
-            $this->controller = DIDA_APP_NAMESPACE . '\\Controllers\\' . $controller;
-            $this->action = $action . 'Action';
-            $this->parameters = $this->request->query;
-            $this->matched = true;
-            return true;
-        }
-        // 否则匹配失败
-        else {
+        // 如果controller或action含有无效字符，则匹配失败
+        if (!dida_is_valid_name($controller) || !dida_is_valid_name($action)) {
             $this->matched = false;
             return false;
         }
+
+        // 如果目标Controller存在，且有此action，则匹配成功
+        $class = DIDA_APP_NAMESPACE . '\\Controllers\\' . $controller;
+        class_exists($class, true); // 首次载入
+        if (class_exists($class)) {
+            if ($class::actionExists($action)) {
+                // 匹配成功
+                $this->controller = $class;
+                $this->action = $action;
+                $this->parameters = $this->request->query;
+                $this->matched = true;
+                return true;
+            }
+        }
+
+        // 否则匹配失败
+        $this->matched = false;
+        return false;
     }
 
 
