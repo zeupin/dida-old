@@ -11,13 +11,28 @@ namespace Dida;
  */
 abstract class Controller implements ControllerInterface
 {
+
+
+    /**
+     * 检查指定的action是否存在
+     */
     public static function actionExists($action)
     {
         return method_exists(get_called_class(), $action);
     }
 
 
-    public function forward();  // todo
-    public function redirect(); // todo
-    public function render(); // todo
+    public function render()
+    {
+    }
+
+
+    public function forward()
+    {
+    }
+
+
+    public function redirect()
+    {
+    }
 }

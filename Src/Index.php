@@ -4,7 +4,7 @@
  * http://dida.zeupin.com
  */
 
-namespace Dida;
+use \Dida\Loader;
 
 /* 开始计时 */
 define('DIDA_START_TIME', microtime(true));
@@ -25,7 +25,5 @@ if (file_exists(DIDA_COMPOSER_ROOT . 'autoload.php')) {
 }
 
 /* 生成app实例 */
-$app = new Application();
-
-/* 开始运行 */
-$app->start();
+require __DIR__ . '/Dida/Dida.php';
+Dida::start();

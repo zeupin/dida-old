@@ -10,14 +10,12 @@
  */
 function app($service_id = null)
 {
-    global $app;
-
     if ($service_id === null) {
-        return $app;
+        return \Dida::$app;
     }
 
-    if ($app->has($service_id)) {
-        return $app->get($service_id);
+    if (\Dida::$app->has($service_id)) {
+        return \Dida::$app->get($service_id);
     } else {
         return null;
     }
