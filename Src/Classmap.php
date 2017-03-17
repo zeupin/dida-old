@@ -21,6 +21,7 @@ return [
     'Dida\\RequestHttp'    => 'Request/RequestHttp.php',
     'Dida\\Response'       => 'Response/Response.php',
     'Dida\\Route'          => 'Route/Route.php',
+    'Dida\\RouteInterface' => 'Route/RouteInterface.php',
     'Dida\\Router'         => 'Router/Router.php',
     'Dida\\Session'        => 'Session/Session.php',
     'Dida\\SingletonTrait' => 'SingletonTrait/SingletonTrait.php',

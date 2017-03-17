@@ -9,7 +9,7 @@ namespace Dida;
 /**
  * Route 类
  */
-abstract class Route
+abstract class Route implements RouteInterface
 {
     /*
      * 要输入的变量
@@ -29,20 +29,6 @@ abstract class Route
      */
     protected $routemap = [];
     protected $matched = false;
-
-
-    /**
-     * 抽象方法，对Request进行路由匹配
-     *
-     * @return bool 匹配成功返回true，否则返回false
-     */
-    abstract public function match();
-
-
-    /**
-     * 抽象方法，组装一个路由
-     */
-    abstract public static function assemble($controller, $action, array $parameters = []);
 
 
     /**
