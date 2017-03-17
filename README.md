@@ -73,7 +73,7 @@
 
 4. require, include, require_once, include_once 文件时，推荐用不加括号的形式。
 
-    > 推荐的写法：   `require 'target_file_name.php'`;  
+    > 推荐的写法： `require 'target_file_name.php'`;  
     > 不推荐写法： `require('target_file_name.php')`;  
 
 ## 处理流程
@@ -87,8 +87,7 @@
     - 3.1 设置全局常量
     - 3.2 加载Dida的autoload机制
     - 3.3 加载composer的autoload机制
-    - 3.4 生成$app实例
-    - 3.5 调用 **$app->start()**，开始运行。
+    - 3.4 Dida::start()
 
 	    * 1) 调用**$app->init()**，执行app初始化工作。
         * 2) 调用**$app->bootstrap()**，进行app自举。
