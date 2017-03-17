@@ -11,5 +11,5 @@ namespace Dida;
  */
 abstract class Controller
 {
-    abstract public function actionExists($action);
+    abstract public static function actionExists($action);
 }
