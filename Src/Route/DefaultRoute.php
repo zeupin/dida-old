@@ -41,11 +41,12 @@ class DefaultRoute extends \Dida\Route
 
         // 如果目标Controller存在，且有此action，则匹配成功
         $class = DIDA_APP_NAMESPACE . '\\Controllers\\' . $controller . 'Controller';
+        $method = $action . 'Action';
         if (class_exists($class, true)) {
-            if ($class::actionExists($action)) {
+            if ($class::actionExists($method)) {
                 // 匹配成功
                 $this->controller = $class;
-                $this->action = $action;
+                $this->action = $method;
                 $this->parameters = $this->request->query;
                 $this->matched = true;
                 return true;

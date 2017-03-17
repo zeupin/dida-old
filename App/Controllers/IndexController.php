@@ -11,7 +11,7 @@ namespace App\Controllers;
  */
 class IndexController extends \Dida\Controller
 {
-    public function index()
+    public function indexAction()
     {
         echo __METHOD__ . ' goes here!';
     }
