@@ -21,13 +21,36 @@ final class Application extends Container
      */
     public function start()
     {
+        // 和app无关部分的初始化
+        $this->init();
+
+        // 和app有关部分的初始化
+        $this->bootstrap();
+
+        // 准备工作就绪，正式处理用户请求
+        $this->run();
+    }
+
+
+    /**
+     * 和App无关的通用环境的初始化
+     */
+    private function init()
+    {
         // 基础环境初始化
         Foundation::init();
 
         // 基础变量
         $this->config = new Config;
         $this->response = new Response;
+    }
 
+
+    /**
+     * 和App相关部分的初始化
+     */
+    private function bootstrap()
+    {
         // 载入App配置
         $this->loadAppConfig();
 
@@ -36,9 +59,6 @@ final class Application extends Container
 
         // 依次载入App的bootstraps
         $this->loadAppBootstraps();
-
-        // 准备工作就绪，正式处理用户请求
-        $this->run();
     }
 
 
@@ -54,6 +74,9 @@ final class Application extends Container
     }
 
 
+    /**
+     * 载入app级别的函数库
+     */
     private function loadAppFunctions()
     {
         $target = DIDA_APP_ROOT . 'Functions/Index.php';
@@ -64,6 +87,9 @@ final class Application extends Container
     }
 
 
+    /**
+     * 载入app的自举程序
+     */
     private function loadAppBootstraps()
     {
         $target = DIDA_APP_ROOT . 'Bootstraps/Index.php';
@@ -74,6 +100,9 @@ final class Application extends Container
     }
 
 
+    /**
+     * 载入app的入口程序，正式开始处理app
+     */
     private function run()
     {
         $app = $this;
