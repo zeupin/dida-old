@@ -9,6 +9,7 @@ namespace Dida;
 /**
  * Controller 基类
  */
-class Controller
+abstract class Controller
 {
+    abstract public function actionExists($action);
 }
