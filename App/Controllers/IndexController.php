@@ -6,14 +6,22 @@
 
 namespace App\Controllers;
 
-use \Dida\Controller;
-
 /**
  * Default Controller
  */
-class DefaultController extends Controller
+class DefaultController extends \Dida\Controller
 {
-    public function index()
+    protected $actions = ['index'];
+
+
+    public static function actionExists($action)
+    {
+        $actions = ['index'];
+        return (in_array($actions, $this->actions));
+    }
+
+
+    public function indexAction()
     {
     }
 }
