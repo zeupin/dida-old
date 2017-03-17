@@ -11,9 +11,9 @@ namespace Dida;
  */
 class RequestHttp extends Request
 {
-    protected $path = [];
-    protected $query = [];
-    protected $fragment = '';
+    public $path = [];
+    public $query = [];
+    public $fragment = '';
 
 
     public function __construct()

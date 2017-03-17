@@ -40,9 +40,8 @@ class DefaultRoute extends \Dida\Route
         }
 
         // 如果目标Controller存在，且有此action，则匹配成功
-        $class = DIDA_APP_NAMESPACE . '\\Controllers\\' . $controller;
-        class_exists($class, true); // 首次载入
-        if (class_exists($class)) {
+        $class = DIDA_APP_NAMESPACE . '\\Controllers\\' . $controller . 'Controller';
+        if (class_exists($class, true)) {
             if ($class::actionExists($action)) {
                 // 匹配成功
                 $this->controller = $class;

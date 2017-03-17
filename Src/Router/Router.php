@@ -26,7 +26,7 @@ class Router
         foreach ($this->routes as $route) {
             $route->setRequest($request);
             if ($route->match()) {
-                $route->route();
+                $route->dispatch();
                 return;
             }
         }

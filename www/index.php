@@ -13,7 +13,7 @@ define('DIDA_ENVIRON', 'dev');
 
 /* 选填的常量 */
 define('DIDA_WWW', '/');
-define('DIDA_DEBUG_MODE', true);
+define('DIDA_DEBUG', true);
 define('DIDA_APP_NAMESPACE', 'App');
 define('DIDA_DEFAULT_CONTROLLER', 'Index');
 define('DIDA_DEFAULT_ACTION', 'index');

@@ -13,7 +13,7 @@ define('DIDA_ENVIRON',        'dev');
 
 /* 选填的常量 */
 define('DIDA_WWW',                '/');
-define('DIDA_DEBUG_MODE',         true);
+define('DIDA_DEBUG',              true);
 define('DIDA_APP_NAMESPACE',      'App');
 define('DIDA_DEFAULT_CONTROLLER', 'Index');
 define('DIDA_DEFAULT_ACTION',     'index');
@@ -54,7 +54,7 @@ DIDA_WWW                指明web的根路径，默认是入口文件所在的we
                             一般这个值为/，虚拟目录则可能为/foo/，最后一个字符应为/。
                             程序在路由时，会忽略网址中 DIDA_WWW 对应的开头部分，以获取一个和主机无关的web路径。
 
-DIDA_DEBUG_MODE         指明是否开启调试模式，值为true或者false。默认是开启true。
+DIDA_DEBUG         指明是否开启调试模式，值为true或者false。默认是开启true。
                             开启后，会显示所有错误信息。
 
 DIDA_APP_NAMESPACE      指明App的命名空间，默认是App。

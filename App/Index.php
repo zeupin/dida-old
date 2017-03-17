@@ -3,6 +3,6 @@
  * Dida Framework --Powered by Zeupin LLC
  * http://dida.zeupin.com
  */
-$form = new Dida\Html\Form();
-$form->method('PUT');
-echo $form->html();
+header("Content-type: text/html; charset=utf-8");
+$app = app();
+app()->get('router')->route($app['request']);

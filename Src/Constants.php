@@ -4,7 +4,7 @@
  * http://dida.zeupin.com
  */
 /* 是否开启调试模式 */
-defined('DIDA_DEBUG_MODE') || define('DIDA_DEBUG_MODE', true); // 默认开启调试模式
+defined('DIDA_DEBUG') || define('DIDA_DEBUG', true); // 默认开启调试模式
 
 /* APP的名称空间 */
 defined('DIDA_APP_NAMESPACE') || define('DIDA_APP_NAMESPACE', 'App'); // 默认值为App

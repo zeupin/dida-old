@@ -37,7 +37,8 @@ abstract class Route implements RouteInterface
     public function dispatch()
     {
         if ($this->matched) {
-            $callback = [$this->controller, $this->action];
+            app()->set('controller', $this->controller);
+            $callback = [app()->get('controller'), $this->action];
             call_user_func_array($callback, $this->parameters);
             return;
         } else {

@@ -9,19 +9,10 @@ namespace App\Controllers;
 /**
  * Default Controller
  */
-class DefaultController extends \Dida\Controller
+class IndexController extends \Dida\Controller
 {
-    protected $actions = ['index'];
-
-
-    public static function actionExists($action)
+    public function index()
     {
-        $actions = ['index'];
-        return (in_array($actions, $this->actions));
-    }
-
-
-    public function indexAction()
-    {
+        echo __METHOD__ . ' goes here!';
     }
 }

@@ -31,7 +31,7 @@ class Foundation
 
     private static function handleErrorsAndExceptions()
     {
-        if (DIDA_DEBUG_MODE) {
+        if (DIDA_DEBUG) {
             // 报告所有 PHP 错误，参见 PHP 的 error_reporting() 文档
             error_reporting(E_ALL);
         } else {
