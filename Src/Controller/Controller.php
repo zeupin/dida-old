@@ -9,7 +9,10 @@ namespace Dida;
 /**
  * Controller 基类
  */
-abstract class Controller
+abstract class Controller implements ControllerInterface
 {
-    abstract public static function actionExists($action);
+    public static function actionExists($action)
+    {
+        return method_exists(get_called_class(), $action);
+    }
 }
