@@ -15,4 +15,9 @@ abstract class Controller implements ControllerInterface
     {
         return method_exists(get_called_class(), $action);
     }
+
+
+    public function forward();  // todo
+    public function redirect(); // todo
+    public function render(); // todo
 }
