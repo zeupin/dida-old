@@ -29,4 +29,5 @@ return [
     'Dida\\Staticall'           => 'Staticall/Staticall.php',
     'Dida\\Validator'           => 'Validator/Validator.php',
     'Dida\\View'                => 'View/View.php',
+    'Dida\\Widget'              => 'Widget/Widget.php',
 ];
