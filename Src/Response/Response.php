@@ -11,35 +11,9 @@ namespace Dida;
  */
 class Response
 {
-    protected $contentType = 'html';       // html,json,text
-    protected $encoding = 'utf-8';
-    protected $buffer = [];
-
-
-    public function contentTypeSet($contentType)
-    {
-        $this->contentType = $contentType;
-        return $this;
-    }
-
-
-    public function contentTypeGet()
-    {
-        return $this->contentType;
-    }
-
-
-    public function encodingSet($encoding)
-    {
-        $this->encoding = $encoding;
-        return $this;
-    }
-
-
-    public function encodingGet()
-    {
-        return $this->encoding;
-    }
+    public $contentType = 'html';       // html,json,text
+    public $encoding = 'utf-8';
+    public $buffer = [];
 
 
     public function clear()
