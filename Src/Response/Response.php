@@ -25,6 +25,7 @@ class Response
 
     public function sendHeader()
     {
+
     }
 
 
@@ -46,28 +47,35 @@ class Response
     }
 
 
-    public function setEncoding($encoding)
+    public function encodingSet($encoding)
     {
         $this->encoding = $encoding;
         return $this;
     }
 
 
-    public function getEncoding()
+    public function encodingGet()
     {
         return $this->encoding;
     }
 
 
-    public function setContentType($contentType)
+    public function contentTypeSet($contentType)
     {
         $this->contentType = $contentType;
         return $this;
     }
 
 
-    public function getContentType()
+    public function contentTypeGet()
     {
         return $this->contentType;
+    }
+
+
+    public function clear()
+    {
+        $this->head = [];
+        $this->body = [];
     }
 }
