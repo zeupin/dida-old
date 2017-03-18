@@ -11,39 +11,21 @@ namespace Dida;
  */
 class Response
 {
-    protected $head = [];
-    protected $body = [];
+    protected $contentType = 'html';       // html,json,text
     protected $encoding = 'utf-8';
-    protected $contentType = '';
+    protected $buffer = [];
 
 
-    public function output($delimiter = '')
+    public function contentTypeSet($contentType)
     {
-        echo implode($delimiter, $this->body);
+        $this->contentType = $contentType;
+        return $this;
     }
 
 
-    public function sendHeader()
+    public function contentTypeGet()
     {
-
-    }
-
-
-    public function redirect($url)
-    {
-        header("Location: $url");
-    }
-
-
-    public function addHead($head)
-    {
-        $this->head[] = $head;
-    }
-
-
-    public function addBody($body)
-    {
-        $this->body[] = $body;
+        return $this->contentType;
     }
 
 
@@ -60,22 +42,38 @@ class Response
     }
 
 
-    public function contentTypeSet($contentType)
-    {
-        $this->contentType = $contentType;
-        return $this;
-    }
-
-
-    public function contentTypeGet()
-    {
-        return $this->contentType;
-    }
-
-
     public function clear()
     {
-        $this->head = [];
-        $this->body = [];
+        $this->buffer = [];
+    }
+
+
+    public function sendHeader($header, $replace = false, $http_response_code = 0)
+    {
+        if ($http_response_code > 99) {
+            header($header, $replace, $http_response_code);
+        } else {
+            header($header, $replace);
+        }
+    }
+
+
+    public function redirect($url)
+    {
+        header("Location: $url");
+    }
+
+
+    public function addData($data)
+    {
+        $this->buffer[] = $data;
+    }
+
+
+    public function output()
+    {
+        if ($this->contentType == 'json') {
+            return json_encode($this->buffer);
+        }
     }
 }
