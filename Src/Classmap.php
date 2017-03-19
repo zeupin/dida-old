@@ -9,6 +9,7 @@ return [
     'Dida\\Container'           => 'Container/Container.php',
     'Dida\\Controller'          => 'Controller/Controller.php',
     'Dida\\ControllerInterface' => 'Controller/ControllerInterface.php',
+    'Dida\\Db'                  => 'Db/DbInterface.php',
     'Dida\\Debug'               => 'Debug/Debug.php',
     'Dida\\Dispatcher'          => 'Dispatcher/Dispatcher.php',
     'Dida\\GetSetTrait'         => 'Traits/GetSetTrait.php',

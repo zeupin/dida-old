@@ -28,7 +28,7 @@ trait GetSetTrait
 
     /**
      * 如果某个属性不可见，检查是否有对应的Setter
-     * 
+     *
      * @param string $name 属性名
      * @param string $value 属性值
      */
