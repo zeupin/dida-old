@@ -12,6 +12,7 @@ namespace Dida;
 abstract class Db implements DbInterface
 {
     public $tablePrefix = '';
+    public $sql = '';
 
 
     /**
@@ -38,8 +39,9 @@ abstract class Db implements DbInterface
      *
      * @param string $sql
      */
-    public function realSql($sql)
+    public function createCommand($sql)
     {
-        return str_replace('###', $this->tablePrefix, $sql);
+        $this->sql = str_replace('###', $this->tablePrefix, $sql);
+        return $this;
     }
 }
