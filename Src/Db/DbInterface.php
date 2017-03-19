@@ -11,16 +11,4 @@ namespace Dida;
  */
 interface DbInterface
 {
-
-
-    /**
-     * 读取数据库
-     */
-    abstract public function read();
-
-
-    /**
-     * 写入数据库
-     */
-    abstract public function write();
 }
