@@ -13,6 +13,7 @@ class IndexController extends \Dida\Controller
 {
     public function indexAction()
     {
-        echo __METHOD__ . ' goes here!';
+        //echo '当前Action是：' . __METHOD__;
+        echo app()->twig->render('Index/index.html.twig');
     }
 }

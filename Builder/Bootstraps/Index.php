@@ -2,15 +2,11 @@
 
 namespace Dida\Builder;
 
-app()->set('request', function () {
+app()->request = function () {
     return new \Dida\RequestHttp();
-});
+};
 
-app()->set('dispatcher', function () {
-    return new \Dida\Dispatcher();
-});
-
-app()->set('router', function () {
+app()->router = function () {
     /* 生成 Router实例 */
     $router = new \Dida\Router();
 
@@ -20,4 +16,10 @@ app()->set('router', function () {
 
     /* 返回生成的路由器实例 */
     return $router;
-});
+};
+
+app()->twig = function() {
+    $loader = new \Twig_Loader_Filesystem(__DIR__ .'/../Views');
+    $twig = new \Twig_Environment($loader, []);
+    return $twig;
+};

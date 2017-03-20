@@ -15,10 +15,11 @@ final class Application extends Container
     public $config = null;    // 配置
     public $response = null;  // 响应
 
-
     /**
      * 启动
      */
+
+
     public function start()
     {
         // 和app无关部分的初始化
@@ -107,5 +108,17 @@ final class Application extends Container
     {
         $app = $this;
         require DIDA_APP_ROOT . 'Index.php';
+    }
+
+
+    public function __get($id)
+    {
+        return $this->get($id);
+    }
+
+
+    public function __set($id, $service)
+    {
+        $this->set($id, $service);
     }
 }

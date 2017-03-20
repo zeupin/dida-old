@@ -5,7 +5,7 @@
  */
 /* 必填的常量 */
 define('DIDA_ROOT', realpath(__DIR__ . '/../src') . '/');
-define('DIDA_COMPOSER_ROOT', realpath(__DIR__ . '/../vendor') . '/');
+define('DIDA_COMPOSER_ROOT', realpath(__DIR__ . '/../composer') . '/');
 define('DIDA_APP_ROOT', realpath(__DIR__ . '/../Builder') . '/');
 define('DIDA_VAR_ROOT', realpath(__DIR__ . '/../Var') . '/');
 define('DIDA_WEB_ROOT', __DIR__ . '/');
