@@ -4,7 +4,7 @@
  * http://dida.zeupin.com
  */
 
-namespace App\Controllers;
+namespace Dida\Builder\Controllers;
 
 /**
  * Default Controller
