@@ -1,1 +1,3 @@
-﻿!.gitignore
+!.gitignore
+!yarn.lock
+!package.json
