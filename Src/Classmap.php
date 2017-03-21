@@ -32,4 +32,10 @@ return [
     'Dida\\Validator'           => 'Validator/Validator.php',
     'Dida\\View'                => 'View/View.php',
     'Dida\\Widget'              => 'Widget/Widget.php',
+    /* 异常 */
+    'Dida\ActionNotFoundException'     => 'Exception\ActionNotFoundException.php',
+    'Dida\DatabaseConnectionException' => 'Exception\DatabaseConnectionException.php',
+    'Dida\EventNotFoundException'      => 'Exception\EventNotFoundException.php',
+    'Dida\InvalidDispatchException'    => 'Exception\InvalidDispatchException.php',
+    'Dida\MethodNotFoundException'     => 'Exception\MethodNotFoundException.php',
 ];
