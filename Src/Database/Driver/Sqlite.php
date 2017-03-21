@@ -11,6 +11,10 @@ namespace Dida\Database\Driver;
  */
 class Sqlite extends Driver
 {
+    /**
+     * 必填:
+     *     file : 文件位置; 也可以将file设置为 :memory: ,表示使用内存数据库
+     */
     public function __construct(array $config)
     {
         /* 必填参数 */

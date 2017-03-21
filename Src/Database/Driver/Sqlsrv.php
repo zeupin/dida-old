@@ -11,6 +11,12 @@ namespace Dida\Database\Driver;
  */
 class Sqlsrv extends Driver
 {
+    /**
+     * 必填:
+     *     server, user, password, dbname
+     * 选填:
+     *     charset 默认 utf8
+     */
     public function __construct(array $config)
     {
         /* 必填参数 */

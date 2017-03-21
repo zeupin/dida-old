@@ -11,6 +11,12 @@ namespace Dida\Database\Driver;
  */
 class Dblib extends Driver
 {
+    /**
+     * 必填:
+     *     host, port, user, password, dbname
+     * 选填:
+     *     charset 默认 utf8
+     */
     public function __construct(array $config)
     {
         /* 必填参数 */

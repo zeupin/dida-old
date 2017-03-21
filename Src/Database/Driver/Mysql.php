@@ -11,6 +11,14 @@ namespace Dida\Database\Driver;
  */
 class Mysql extends Driver
 {
+    /**
+     * 必填:
+     *     user, password, dbname
+     * 选填:
+     *     host    默认 localhost
+     *     port    默认 3306
+     *     charset 默认 utf8
+     */
     public function __construct(array $config)
     {
         /* 必填参数 */
