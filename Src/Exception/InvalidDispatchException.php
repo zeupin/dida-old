@@ -4,11 +4,11 @@
  * http://dida.zeupin.com
  */
 
-namespace Dida\Exception;
+namespace Dida;
 
 /**
  * 未找到指定事件
  */
-class InvalidDispatchException extends \Dida\Exception
+class InvalidDispatchException extends Exception
 {
 }

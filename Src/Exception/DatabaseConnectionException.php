@@ -7,8 +7,8 @@
 namespace Dida;
 
 /**
- * 未找到指定事件
+ * 数据库连接异常
  */
-class EventNotFoundException extends Exception
+class DatabaseConnectionException extends Exception
 {
 }
