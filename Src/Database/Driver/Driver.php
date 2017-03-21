@@ -71,4 +71,42 @@ abstract class Driver
     {
         $this->pdo = null;
     }
+
+
+    /**
+     * 处理未定义的方法
+     *
+     * 1. 检查是否是PDO的方法. 如果是, 调用PDO对应的方法
+     */
+    public function __call($name, $arguments)
+    {
+        switch ($name) {
+            /* 调用PDO, 无参数 */
+            case 'beginTransaction':
+            case 'commit':
+            case 'rollBack':
+            case 'inTransaction':
+            case 'errorCode':
+            case 'errorInfo':
+                return call_user_func([$this->pdo, $name]);
+
+            /* 调用PDO, 有参数 */
+            case 'query':
+            case 'exec':
+            case 'lastInsertId':
+            case 'prepare':
+            case 'quote':
+            case 'setAttribute':
+            case 'getAttribute':
+                return call_user_func_array([$this->pdo, $name], $arguments);
+
+            /* 调用PDO, 静态方法 */
+            case 'getAvailableDrivers':
+                return call_user_func_array(['PDO', $name], $arguments);
+
+            /* 未找到 */
+            default:
+                throw new \Dida\MethodNotFoundException();
+        }
+    }
 }
