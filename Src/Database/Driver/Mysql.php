@@ -51,9 +51,7 @@ class Mysql extends Driver
         $persistence = isset($config['persistence']) ? (bool) $config['persistence'] : false;
 
         /* 设置 */
-        $dsn = '';
-        $options = [];
-        $dsn .= "mysql:host=$host;port=$port;dbname=$dbname;charset=$charset;";
+        $dsn = "mysql:host=$host;port=$port;dbname=$dbname;charset=$charset;";
         $options[\PDO::MYSQL_ATTR_INIT_COMMAND] = 'SET NAMES ' . $charset;
         if ($persistence) {
             $options[\PDO::ATTR_PERSISTENT] = $persistence;
@@ -99,9 +97,7 @@ class Mysql extends Driver
         $persistence = isset($config['persistence']) ? (bool) $config['persistence'] : false;
 
         /* 设置 */
-        $dsn = '';
-        $options = [];
-        $dsn .= "mysql:unix_socket=$socket;dbname=$dbname;charset=$charset;";
+        $dsn = "mysql:unix_socket=$socket;dbname=$dbname;charset=$charset;";
         $options[\PDO::MYSQL_ATTR_INIT_COMMAND] = 'SET NAMES ' . $charset;
         if ($persistence) {
             $options[\PDO::ATTR_PERSISTENT] = $persistence;
