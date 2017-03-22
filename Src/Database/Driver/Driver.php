@@ -16,13 +16,14 @@ abstract class Driver
     use PDOTrait;
 
     /* PDO配置 */
-    protected $_dsn = null;
-    protected $_options = [];
-    protected $_user = null;
-    protected $_password = null;
-    protected $_dbname = null;
-    protected $_charset = null;
-    protected $_persistence = false;
+    protected $_dsn = null;             // pdo的dns
+    protected $_options = [];           // pdo的driver_options
+    protected $_user = null;            // 数据库用户名
+    protected $_password = null;        // 数据库密码
+    protected $_dbname = null;          // 数据库名
+    protected $_charset = null;         // 连接字符集
+    protected $_persistence = false;    // 是否是长连接
+    protected $_prefix = '';            // 默认的数据表前缀
 
     /* PDO实例 */
     protected $pdo = null;
@@ -81,5 +82,24 @@ abstract class Driver
     public function disconnect()
     {
         $this->pdo = null;
+    }
+
+
+    /**
+     * 未知属性处理
+     */
+    public function __get($name)
+    {
+        switch ($name) {
+            case 'pdo':
+                return $this->pdo;
+            case 'dbname':
+                return $this->_dbname;
+            case 'prefix':
+                return $this->_prefix;
+        }
+
+        // 其它未知属性抛异常
+        throw new PropertyGetException(sprintf('%s的属性%s不存在', get_called_class(), $name));
     }
 }
