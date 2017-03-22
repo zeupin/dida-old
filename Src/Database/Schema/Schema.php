@@ -16,9 +16,6 @@ abstract class Schema
     // 数据库驱动
     protected $driver = null;
 
-    // 表前缀, 默认为空
-    public $prefix = '';
-
 
     /**
      * 初始化
