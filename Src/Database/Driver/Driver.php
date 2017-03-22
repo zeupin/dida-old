@@ -76,7 +76,8 @@ abstract class Driver
     /**
      * 处理未定义的方法
      *
-     * 1. 检查是否是PDO的方法. 如果是, 调用PDO对应的方法
+     * 1. 检查是否是PDO的方法. 如果是, 调用PDO对应的方法.
+     * 2. getAvailableDrivers()请直接用 PDO::getAvailableDrivers()
      */
     public function __call($name, $arguments)
     {
@@ -99,10 +100,6 @@ abstract class Driver
             case 'setAttribute':
             case 'getAttribute':
                 return call_user_func_array([$this->pdo, $name], $arguments);
-
-            /* 调用PDO, 静态方法 */
-            case 'getAvailableDrivers':
-                return call_user_func_array(['PDO', $name], $arguments);
 
             /* 未找到 */
             default:
