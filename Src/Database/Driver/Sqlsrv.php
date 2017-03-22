@@ -48,12 +48,17 @@ class Sqlserver extends Driver
         $charset = isset($config['charset']) ? $config['charset'] : 'utf8';
 
         /* 设置 */
-        $this->_dsn = sprintf('sqlsrv:server=%s;database=%s;', $server, $dbname);
+        $dsn = sprintf('sqlsrv:server=%s;database=%s;', $server, $dbname);
+        $options = [];
+
+        /* 保存 */
+        $this->_dsn = $dsn;
+        $this->_options = $options;
         $this->_user = $user;
         $this->_password = $password;
-        $this->_options = [];
         $this->_dbname = $dbname;
         $this->_charset = $charset;
+        $this->_persistence = $persistence;
     }
 
 
@@ -86,11 +91,16 @@ class Sqlserver extends Driver
         $charset = isset($config['charset']) ? $config['charset'] : 'utf8';
 
         /* 设置 */
-        $this->_dsn = sprintf('dblib:host=%s:%s;dbname=%s;charset=%s', $host, $port, $dbname, $charset);
+        $dsn = sprintf('dblib:host=%s:%s;dbname=%s;charset=%s', $host, $port, $dbname, $charset);
+        $options = [];
+
+        /* 保存 */
+        $this->_dsn = $dsn;
+        $this->_options = $options;
         $this->_user = $user;
         $this->_password = $password;
-        $this->_options = [];
         $this->_dbname = $dbname;
         $this->_charset = $charset;
+        $this->_persistence = $persistence;
     }
 }
