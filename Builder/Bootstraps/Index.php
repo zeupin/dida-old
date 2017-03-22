@@ -18,8 +18,18 @@ app()->router = function () {
     return $router;
 };
 
-app()->twig = function() {
-    $loader = new \Twig_Loader_Filesystem(__DIR__ .'/../Views');
+app()->twig = function () {
+    $loader = new \Twig_Loader_Filesystem(__DIR__ . '/../Views');
     $twig = new \Twig_Environment($loader, []);
     return $twig;
+};
+
+app()->db = function () {
+    $db = new \Dida\Database\Driver\Mysql([
+        'user'     => 'pi',
+        'password' => 'pi',
+        'dbname'   => 'pi',
+    ]);
+    $db->connect();
+    return $db;
 };

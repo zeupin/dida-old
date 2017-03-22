@@ -26,23 +26,23 @@ abstract class Schema
     /**
      * 返回所有表的表名
      */
-    abstract public function getTableNames();
+    abstract public function listTableNames();
 
 
     /**
      * 返回所有表的详细信息
      */
-    abstract public function getTables();
+    abstract public function listTables();
 
 
     /**
      * 返回表的所有字段名
      */
-    abstract public function getColumnNames($table);
+    abstract public function listColumnNames($table);
 
 
     /**
      * 返回表的所有字段详细信息
      */
-    abstract public function getColumns($table);
+    abstract public function listColumns($table);
 }

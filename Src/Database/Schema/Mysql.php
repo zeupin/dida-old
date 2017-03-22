@@ -20,26 +20,31 @@ class Mysql extends Schema
     }
 
 
-    public function getTableNames()
+    public function listTableNames()
     {
-        $sql = <<<EOT
+        $sql = <<<'EOT'
 SELECT TABLE_NAME FROM information_schema.TABLES
 WHERE
-    (TABLE_SCHEMA LIKE '{$this->driver->dbname}') AND (TABLE_NAME LIKE '{$this->driver->prefix}%')
-ORDER BY TABLE_NAME
+    (TABLE_SCHEMA = :dbname) AND (TABLE_NAME = :table)
+ORDER BY
+    TABLE_SCHEMA, TABLE_NAME
 EOT;
-        $stmt = $this->driver->query($sql);
+        $stmt = $this->driver->prepare($sql);
+        $stmt->execute([
+            ':dbname' => $this->driver->dbname,
+            ':table'  => $this->driver->prefix . '%',
+        ]);
         $result = $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
         return $result;
     }
 
 
-    public function getTables()
+    public function listTables()
     {
         $sql = <<<'EOT'
 SELECT * FROM information_schema.TABLES
 WHERE
-    (TABLE_SCHEMA LIKE :dbname) AND (TABLE_NAME LIKE :table)
+    (TABLE_SCHEMA = :dbname) AND (TABLE_NAME = :table)
 ORDER BY
     TABLE_SCHEMA, TABLE_NAME
 EOT;
@@ -53,12 +58,36 @@ EOT;
     }
 
 
-    public function getColumnNames($table)
+    public function listColumnNames($table)
     {
+        $sql = <<<'EOT'
+SELECT COLUMN_NAME FROM information_schema.COLUMNS
+WHERE
+    TABLE_SCHEMA = :dbname  AND TABLE_NAME = :table
+EOT;
+        $stmt = $this->driver->prepare($sql);
+        $stmt->execute([
+            ':dbname' => $this->driver->dbname,
+            ':table'  => $table,
+        ]);
+        $result = $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
+        return $result;
     }
 
 
-    public function getColumns($table)
+    public function listColumns($table)
     {
+        $sql = <<<'EOT'
+SELECT * FROM information_schema.COLUMNS
+WHERE
+    TABLE_SCHEMA = :dbname  AND TABLE_NAME = :table
+EOT;
+        $stmt = $this->driver->prepare($sql);
+        $stmt->execute([
+            ':dbname' => $this->driver->dbname,
+            ':table'  => $table,
+        ]);
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
     }
 }
