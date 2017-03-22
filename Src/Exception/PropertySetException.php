@@ -3,12 +3,11 @@
  * Dida Framework --Powered by Zeupin LLC
  * http://dida.zeupin.com
  */
-
 namespace Dida;
 
 /**
- * Action未找到
+ * 属性不存在或无权访问
  */
-class ActionNotFoundException extends \Dida\Exception
+class PropertySetException extends \Dida\Exception
 {
 }
