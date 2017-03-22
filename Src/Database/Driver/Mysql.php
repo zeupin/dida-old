@@ -27,9 +27,10 @@ class Mysql extends Driver
      * 必填:
      *     user, password, dbname
      * 选填:
-     *     host    默认 localhost
-     *     port    默认 3306
-     *     charset 默认 utf8
+     *     host        默认 localhost
+     *     port        默认 3306
+     *     charset     默认 utf8
+     *     persistence 默认 false
      */
     private function hostport($config)
     {
@@ -47,16 +48,25 @@ class Mysql extends Driver
         $host = isset($config['host']) ? $config['host'] : 'localhost';
         $port = isset($config['port']) ? $config['port'] : 3306;
         $charset = isset($config['charset']) ? $config['charset'] : 'utf8';
+        $persistence = isset($config['persistence']) ? (bool) $config['persistence'] : false;
 
         /* 设置 */
-        $this->_dsn = sprintf('mysql:host=%s;port=%d;dbname=%s;charset=%s', $host, $port, $dbname, $charset);
-        $this->_options = [
-            \PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES ' . $charset,
-        ];
+        $dsn = '';
+        $options = [];
+        $dsn .= "mysql:host=$host;port=$port;dbname=$dbname;charset=$charset;";
+        $options[\PDO::MYSQL_ATTR_INIT_COMMAND] = 'SET NAMES ' . $charset;
+        if ($persistence) {
+            $options[\PDO::ATTR_PERSISTENT] = $persistence;
+        }
+
+        /* 保存 */
+        $this->_dsn = $dsn;
+        $this->_options = $options;
         $this->_user = $user;
         $this->_password = $password;
         $this->_dbname = $dbname;
         $this->_charset = $charset;
+        $this->_persistence = $persistence;
     }
 
 
@@ -66,7 +76,8 @@ class Mysql extends Driver
      * 必填:
      *     socket, user, password, dbname
      * 选填:
-     *     charset 默认 utf8
+     *     charset     默认 utf8
+     *     persistence 默认 false
      */
     private function socket(array $config)
     {
@@ -85,15 +96,24 @@ class Mysql extends Driver
 
         /* 选填参数 */
         $charset = isset($config['charset']) ? $config['charset'] : 'utf8';
+        $persistence = isset($config['persistence']) ? (bool) $config['persistence'] : false;
 
         /* 设置 */
-        $this->_dsn = sprintf('mysql:unix_socket=%s;dbname=%s;charset=%s', $socket, $dbname, $charset);
+        $dsn = '';
+        $options = [];
+        $dsn .= "mysql:unix_socket=$socket;dbname=$dbname;charset=$charset;";
+        $options[\PDO::MYSQL_ATTR_INIT_COMMAND] = 'SET NAMES ' . $charset;
+        if ($persistence) {
+            $options[\PDO::ATTR_PERSISTENT] = $persistence;
+        }
+
+        /* 保存 */
+        $this->_dsn = $dsn;
+        $this->_options = $options;
         $this->_user = $user;
         $this->_password = $password;
-        $this->_options = [
-            \PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES ' . $charset,
-        ];
         $this->_dbname = $dbname;
         $this->_charset = $charset;
+        $this->_persistence = $persistence;
     }
 }
