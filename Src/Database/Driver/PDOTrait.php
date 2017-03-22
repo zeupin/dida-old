@@ -56,7 +56,7 @@ trait PDOTrait
      */
     public function prepare($statement, array $driver_options = [])
     {
-        $this->pdo->prepare($statement, $driver_options);
+        return $this->pdo->prepare($statement, $driver_options);
     }
 
 
