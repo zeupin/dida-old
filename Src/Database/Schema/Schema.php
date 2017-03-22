@@ -4,7 +4,7 @@
  * http://dida.zeupin.com
  */
 
-namespace Src\Database\Schema;
+namespace Dida\Database\Schema;
 
 use \Dida\Database\Driver\Driver;
 
@@ -23,7 +23,7 @@ abstract class Schema
     /**
      * 初始化
      */
-    abstract public function __construct(Driver $driver, $prefix = '');
+    abstract public function __construct(Driver $driver);
 
 
     /**
