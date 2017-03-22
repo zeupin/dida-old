@@ -25,10 +25,16 @@ class Sqlite extends Driver
         $file = str_replace('\\', '/', $config['file']);
 
         /* 设置 */
-        $this->_dsn = sprintf('sqlite:%s', $file);
+        $dsn = sprintf('sqlite:%s', $file);
+        $options = [];
+
+        /* 保存 */
+        $this->_dsn = $dsn;
+        $this->_options = $options;
         $this->_user = null;
         $this->_password = null;
         $this->_dbname = null;
         $this->_charset = null;
+        $this->_persistence = false;
     }
 }
