@@ -26,7 +26,6 @@ class Mysql extends Driver
             !isset($config['password']) ||
             !isset($config['dbname'])) {
             throw new \Dida\DatabaseConnectionException();
-            return false;
         }
         $user = $config['user'];
         $password = $config['password'];

@@ -11,7 +11,7 @@ use PDO;
 /**
  * 数据库Driver抽象类
  */
-abstract class Driver extends PDO
+abstract class Driver
 {
     /* PDO配置 */
     protected $_dsn = null;
@@ -23,6 +23,12 @@ abstract class Driver extends PDO
 
     /* PDO实例 */
     protected $pdo = null;
+
+
+    /**
+     * 构造函数
+     */
+    abstract public function __construct(array $config);
 
 
     /**
@@ -72,5 +78,37 @@ abstract class Driver extends PDO
     public function disconnect()
     {
         $this->pdo = null;
+    }
+
+
+    /**
+     * 处理未声明的方法
+     *
+     * 1. 检查是否是PDO的方法. 如果是, 调用PDO对应的方法.
+     * 2. getAvailableDrivers()请直接用 PDO::getAvailableDrivers()
+     */
+    public function __call($name, $arguments)
+    {
+        switch ($name) {
+            /* PDO方法, 按常规使用频率排序 */
+            case 'query':
+            case 'quote':
+            case 'prepare':
+            case 'lastInsertId':
+            case 'exec':
+            case 'errorCode':
+            case 'errorInfo':
+            case 'beginTransaction':
+            case 'commit':
+            case 'rollBack':
+            case 'inTransaction':
+            case 'setAttribute':
+            case 'getAttribute':
+                return call_user_func_array([$this->pdo, $name], $arguments);
+
+            /* 未找到 */
+            default:
+                throw new \Dida\MethodNotFoundException(get_called_class() . '->' . $name . ' 不存在');
+        }
     }
 }
