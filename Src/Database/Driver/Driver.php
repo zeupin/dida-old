@@ -6,10 +6,12 @@
 
 namespace Dida\Database\Driver;
 
+use PDO;
+
 /**
  * 数据库Driver抽象类
  */
-abstract class Driver
+abstract class Driver extends PDO
 {
     /* PDO配置 */
     protected $_dsn = null;
@@ -70,40 +72,5 @@ abstract class Driver
     public function disconnect()
     {
         $this->pdo = null;
-    }
-
-
-    /**
-     * 处理未定义的方法
-     *
-     * 1. 检查是否是PDO的方法. 如果是, 调用PDO对应的方法.
-     * 2. getAvailableDrivers()请直接用 PDO::getAvailableDrivers()
-     */
-    public function __call($name, $arguments)
-    {
-        switch ($name) {
-            /* 调用PDO, 无参数 */
-            case 'beginTransaction':
-            case 'commit':
-            case 'rollBack':
-            case 'inTransaction':
-            case 'errorCode':
-            case 'errorInfo':
-                return call_user_func([$this->pdo, $name]);
-
-            /* 调用PDO, 有参数 */
-            case 'query':
-            case 'exec':
-            case 'lastInsertId':
-            case 'prepare':
-            case 'quote':
-            case 'setAttribute':
-            case 'getAttribute':
-                return call_user_func_array([$this->pdo, $name], $arguments);
-
-            /* 未找到 */
-            default:
-                throw new \Dida\MethodNotFoundException();
-        }
     }
 }
