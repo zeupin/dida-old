@@ -31,6 +31,7 @@ class Mysql extends Driver
      *     port        默认 3306
      *     charset     默认 utf8
      *     persistence 默认 false
+     *     prefix      默认 ''
      */
     private function hostport($config)
     {
@@ -49,6 +50,7 @@ class Mysql extends Driver
         $port = isset($config['port']) ? $config['port'] : 3306;
         $charset = isset($config['charset']) ? $config['charset'] : 'utf8';
         $persistence = isset($config['persistence']) ? (bool) $config['persistence'] : false;
+        $prefix = isset($config['prefix']) ? $config['prefix'] : '';
 
         /* 设置 */
         $dsn = "mysql:host=$host;port=$port;dbname=$dbname;charset=$charset;";
@@ -65,6 +67,7 @@ class Mysql extends Driver
         $this->_dbname = $dbname;
         $this->_charset = $charset;
         $this->_persistence = $persistence;
+        $this->_prefix = $prefix;
     }
 
 
@@ -76,6 +79,7 @@ class Mysql extends Driver
      * 选填:
      *     charset     默认 utf8
      *     persistence 默认 false
+     *     prefix      默认 ''
      */
     private function socket(array $config)
     {
@@ -95,6 +99,7 @@ class Mysql extends Driver
         /* 选填参数 */
         $charset = isset($config['charset']) ? $config['charset'] : 'utf8';
         $persistence = isset($config['persistence']) ? (bool) $config['persistence'] : false;
+        $prefix = isset($config['prefix']) ? $config['prefix'] : '';
 
         /* 设置 */
         $dsn = "mysql:unix_socket=$socket;dbname=$dbname;charset=$charset;";
@@ -111,5 +116,6 @@ class Mysql extends Driver
         $this->_dbname = $dbname;
         $this->_charset = $charset;
         $this->_persistence = $persistence;
+        $this->_prefix = $prefix;
     }
 }

@@ -27,7 +27,8 @@ class Sqlserver extends Driver
      * 必填:
      *     server, user, password, dbname
      * 选填:
-     *     charset 默认 utf8
+     *     charset     默认 utf8
+     *     prefix      默认 ''
      */
     private function sqlsrv(array $config)
     {
@@ -46,6 +47,7 @@ class Sqlserver extends Driver
 
         /* 选填参数 */
         $charset = isset($config['charset']) ? $config['charset'] : 'utf8';
+        $prefix = isset($config['prefix']) ? $config['prefix'] : '';
 
         /* 设置 */
         $dsn = sprintf('sqlsrv:server=%s;database=%s;', $server, $dbname);
@@ -59,6 +61,7 @@ class Sqlserver extends Driver
         $this->_dbname = $dbname;
         $this->_charset = $charset;
         $this->_persistence = $persistence;
+        $this->_prefix = $prefix;
     }
 
 
@@ -68,7 +71,8 @@ class Sqlserver extends Driver
      * 必填:
      *     host, port, user, password, dbname
      * 选填:
-     *     charset 默认 utf8
+     *     charset     默认 utf8
+     *     prefix      默认 ''
      */
     private function dblib(array $config)
     {
@@ -89,6 +93,7 @@ class Sqlserver extends Driver
 
         /* 选填参数 */
         $charset = isset($config['charset']) ? $config['charset'] : 'utf8';
+        $prefix = isset($config['prefix']) ? $config['prefix'] : '';
 
         /* 设置 */
         $dsn = sprintf('dblib:host=%s:%s;dbname=%s;charset=%s', $host, $port, $dbname, $charset);
@@ -102,5 +107,6 @@ class Sqlserver extends Driver
         $this->_dbname = $dbname;
         $this->_charset = $charset;
         $this->_persistence = $persistence;
+        $this->_prefix = $prefix;
     }
 }
