@@ -18,12 +18,6 @@ abstract class Schema
 
 
     /**
-     * 初始化
-     */
-    abstract public function __construct(Driver $driver);
-
-
-    /**
      * 返回所有表的表名
      */
     abstract public function listTableNames();

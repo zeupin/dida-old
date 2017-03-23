@@ -7,16 +7,16 @@
 namespace Dida\Database\Schema;
 
 use \PDO;
-use \Dida\Database\Driver\Driver;
 
 /**
  * Mysql
  */
 class Mysql extends Schema
 {
-
-
-    public function __construct(Driver $driver)
+    /**
+     * 初始化
+     */
+    public function __construct(\Dida\Database\Driver\Mysql $driver)
     {
         $this->driver = $driver;
     }
