@@ -14,12 +14,18 @@ use \Dida\Database\Driver\Driver;
  */
 class Mysql extends Schema
 {
+
+
     public function __construct(Driver $driver)
     {
         $this->driver = $driver;
     }
 
 
+    /**
+     * 返回所有表的表名
+     * 基于information_schema
+     */
     public function listTableNames()
     {
         $sql = <<<'EOT'
@@ -39,6 +45,10 @@ EOT;
     }
 
 
+    /**
+     * 返回所有表的详细信息
+     * 基于information_schema
+     */
     public function listTables()
     {
         $sql = <<<'EOT'
@@ -58,6 +68,10 @@ EOT;
     }
 
 
+    /**
+     * 返回表的所有字段名
+     * 基于information_schema
+     */
     public function listColumnNames($table)
     {
         $sql = <<<'EOT'
@@ -75,6 +89,10 @@ EOT;
     }
 
 
+    /**
+     * 返回表的所有字段详细信息
+     * 基于information_schema
+     */
     public function listColumns($table)
     {
         $sql = <<<'EOT'
