@@ -83,7 +83,7 @@ abstract class Event
                 $this->hooks[$event][$id] = [$handler, $parameters];
             }
         } else {
-            throw new \Dida\Exception\EventNotFound();
+            throw new \Dida\EventNotFoundException();
         }
         return $this;
     }
@@ -134,7 +134,7 @@ abstract class Event
              * 如果事件不存在，抛出EventNotFound异常
              */
             if (!array_key_exists($event, $events)) {
-                throw new \Dida\Exception\EventNotFound();
+                throw new \Dida\EventNotFoundException();
             }
         }
     }
