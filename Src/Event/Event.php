@@ -7,15 +7,17 @@
 namespace Dida;
 
 /**
- * Event 基类
+ * Event 类
  */
-abstract class Event
+final class Event
 {
-    const SYSTEM_EVENT = 0;
-    const USER_EVENT = 1;
+    const SYSTEM_EVENT = 0;     // 系统预定义事件
+    const USER_EVENT = 1;       // 用户自定义事件
 
-    // 预定义的系统事件
-    protected $events = [
+    /*
+     * 预定义的系统事件
+     */
+    private $events = [
         'dida_ready'      => self::SYSTEM_EVENT,
         'before_request'  => self::SYSTEM_EVENT,
         'after_request'   => self::SYSTEM_EVENT,
@@ -26,11 +28,18 @@ abstract class Event
         'before_response' => self::SYSTEM_EVENT,
         'after_response'  => self::SYSTEM_EVENT,
     ];
+
+    /*
+     * 挂接在事件上的回调函数
+     * $hooks["event_name"][id] = callback()
+     */
     protected $hooks = [];
 
 
     /**
      * 新增一个用户事件
+     *
+     * @param string $event 事件名称
      */
     public function addEvent($event)
     {
@@ -42,23 +51,32 @@ abstract class Event
 
 
     /**
-     * 删除一个用户事件，以及所有已挂接到这个事件hooks。
-     * 注：系统事件不可删除。
+     * 删除一个用户事件，以及所有已挂接到这个事件上的回调函数
+     * 注：系统事件不可删除，只能删除用户事件。
+     *
+     * @param string $event 事件名称
      */
     public function removeEvent($event)
     {
+        // 删除此事件的所有hooks
+        unset($this->hooks[$event]);
+
+        // 如果此事件是用户事件，则删除之
         if (array_key_exists($event, $this->events)) {
             if ($this->events[$event] == self::USER_EVENT) {
                 unset($this->events[$event]);
-                unset($this->hooks[$event]);
             }
         }
+
+        // return
         return $this;
     }
 
 
     /**
      * 检查一个事件是否已经定义
+     *
+     * @param string $event 事件名称
      */
     public function hasEvent($event)
     {
@@ -67,20 +85,20 @@ abstract class Event
 
 
     /**
-     * 挂接一个处理程序到指定的event上
+     * 在指定事件上挂接一个回调函数
      *
-     * @param string $event
-     * @param string $handler
-     * @param array $parameters
-     * @param string $id
+     * @param string $event      事件名称
+     * @param callback $callback 回调函数
+     * @param array $parameters  回调函数的参数
+     * @param string $id         设置这个回调函数的id
      */
-    public function hook($event, $handler, array $parameters = [], $id = DIDA_NOT_SET)
+    public function hook($event, $callback, array $parameters = [], $id = null)
     {
         if ($this->hasEvent($event)) {
-            if ($id === DIDA_NOT_SET) {
-                $this->hooks[$event][] = [$handler, $parameters];
+            if ($id === null) {
+                $this->hooks[$event][] = [$callback, $parameters];
             } else {
-                $this->hooks[$event][$id] = [$handler, $parameters];
+                $this->hooks[$event][$id] = [$callback, $parameters];
             }
         } else {
             throw new \Dida\EventNotFoundException();
@@ -90,42 +108,39 @@ abstract class Event
 
 
     /**
-     * 解除event上某个id的处理程序的挂接
+     * 解除某个事件上挂接的某个或者全部回调函数
+     * 如果不指定id，则表示解除此事件上的所有回调函数
      *
-     * @param string $event
-     * @param string $id
+     * @param string $event 事件名称
+     * @param string $id    回调函数的id
      */
-    public function unhook($event, $id)
+    public function unhook($event, $id = null)
     {
-        unset($this->hooks[$event][$id]);
+        if ($id === null) {
+            unset($this->hooks[$event]);
+        } else {
+            unset($this->hooks[$event][$id]);
+        }
         return $this;
     }
 
 
     /**
-     * 清除挂接在指定event上的所有处理程序
+     * 触发一个事件，并执行挂接在这个事件上的所有回调函数
+     * 注：如果某个回调函数返回false，则不再执行后面的回调函数。
      *
-     * @param string $event
-     */
-    public function unhookAll($event)
-    {
-        unset($this->hooks[$event]);
-    }
-
-
-    /**
-     * 触发一个事件
+     * @param string $event 事件名称
      */
     public function tigger($event)
     {
         if (array_key_exists($event, $this->hooks)) {
             /*
-             * 依次执行处理程序
-             * 注：如果某个处理程序返回false，则不再执行后面的处理程序。
+             * 依次执行此事件上的所有回调函数
+             * 注：如果某个回调函数返回false，则不再执行后面的回调函数。
              */
             foreach ($hooks as $hook) {
-                list($handler, $parameters) = $hook;
-                if (call_user_func_array($handler, $parameters) === false) {
+                list($callback, $parameters) = $hook;
+                if (call_user_func_array($callback, $parameters) === false) {
                     break;
                 }
             }
