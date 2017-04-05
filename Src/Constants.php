@@ -21,18 +21,6 @@ defined('DIDA_DEFAULT_ACTION') || define('DIDA_DEFAULT_ACTION', 'index'); // Def
 
 /* 如果不是CLI模式，则为HTTP模式 */
 if (!DIDA_IS_CLI) {
-    /* DIDA_WWW */
+    /* 如果没有定义 DIDA_WWW，则默认其为当前脚本所在目录 */
     defined('DIDA_WWW') || define('DIDA_WWW', str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'])));
-
-    /* IS_AJAX */
-    define('DIDA_IS_AJAX', isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest');
-
-    /* REQUEST_METHOD，值为：GET，POST，PUT，PATCH，DELETE，OPTIONS，HEAD */
-    if (isset($_POST['_method'])) {
-        define('DIDA_REQUEST_METHOD', strtoupper($_POST['_method']));
-    } elseif (isset($_SERVER['REQUEST_METHOD'])) {
-        define('DIDA_REQUEST_METHOD', strtoupper($_SERVER['REQUEST_METHOD']));
-    } else {
-        define('DIDA_REQUEST_METHOD', '');
-    }
 }
