@@ -7,7 +7,7 @@
 namespace Dida;
 
 /**
- * Container 服务容器类
+ * Container 依赖注入型容器类
  */
 class Container implements \ArrayAccess
 {
@@ -25,13 +25,12 @@ class Container implements \ArrayAccess
     private $_instances = [];   // 已生成的实例
     private $_singletons = [];  // 单例服务
 
+
     /**
-     * 实现ArrayAccess。检查键值是否存在。
+     * 实现ArrayAccess:检查键值是否存在。
      *
      * @param string $id
      */
-
-
     public function offsetExists($id)
     {
         return $this->has($id);
@@ -39,7 +38,7 @@ class Container implements \ArrayAccess
 
 
     /**
-     * 实现ArrayAccess。获取一个服务。
+     * 实现ArrayAccess:获取一个服务。
      *
      * @param string $id
      */
@@ -50,7 +49,7 @@ class Container implements \ArrayAccess
 
 
     /**
-     * 实现ArrayAccess。注册一个服务。
+     * 实现ArrayAccess:注册一个服务。
      *
      * @param string $id
      * @param string|closure|object $service
@@ -62,7 +61,7 @@ class Container implements \ArrayAccess
 
 
     /**
-     * 实现ArrayAccess。删除一个条目。
+     * 实现ArrayAccess:删除一个条目。
      *
      * @param string $id
      */
@@ -85,12 +84,62 @@ class Container implements \ArrayAccess
 
 
     /**
+     * 注册一个服务
+     *
+     * @param string $id
+     * @param string|closure|object $service
+     *
+     * @return Container $this 链式调用
+     */
+    public function set($id, $service)
+    {
+        if ($this->has($id)) {
+            $this->remove($id);
+        }
+
+        if (is_string($service)) {
+            $this->_keys[$id] = self::CLASSNAME_TYPE;
+            $this->_classnames[$id] = $service;
+        } elseif (is_object($service)) {
+            if ($service instanceof \Closure) {
+                $this->_keys[$id] = self::CLOSURE_TYPE;
+                $this->_closures[$id] = $service;
+            } else {
+                $this->_keys[$id] = self::INSTANCE_TYPE;
+                $this->_instances[$id] = $service;
+            }
+        } else {
+            throw new \Exception('传入的service类型不合法');
+        }
+
+        // 服务注册成功
+        return $this;
+    }
+
+
+    /**
+     * 注册一个单例服务
+     *
+     * @param string $id
+     * @param string|closure|object $service
+     *
+     * @return Container $this 链式调用
+     */
+    public function setSingleton($id, $service)
+    {
+        $this->set($id, $service);
+        $this->_singletons[$id] = true;
+        return $this;
+    }
+
+
+    /**
      * 返回一个共享的服务实例
      *
      * 如果需要返回新的服务实例，需要用getNew()方法来完成。
      *
      * @param string $id 服务id
-     * @param array $parameters 待传入的参数数组
+     * @param array $parameters 待传入的参数数组，可选填
      *
      * @return mixed
      */
@@ -134,51 +183,6 @@ class Container implements \ArrayAccess
 
 
     /**
-     * 注册一个服务
-     *
-     * @param string $id
-     * @param string|closure|object $service
-     *
-     * @return Container $this 链式调用
-     */
-    public function set($id, $service)
-    {
-        if ($this->has($id)) {
-            $this->remove($id);
-        }
-
-        if (is_string($service)) {
-            $this->_keys[$id] = self::CLASSNAME_TYPE;
-            $this->_classnames[$id] = $service;
-        } elseif (is_object($service)) {
-            if ($service instanceof \Closure) {
-                $this->_keys[$id] = self::CLOSURE_TYPE;
-                $this->_closures[$id] = $service;
-            } else {
-                $this->_keys[$id] = self::INSTANCE_TYPE;
-                $this->_instances[$id] = $service;
-            }
-        } else {
-            throw new \Exception('传入的service类型不合法');
-        }
-
-        // 服务注册成功
-        return $this;
-    }
-
-
-    /**
-     * 删除指定的条目
-     *
-     * @param string $id
-     */
-    public function remove($id)
-    {
-        unset($this->_keys[$id], $this->_classnames[$id], $this->_closures, $this->_instances[$id], $this->_singletons[$id]);
-    }
-
-
-    /**
      * 返回一个新的服务实例
      *
      * @param string $id 服务id
@@ -218,18 +222,13 @@ class Container implements \ArrayAccess
 
 
     /**
-     * 注册一个单例服务
+     * 删除指定的条目
      *
      * @param string $id
-     * @param string|closure|object $service
-     *
-     * @return Container $this 链式调用
      */
-    public function singleton($id, $service)
+    public function remove($id)
     {
-        $this->set($id, $service);
-        $this->_singletons[$id] = true;
-        return $this;
+        unset($this->_keys[$id], $this->_classnames[$id], $this->_closures, $this->_instances[$id], $this->_singletons[$id]);
     }
 
 
