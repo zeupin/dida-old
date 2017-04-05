@@ -30,7 +30,7 @@ trait SingletonTrait
 
 
     /**
-     * 不准 new 操作
+     * 禁用 new 操作
      */
     private function __construct()
     {
@@ -38,7 +38,7 @@ trait SingletonTrait
 
 
     /**
-     * 不准 clone() 操作
+     * 禁用 clone 操作
      */
     private function __clone()
     {
