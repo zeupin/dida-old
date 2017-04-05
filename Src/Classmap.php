@@ -21,7 +21,7 @@ return [
     'Dida\\Middleware'          => 'Middleware/Middleware.php',
     'Dida\\Model'               => 'Model/Model.php',
     'Dida\\Request'             => 'Request/Request.php',
-    'Dida\\RequestHttp'         => 'Request/RequestHttp.php',
+    'Dida\\HttpRequest'         => 'Request/HttpRequest.php',
     'Dida\\Response'            => 'Response/Response.php',
     'Dida\\Route'               => 'Route/Route.php',
     'Dida\\RouteInterface'      => 'Route/RouteInterface.php',
@@ -32,7 +32,7 @@ return [
     'Dida\\Validator'           => 'Validator/Validator.php',
     'Dida\\View'                => 'View/View.php',
     'Dida\\Widget'              => 'Widget/Widget.php',
-    
+
     /* 异常 */
     'Dida\ActionNotFoundException'     => 'Exception\ActionNotFoundException.php',
     'Dida\DatabaseConnectionException' => 'Exception\DatabaseConnectionException.php',
@@ -41,4 +41,5 @@ return [
     'Dida\MethodNotFoundException'     => 'Exception\MethodNotFoundException.php',
     'Dida\PropertyGetException'        => 'Exception\PropertyGetException.php',
     'Dida\PropertySetException'        => 'Exception\PropertySetException.php',
+    'Dida\UriException'                => 'Exception\UriException.php',
 ];

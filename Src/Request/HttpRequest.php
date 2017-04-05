@@ -7,9 +7,9 @@
 namespace Dida;
 
 /**
- * Request 类
+ * HttpRequest 类
  */
-class RequestHttp extends Request
+class HttpRequest extends Request
 {
     public $path = [];
     public $query = [];
