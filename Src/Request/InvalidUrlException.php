@@ -9,6 +9,6 @@ namespace Dida;
 /**
  * Uri异常
  */
-class UriException extends Exception
+class InvalidUrlException extends Exception
 {
 }

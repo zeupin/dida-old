@@ -41,5 +41,4 @@ return [
     'Dida\MethodNotFoundException'     => 'Exception\MethodNotFoundException.php',
     'Dida\PropertyGetException'        => 'Exception\PropertyGetException.php',
     'Dida\PropertySetException'        => 'Exception\PropertySetException.php',
-    'Dida\UriException'                => 'Exception\UriException.php',
 ];

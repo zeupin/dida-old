@@ -6,6 +6,8 @@
 
 namespace Dida;
 
+use \Dida\Request\InvalidUrlException;
+
 /**
  * HttpRequest 类
  */
@@ -43,8 +45,11 @@ class HttpRequest extends Request
             case 'fragment':
                 return $this->fragment;
 
+            /* method */
             case 'method':
                 return $this->method();
+
+            /* isAjax */
             case 'isAjax':
                 return $this->isAjax();
         }
@@ -52,25 +57,32 @@ class HttpRequest extends Request
 
 
     /**
-     * 把URI拆分为path,query,fragment
+     * 把url拆分为path,query,fragment
      *
-     * uri 一般表示为 path?query=...#fragment
+     * url 一般表示为 path?query=...#fragment
      */
     private function parseUrl()
     {
-        // 检查请求的uri是否有效
-        if (strncasecmp($_SERVER['REQUEST_URI'], DIDA_WWW, strlen(DIDA_WWW)) != 0) {
-            throw new UriException;
-        }
-
         // 分解uri
         $url = parse_url($_SERVER['REQUEST_URI']);
 
         // 处理path部分
         if (isset($url['path'])) {
-            // 去除DIDA_WWW后的部分
-            $path = substr($url['path'], strlen(DIDA_WWW));
-            $this->path = explode('/', $path);
+            $path = $url['path'];
+
+            // 检查path是否有效
+            if (($path === DIDA_WWW) || ($path . '/' === DIDA_WWW)) {
+                // 请求首页，因访问频率很高，独立出来，加快速度
+                $this->path = [];
+            } else {
+                if (strncasecmp($path, DIDA_WWW, strlen(DIDA_WWW)) === 0) {
+                    // 去除DIDA_WWW
+                    $path = substr($path, strlen(DIDA_WWW));
+                    $this->path = explode('/', $path);
+                } else {
+                    throw new InvalidUrlException;
+                }
+            }
         }
 
         // 处理query部分
@@ -117,7 +129,7 @@ class HttpRequest extends Request
             case 'HEAD':
                 $this->method = $method;
                 break;
-            default :
+            default:
                 $this->method = '';
         }
         return $this->method;
