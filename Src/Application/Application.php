@@ -119,7 +119,7 @@ final class Application extends Container
                 return $this->config;
             case 'response':
                 return $this->response;
-            default :
+            default:
                 return $this->get($id);
         }
     }
