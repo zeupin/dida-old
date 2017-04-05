@@ -12,14 +12,12 @@ namespace Dida;
 final class Application extends Container
 {
     /* 公有变量 */
-    public $config = null;    // 配置
-    public $response = null;  // 响应
+    protected $config = null;    // 配置
+    protected $response = null;  // 响应
 
     /**
      * 启动
      */
-
-
     public function start()
     {
         // 和app无关部分的初始化
@@ -111,12 +109,25 @@ final class Application extends Container
     }
 
 
+    /**
+     * 解析未定义的类属性
+     */
     public function __get($id)
     {
-        return $this->get($id);
+        switch ($id) {
+            case 'config':
+                return $this->config;
+            case 'response':
+                return $this->response;
+            default :
+                return $this->get($id);
+        }
     }
 
 
+    /**
+     * 设置未定义的类属性
+     */
     public function __set($id, $service)
     {
         $this->set($id, $service);
