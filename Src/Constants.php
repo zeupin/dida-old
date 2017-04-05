@@ -22,5 +22,9 @@ defined('DIDA_DEFAULT_ACTION') || define('DIDA_DEFAULT_ACTION', 'index'); // Def
 /* 如果不是CLI模式，则为HTTP模式 */
 if (!DIDA_IS_CLI) {
     /* 如果没有定义 DIDA_WWW，则默认其为当前脚本所在目录 */
-    defined('DIDA_WWW') || define('DIDA_WWW', str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'])));
+    if (!defined('DIDA_WWW')) {
+        $dida_www = str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME']));
+        define('DIDA_WWW', ($dida_www === '/') ? '/' : $dida_www . '/');
+        unset($dida_www);
+    }
 }
