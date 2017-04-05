@@ -7,7 +7,10 @@
 namespace Dida;
 
 /**
- * Container 依赖注入型容器类
+ * Container 容器类，主要用于依赖注入和服务定位用途。
+ *
+ * 从运行效率考虑，Container设计为只包含服务定义，不包含配置定义。不然，每次想引用一个service，都要从几十个conf中
+ * 逐个找下来，会滞碍运行速度。
  */
 class Container implements \ArrayAccess
 {
@@ -228,7 +231,8 @@ class Container implements \ArrayAccess
      */
     public function remove($id)
     {
-        unset($this->_keys[$id], $this->_classnames[$id], $this->_closures, $this->_instances[$id], $this->_singletons[$id]);
+        unset($this->_keys[$id]);
+        unset($this->_classnames[$id], $this->_closures, $this->_instances[$id], $this->_singletons[$id]);
     }
 
 
