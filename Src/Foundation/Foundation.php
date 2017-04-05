@@ -9,11 +9,30 @@ namespace Dida;
 /**
  * Foundation 类
  */
-class Foundation
+final class Foundation
 {
     private static $initialized = false;
 
 
+    /**
+     * 禁用构造函数
+     */
+    private function __construct()
+    {
+    }
+
+
+    /**
+     * 禁用clone函数
+     */
+    private function __clone()
+    {
+    }
+
+
+    /**
+     * 初始化
+     */
     public static function init()
     {
         // 确保本函数只执行一次
@@ -29,6 +48,9 @@ class Foundation
     }
 
 
+    /**
+     * 根据参数宏的定义，决定如何处理抛出的错误和异常
+     */
     private static function handleErrorsAndExceptions()
     {
         if (DIDA_DEBUG) {
@@ -41,6 +63,9 @@ class Foundation
     }
 
 
+    /**
+     * 载入DIDA的全局函数库
+     */
     private static function loadFunctions()
     {
         require DIDA_ROOT . 'Functions/Index.php';
