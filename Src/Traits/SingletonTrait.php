@@ -12,7 +12,7 @@ namespace Dida;
 trait SingletonTrait
 {
     /**
-     * 保存类的实例
+     * 保存类的静态实例
      */
     private static $_instance = null;
 
@@ -30,7 +30,7 @@ trait SingletonTrait
 
 
     /**
-     * 不准 new操作
+     * 不准 new 操作
      */
     private function __construct()
     {
@@ -38,7 +38,7 @@ trait SingletonTrait
 
 
     /**
-     * 不准 clone()操作
+     * 不准 clone() 操作
      */
     private function __clone()
     {
