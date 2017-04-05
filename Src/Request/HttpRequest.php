@@ -63,7 +63,9 @@ class HttpRequest extends Request
      */
     private function parseUrl()
     {
-        // 分解uri
+        /* 分解uri
+         * 注意：parse_url不负责检查url的合法性，需要自己在程序中处理
+         */
         $url = parse_url($_SERVER['REQUEST_URI']);
 
         // 处理path部分
@@ -78,6 +80,9 @@ class HttpRequest extends Request
                 if (strncasecmp($path, DIDA_WWW, strlen(DIDA_WWW)) === 0) {
                     // 去除DIDA_WWW
                     $path = substr($path, strlen(DIDA_WWW));
+                    // urldecode
+                    $path = urldecode($path);
+                    // 分解成路径数组
                     $this->path = explode('/', $path);
                 } else {
                     throw new InvalidUrlException;
@@ -87,7 +92,11 @@ class HttpRequest extends Request
 
         // 处理query部分
         if (isset($url['query'])) {
-            $this->query = $url['query'];
+            $this->query = [];
+            foreach ($url['query'] as $k=>$v) {
+                // urldecode
+                $this->query[$k] = urldecode($v);
+            }
         }
 
         // 处理fragment部分
