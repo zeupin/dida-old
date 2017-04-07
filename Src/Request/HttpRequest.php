@@ -4,10 +4,10 @@
  * http://dida.zeupin.com
  */
 
-namespace Dida;
+namespace Dida\Request;
 
-use \Dida\Request\Exception\InvalidUrlException;
-use \Dida\Request\Exception\InvalidRequestMethod;
+use Exception\InvalidUrlException;
+use Exception\InvalidRequestMethod;
 
 /**
  * HttpRequest 类
@@ -102,7 +102,7 @@ class HttpRequest extends Request
 
         // 处理fragment部分
         if (isset($url['$fragment'])) {
-            $this->fragment = $url['$fragment'];
+            $this->fragment = urldecode($url['$fragment']);
         }
     }
 
