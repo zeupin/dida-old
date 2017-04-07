@@ -30,3 +30,5 @@ Host: www.example.com
 可以看到，只是请求 `index.html`，根本没有 `#print` 的部分。
 
 因此，在 `$_SERVER['REQUEST_URI']` 变量中，也是不包含 #fragment 部分的。
+
+参考文章：<http://www.cnblogs.com/kaituorensheng/p/3776527.html>
