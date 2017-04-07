@@ -6,6 +6,7 @@
 
 namespace Dida\Request;
 
+use \Dida\Request;
 use Exception\InvalidUrlException;
 use Exception\InvalidRequestMethod;
 
