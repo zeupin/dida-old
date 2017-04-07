@@ -7,8 +7,9 @@
 namespace Dida\Request;
 
 use \Dida\Request;
-use Exception\InvalidUrlException;
-use Exception\InvalidRequestMethod;
+use \Dida\Request\Exception\InvalidUrlException;
+use \Dida\Request\Exception\InvalidHttpMethodException;
+use \Dida\Request\Exception\InvalidQueryException;
 
 /**
  * HttpRequest 类
@@ -18,7 +19,6 @@ class HttpRequest extends Request
     /* Uri 解析相关 */
     protected $path = [];
     protected $query = [];
-    protected $fragment = '';
 
     /* 是否是 Ajax */
     protected $isAjax = null;
@@ -44,8 +44,6 @@ class HttpRequest extends Request
                 return $this->path;
             case 'query':
                 return $this->query;
-            case 'fragment':
-                return $this->fragment;
 
             /* method */
             case 'method':
@@ -93,17 +91,8 @@ class HttpRequest extends Request
         }
 
         // 处理query部分
-        if (isset($url['query'])) {
-            $this->query = [];
-            foreach ($url['query'] as $k => $v) {
-                // urldecode
-                $this->query[$k] = urldecode($v);
-            }
-        }
-
-        // 处理fragment部分
-        if (isset($url['$fragment'])) {
-            $this->fragment = urldecode($url['$fragment']);
+        foreach ($_GET as $k => $v) {
+            $this->query[$k] = $v;
         }
     }
 
@@ -140,7 +129,7 @@ class HttpRequest extends Request
                 $this->method = $method;
                 break;
             default:
-                throw new InvalidRequestMethod;
+                throw new InvalidHttpMethodException;
         }
         return $this->method;
     }
