@@ -6,11 +6,17 @@
 
 namespace Dida;
 
+use \Dida\Request;
+
 /**
  * Controller 基类
  */
-abstract class Controller implements ControllerInterface
+abstract class Controller
 {
+    protected $request = null;
+
+
+    abstract public function render();
 
 
     /**
@@ -22,17 +28,35 @@ abstract class Controller implements ControllerInterface
     }
 
 
-    public function render()
+    /**
+     * 设置request对象
+     *
+     * @param Request $request
+     */
+    public function setRequest(Request $request)
+    {
+        $this->request = $request;
+        return $this;
+    }
+
+
+    /**
+     * 转发
+     *
+     * @param string $controller
+     * @param string $action
+     * @param array $parameters
+     */
+    public function forward($controller, $action, $parameters = [])
     {
     }
 
 
-    public function forward()
+    /**
+     * 重定向到另外一个url
+     */
+    public function redirect($url)
     {
-    }
-
-
-    public function redirect()
-    {
+        header('Location:' . $url);
     }
 }
