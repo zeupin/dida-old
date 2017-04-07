@@ -6,11 +6,15 @@
 
 namespace Dida;
 
+use \Dida\Container\Exception\InvalidServiceException;
+use \Dida\Container\Exception\ServiceNotFoundException;
+use \Dida\Container\Exception\SingletonException;
+
 /**
  * Container 容器类，主要用于依赖注入和服务定位用途。
  *
- * 从运行效率考虑，Container设计为只包含服务定义，不包含配置定义。不然，每次想引用一个service，都要从几十个conf中
- * 逐个找下来，会滞碍运行速度。
+ * 从运行效率考虑，Container设计为只包含服务定义，不包含配置定义。
+ * 不然，每次想引用一个service，都要从几十个conf中逐个找下来，会滞碍运行速度。
  */
 class Container implements \ArrayAccess
 {
@@ -112,7 +116,7 @@ class Container implements \ArrayAccess
                 $this->_instances[$id] = $service;
             }
         } else {
-            throw new \Exception('传入的service类型不合法');
+            throw new InvalidServiceException('传入的service类型不合法');
         }
 
         // 服务注册成功
@@ -149,7 +153,7 @@ class Container implements \ArrayAccess
     public function get($id, array $parameters = [])
     {
         if (!$this->has($id)) {
-            throw new \Exception("服务容器中不存在指定服务id");
+            throw new ServiceNotFoundException("容器中不存在指定id的服务");
         }
 
         $obj = null;
@@ -196,11 +200,11 @@ class Container implements \ArrayAccess
     public function getNew($id, array $parameters = [])
     {
         if (!$this->has($id)) {
-            throw new \Exception('未找到指定的服务id');
+            throw new ServiceNotFoundException("容器中不存在指定id的服务");
         }
 
         if (isset($this->_singletons[$id])) {
-            throw new \Exception('已被注册为单例服务，不可生成新的服务实例');
+            throw new SingletonException('已被注册为单例服务，不可生成新的服务实例');
         }
 
         $obj = null;
