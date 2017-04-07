@@ -4,7 +4,9 @@
  * http://dida.zeupin.com
  */
 
-namespace Dida;
+namespace Dida\Routing;
+
+use Exception\NotFoundException;
 
 /**
  * Router 类
@@ -37,6 +39,6 @@ class Router
 
     public function notFound()
     {
-        throw new \Exception('404 Not Found');
+        throw new NotFoundException('404 Not Found');
     }
 }

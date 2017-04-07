@@ -4,12 +4,12 @@
  * http://dida.zeupin.com
  */
 
-namespace Dida\Route;
+namespace Dida\Routing;
 
 /**
  * 默认模式路由
  */
-class DefaultRoute extends \Dida\Route
+class DefaultRoute extends Route
 {
     public function match()
     {
