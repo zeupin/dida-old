@@ -4,12 +4,11 @@
  * http://dida.zeupin.com
  */
 
-namespace Dida;
+namespace Dida\MVC;
 
 /**
- * ModelList
+ * Action 基类
  */
-class ModelList
+class Action
 {
-    public $data;
 }

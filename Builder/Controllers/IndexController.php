@@ -6,10 +6,12 @@
 
 namespace Dida\Builder\Controllers;
 
+use \Dida\MVC\Controller;
+
 /**
- * Default Controller
+ * IndexController
  */
-class IndexController extends \Dida\Controller
+class IndexController extends Controller
 {
     public function indexAction()
     {

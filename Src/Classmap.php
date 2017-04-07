@@ -7,7 +7,6 @@ return [
     'Dida\\Application'         => 'Application/Application.php',
     'Dida\\Config'              => 'Config/Config.php',
     'Dida\\Container'           => 'Container/Container.php',
-    'Dida\\Controller'          => 'Controller/Controller.php',
     'Dida\\Db'                  => 'Db/DbInterface.php',
     'Dida\\Debug'               => 'Debug/Debug.php',
     'Dida\\Dispatcher'          => 'Dispatcher/Dispatcher.php',
@@ -18,14 +17,12 @@ return [
     'Dida\\Foundation'          => 'Foundation/Foundation.php',
     'Dida\\Loader'              => 'Loader/Loader.php',
     'Dida\\Middleware'          => 'Middleware/Middleware.php',
-    'Dida\\Model'               => 'Model/Model.php',
     'Dida\\Request'             => 'Request/Request.php',
     'Dida\\Response'            => 'Response/Response.php',
     'Dida\\Session'             => 'Session/Session.php',
     'Dida\\SingletonTrait'      => 'Traits/SingletonTrait.php',
     'Dida\\Staticall'           => 'Staticall/Staticall.php',
     'Dida\\Validator'           => 'Validator/Validator.php',
-    'Dida\\View'                => 'View/View.php',
     'Dida\\Widget'              => 'Widget/Widget.php',
 
     /* 异常 */

@@ -4,7 +4,7 @@
  * http://dida.zeupin.com
  */
 
-namespace Dida;
+namespace Dida\MVC;
 
 use \Dida\Request;
 
@@ -14,9 +14,6 @@ use \Dida\Request;
 abstract class Controller
 {
     protected $request = null;
-
-
-    abstract public function render();
 
 
     /**
