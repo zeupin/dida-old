@@ -91,21 +91,21 @@
     - 3.3 加载composer的autoload机制
     - 3.4 Dida::start()
 
-	    * 1) 调用**$app->init()**，执行app初始化工作。
-        * 2) 调用**$app->bootstrap()**，进行app自举。
-        * 3) 调用**$app->run()**，正式运行app解析路由。
+	    * 1) 调用 `$app->init()`，执行app初始化工作。
+        * 2) 调用 `$app->bootstrap()`，进行app自举。
+        * 3) 调用 `$app->run()`，正式运行app解析路由。
 
 4. `$app->init()`，执行运行环境初始化。
 
-    - 4.1 先调用 **Foundation::init()** 执行基础环境初始化。
-    - 4.2 生成**基本对象**，`config`, `response`。
-    - 4.3 **Middleware中间件环境初始化**。
+    - 4.1 先调用 `Foundation::init()` 执行基础环境初始化。
+    - 4.2 生成 **基本对象** ，`config`, `response`。
+    - 4.3 **Middleware中间件环境初始化** 。
 
 5. `$app->bootstrap()`，执行app的自举。
 
-    - 5.1 **载入App配置**， `App/Config/App.dev.php`。
-    - 5.2 **载入App函数库**， 按照 `App/Functions/Index.php` 要求，载入app级别的函数库（如果有的话）。
-    - 5.3 **载入App自举程序**，按照 `App/Bootstraps/Index.php` 要求，对app环境和可能用到的服务进行初始配置。
+    - 5.1 **载入App配置** ， `App/Config/App.dev.php`。
+    - 5.2 **载入App函数库** ， 按照 `App/Functions/Index.php` 要求，载入app级别的函数库（如果有的话）。
+    - 5.3 **载入App自举程序** ，按照 `App/Bootstraps/Index.php` 要求，对app环境和可能用到的服务进行初始配置。
 
 6. `$app->run()`，此时工作环境已经ready，可以正式处理Reuqest了。
 
@@ -115,8 +115,8 @@
 
 9.  Middleware处理 pre-action，比如检查对应的Controller有没有这个action？用户是否有足够权限执行这个action？等等
 
-10. 执行标准的**MVC流程**：**Controller** 从 **Model** 取数据，输出给 **View**。
+10. 执行标准的 **MVC流程** ： **Controller** 从 **Model** 取数据，输出给 **View** 。
 
 11. Middleware处理 post-action，比如一些过滤和收尾工作。
 
-12. **app()->response->output()** 输出最终内容给用户。
+12. `app()->response->output()` 输出最终内容给用户。
