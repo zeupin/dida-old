@@ -7,6 +7,7 @@
 namespace Dida;
 
 use \Dida\Request\Exception\InvalidUrlException;
+use \Dida\Request\Exception\InvalidRequestMethod;
 
 /**
  * HttpRequest 类
@@ -93,7 +94,7 @@ class HttpRequest extends Request
         // 处理query部分
         if (isset($url['query'])) {
             $this->query = [];
-            foreach ($url['query'] as $k=>$v) {
+            foreach ($url['query'] as $k => $v) {
                 // urldecode
                 $this->query[$k] = urldecode($v);
             }
@@ -126,8 +127,7 @@ class HttpRequest extends Request
             $method = strtoupper($_SERVER['REQUEST_METHOD']);
         }
 
-        // 限定method只能为：GET，POST，PUT，PATCH，DELETE，OPTIONS，HEAD之一
-        // 否则，返回空串
+        // 只能为：GET，POST，PUT，PATCH，DELETE，OPTIONS，HEAD之一
         switch ($method) {
             case 'GET':
             case 'POST':
@@ -139,7 +139,7 @@ class HttpRequest extends Request
                 $this->method = $method;
                 break;
             default:
-                $this->method = '';
+                throw new InvalidRequestMethod;
         }
         return $this->method;
     }
