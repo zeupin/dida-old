@@ -4,22 +4,21 @@
  * http://dida.zeupin.com
  */
 header("Content-type: text/html; charset=utf-8");
+
 $app = app();
-//app()->get('router')->route($app['request']);
-//var_dump($app->db);
-$result = $app->db->query(<<<'EOT'
-   select * from information_schema.TABLES WHERE TABLE_SCHEMA LIKE 'pi'
-EOT
-    );
-foreach ($result as $row) {
-    //var_dump($row);
+$conn = $app->db;
+
+//$conn->getDatabasePlatform()->registerDoctrineTypeMapping('enum', 'integer');
+$sm = $conn->getSchemaManager();
+//$tables = $sm->listViews();
+
+$columns = $sm->listTableDetails('user');
+foreach ($columns as $column) {
+    echo sprintf('%s --%s<br>', $column->getName(), $column->getType());
 }
 
-$schema = new \Dida\Database\Schema\Mysql($app->db);
-//var_export($schema->listTableNames());
 
-var_export($schema->listColumns('contact'));
-foreach ($tables = $schema->listTables() as $table) {
-    //var_export(array_keys($table));
-    die();
-}
+
+var_dump(app()->get('request'));
+
+var_dump($_GET);
