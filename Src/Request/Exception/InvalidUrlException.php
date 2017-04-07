@@ -4,10 +4,12 @@
  * http://dida.zeupin.com
  */
 
-namespace Dida;
+namespace Dida\Request\Exception;
+
+use \Dida\Exception;
 
 /**
- * Uri异常
+ * 无效的url
  */
 class InvalidUrlException extends Exception
 {

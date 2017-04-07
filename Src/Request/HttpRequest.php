@@ -6,7 +6,7 @@
 
 namespace Dida;
 
-use \Dida\Request\InvalidUrlException;
+use \Dida\Request\Exception\InvalidUrlException;
 
 /**
  * HttpRequest 类
