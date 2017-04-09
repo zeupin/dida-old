@@ -6,6 +6,8 @@
 
 namespace Dida;
 
+use \Dida\Event\Exception\EventNotFoundException;
+
 /**
  * EventBus 事件总线
  */
@@ -101,7 +103,7 @@ final class EventBus
                 $this->hooks[$event][$id] = [$callback, $parameters];
             }
         } else {
-            throw new \Dida\EventNotFoundException();
+            throw new EventNotFoundException($event);
         }
         return $this;
     }
@@ -149,7 +151,7 @@ final class EventBus
              * 如果事件不存在，抛出EventNotFound异常
              */
             if (!array_key_exists($event, $events)) {
-                throw new \Dida\EventNotFoundException();
+                throw new EventNotFoundException($event);
             }
         }
     }
