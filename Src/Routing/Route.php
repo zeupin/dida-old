@@ -9,7 +9,7 @@ namespace Dida\Routing;
 /**
  * Route 类
  */
-abstract class Route implements RouteInterface
+abstract class Route
 {
     /*
      * 要输入的变量
@@ -21,14 +21,20 @@ abstract class Route implements RouteInterface
      */
     protected $controller = '';     // Controller的FQCN名称
     protected $action = '';         // Action的名称
-    protected $parameters = [];     // 参数数组
-    protected $flags = [];          // 会用到的标志位
 
     /*
      * 内部变量
      */
     protected $routemap = [];
     protected $matched = false;
+
+
+    /**
+     * 对Request进行路由匹配
+     *
+     * @return bool 匹配成功返回true，否则返回false
+     */
+    abstract public function match();
 
 
     /**

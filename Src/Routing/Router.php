@@ -16,6 +16,12 @@ class Router
     protected $routes = [];
 
 
+    /**
+     * 新增一个路由规则
+     *
+     * @param \Dida\Routing\Route $route
+     * @return $this 链式调用
+     */
     public function addRoute(Route $route)
     {
         $this->routes[] = $route;
@@ -23,6 +29,13 @@ class Router
     }
 
 
+    /**
+     * 遍历所有的路由规则，如果找到，则执行
+     *
+     * @param \Dida\Routing\Request $request
+     * @return type
+     * @throws RoutingFailException
+     */
     public function route(Request $request)
     {
         foreach ($this->routes as $route) {
@@ -34,6 +47,6 @@ class Router
         }
 
         // 路由失败，抛出 RoutingFailException
-        throw new RoutingFailException('404 Not Found');
+        throw new RoutingFailException;
     }
 }
