@@ -9,6 +9,8 @@ namespace Dida;
 use \Dida\Container;
 use \Dida\Boot\Foundation;
 use \Dida\Config;
+use \Dida\Request\ConsoleRequest;
+use \Dida\Request\HttpRequest;
 use \Dida\Response;
 
 /**
@@ -18,7 +20,8 @@ final class Application extends Container
 {
     /* 公有变量 */
     protected $config = null;    // 配置
-    protected $response = null;  // 响应
+    protected $request = null;   // 请求
+    protected $response = null;  // 应答
 
     /**
      * 启动
@@ -47,6 +50,7 @@ final class Application extends Container
         // 基础变量
         $this->config = new Config;
         $this->response = new Response;
+        $this->request = (DIDA_IS_CLI) ? (new ConsoleRequest) : (new HttpRequest);
     }
 
 
