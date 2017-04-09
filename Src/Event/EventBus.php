@@ -7,9 +7,9 @@
 namespace Dida;
 
 /**
- * Event 类
+ * EventBus 事件总线
  */
-final class Event
+final class EventBus
 {
     const SYSTEM_EVENT = 0;     // 系统预定义事件
     const USER_EVENT = 1;       // 用户自定义事件
