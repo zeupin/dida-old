@@ -7,7 +7,7 @@
 namespace Dida;
 
 /**
- * Middleware 基类
+ * Middleware 中间件基类
  */
 class Middleware
 {
