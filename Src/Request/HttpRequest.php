@@ -16,19 +16,29 @@ use \Dida\Request\Exception\InvalidQueryException;
  */
 class HttpRequest extends Request
 {
+    /* 常量 */
+    const GET = 'GET';
+    const POST = 'POST';
+    const PUT = 'PUT';
+    const PATCH = 'PATCH';
+    const DELETE = 'DELETE';
+    const HEAD = 'HEAD';
+    const OPTIONS = 'OPTIONS';
+
     /* Uri 解析相关 */
     protected $path = [];
     protected $query = [];
 
-    /* 是否是 Ajax */
-    protected $isAjax = null;
-
     /* Request Method */
     protected $method = null;
 
+    /* 是否是 Ajax */
+    protected $isAjax = null;
 
+    
     public function __construct()
     {
+        $this->method();
         $this->parseUrl();
     }
 
@@ -109,10 +119,11 @@ class HttpRequest extends Request
             return $this->method;
         }
 
-        // 获取method
+        // 第一次运行
         $method = '';
         if (isset($_POST['_method'])) {
             $method = strtoupper($_POST['_method']);
+            unset($_POST['_method']);
         } elseif (isset($_SERVER['REQUEST_METHOD'])) {
             $method = strtoupper($_SERVER['REQUEST_METHOD']);
         }
@@ -147,7 +158,7 @@ class HttpRequest extends Request
             return $this->isAjax;
         }
 
-        // 第一次运行，从设置中读取
+        // 第一次运行
         $this->isAjax = false;  // 置初始值
         if (isset($_SERVER['HTTP_X_REQUESTED_WITH'])) {
             if (strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
