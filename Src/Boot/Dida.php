@@ -4,6 +4,8 @@
  * http://dida.zeupin.com
  */
 
+use \Dida\Application;
+
 /**
  * Dida
  */
@@ -14,7 +16,7 @@ final class Dida
 
     public static function start()
     {
-        self::$app = new \Dida\Application();
+        self::$app = new Application;
         self::$app->start();
     }
 }

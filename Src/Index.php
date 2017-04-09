@@ -25,5 +25,5 @@ if (file_exists(DIDA_COMPOSER_ROOT . '/vendor/autoload.php')) {
 }
 
 /* 生成app实例 */
-require __DIR__ . '/Dida/Dida.php';
+require DIDA_ROOT . 'Boot/Dida.php';
 Dida::start();
