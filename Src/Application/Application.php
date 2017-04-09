@@ -7,6 +7,8 @@
 namespace Dida;
 
 use \Dida\Boot\Foundation;
+use \Dida\Config;
+use \Dida\Response;
 
 /**
  * Application 类
