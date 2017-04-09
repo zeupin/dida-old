@@ -17,6 +17,8 @@ foreach ($columns as $column) {
     echo sprintf('%s --%s<br>', $column->getName(), $column->getType());
 }
 
+throw new \Dida\Exception\PropertyGetException('hi');
+
 for ($i=0; $i<20; $i++) {
     echo microtime().PHP_EOL;
 }

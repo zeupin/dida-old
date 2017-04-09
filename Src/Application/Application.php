@@ -118,7 +118,11 @@ final class Application extends Container
     private function run()
     {
         $app = $this;
-        require DIDA_APP_ROOT . 'Index.php';
+        try {
+            require DIDA_APP_ROOT . 'Index.php';
+        } catch (\Exception $e) {
+            include DIDA_ROOT . 'Exception/View/Html.php';
+        }
     }
 
 

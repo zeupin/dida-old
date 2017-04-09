@@ -11,4 +11,11 @@ namespace Dida;
  */
 class Exception extends \Exception
 {
+    /**
+     * 获取抛出的Exception的具体类名
+     */
+    public function getType()
+    {
+        return get_called_class();
+    }
 }
