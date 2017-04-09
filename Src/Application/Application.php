@@ -6,6 +6,7 @@
 
 namespace Dida;
 
+use \Dida\Container;
 use \Dida\Boot\Foundation;
 use \Dida\Config;
 use \Dida\Response;
