@@ -17,6 +17,6 @@ foreach ($columns as $column) {
     echo sprintf('%s --%s<br>', $column->getName(), $column->getType());
 }
 
-for($i=0; $i<20; $i++) {
-  echo microtime().PHP_EOL;
+for ($i=0; $i<20; $i++) {
+    echo microtime().PHP_EOL;
 }
