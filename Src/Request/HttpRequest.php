@@ -17,29 +17,28 @@ use \Dida\Request\Exception\InvalidQueryException;
 class HttpRequest extends Request
 {
     /* 常量 */
-    const GET = 'GET';
-    const POST = 'POST';
-    const PUT = 'PUT';
-    const PATCH = 'PATCH';
-    const DELETE = 'DELETE';
-    const HEAD = 'HEAD';
-    const OPTIONS = 'OPTIONS';
+    const GET_METHOD = 'GET';
+    const POST_METHOD = 'POST';
+    const PUT_METHOD = 'PUT';
+    const PATCH_METHOD = 'PATCH';
+    const DELETE_METHOD = 'DELETE';
+    const HEAD_METHOD = 'HEAD';
+    const OPTIONS_METHOD = 'OPTIONS';
 
-    /* Uri 解析相关 */
-    protected $path = [];
-    protected $query = [];
-
-    /* Request Method */
+    /* 基本属性，初始化时即获取 */
     protected $method = null;
+    protected $path = null;
 
-    /* 是否是 Ajax */
+    /* 扩展属性，需要用到时再获取 */
+    protected $get = null;          // $_GET
+    protected $post = null;         // $_POST
     protected $isAjax = null;
 
-    
+
     public function __construct()
     {
         $this->method();
-        $this->parseUrl();
+        $this->path();
     }
 
 
@@ -49,60 +48,16 @@ class HttpRequest extends Request
     public function __get($name)
     {
         switch ($name) {
-            /* URI解析相关的几个属性 */
+            case 'method':
+                return $this->method;
             case 'path':
                 return $this->path;
-            case 'query':
-                return $this->query;
-
-            /* method */
-            case 'method':
-                return $this->method();
-
-            /* isAjax */
+            case 'get':
+                return $this->get();
+            case 'post':
+                return $this->post();
             case 'isAjax':
                 return $this->isAjax();
-        }
-    }
-
-
-    /**
-     * 把url拆分为path,query,fragment
-     *
-     * url 一般表示为 path?query=...#fragment
-     */
-    private function parseUrl()
-    {
-        /* 分解uri
-         * 注意：parse_url不负责检查url的合法性，需要自己在程序中处理
-         */
-        $url = parse_url($_SERVER['REQUEST_URI']);
-
-        // 处理path部分
-        if (isset($url['path'])) {
-            $path = $url['path'];
-
-            // 检查path是否有效
-            if (($path === DIDA_WWW) || ($path . '/' === DIDA_WWW)) {
-                // 请求首页，因访问频率很高，独立出来，加快速度
-                $this->path = [];
-            } else {
-                if (strncasecmp($path, DIDA_WWW, strlen(DIDA_WWW)) === 0) {
-                    // 去除DIDA_WWW
-                    $path = substr($path, strlen(DIDA_WWW));
-                    // urldecode
-                    $path = urldecode($path);
-                    // 分解成路径数组
-                    $this->path = explode('/', $path);
-                } else {
-                    throw new InvalidUrlException;
-                }
-            }
-        }
-
-        // 处理query部分
-        foreach ($_GET as $k => $v) {
-            $this->query[$k] = $v;
         }
     }
 
@@ -147,13 +102,103 @@ class HttpRequest extends Request
 
 
     /**
+     * 从REQUEST_URI中分解path
+     *
+     * @return array
+     */
+    public function path()
+    {
+        // 不重复处理
+        if (is_array($this->path)) {
+            return $this->path;
+        }
+
+        /* 获取$path */
+        $url = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+
+        /* 快捷处理 */
+        if (($url === DIDA_WWW) || ($url . '/' === DIDA_WWW)) {
+            // 请求首页，因访问频率很高，独立出来，加快速度
+            $this->path = [];
+            return [];
+        }
+
+        /* url中的path */
+        $path = explode('/', $url);
+        (end($path) === '') ? array_pop($path) : null;   // 末层目录如果为空，则清除之
+
+        /* wwwroot */
+        $root = explode('/', DIDA_WWW);
+        (end($root) === '') ? array_pop($root) : null;   // 末层目录如果为空，则清除之
+
+        /* path必须是root的子集 */
+        if (count($path) < count($root)) {
+            throw new InvalidUrlException;
+        }
+
+        /* 去除DIDA_WWW */
+        while (count($root)) {
+            if (strcasecmp(reset($root), reset($path)) === 0) {
+                array_shift($root);
+                array_shift($path);
+            } else {
+                throw new InvalidUrlException;
+            }
+        }
+
+        $this->path = $path;
+        return $path;
+    }
+
+
+    /**
+     * 获取$_GET
+     *
+     * @return array
+     */
+    public function get()
+    {
+        // 不重复处理
+        if (is_array($this->get)) {
+            return $this->get;
+        }
+
+        // 第一次运行，从$_GET把数据搬过来
+        foreach ($_GET as $k => $v) {
+            $this->get[$k] = $v;
+        }
+        return $this->get;
+    }
+
+
+    /**
+     * 获取$_POST
+     *
+     * @return array
+     */
+    public function post()
+    {
+        // 不重复处理
+        if (is_array($this->post)) {
+            return $this->post;
+        }
+
+        // 第一次运行，从$_POST把数据搬过来
+        foreach ($_POST as $k => $v) {
+            $this->post[$k] = $v;
+        }
+        return $this->post;
+    }
+
+
+    /**
      * 是否是Ajax请求
      *
      * @return bool
      */
     public function isAjax()
     {
-        // 如果已经有值，直接引用
+        // 不重复处理
         if ($this->isAjax !== null) {
             return $this->isAjax;
         }

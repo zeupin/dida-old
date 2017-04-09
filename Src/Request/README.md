@@ -2,14 +2,19 @@
 
 ## HttpRequest
 
-把一个HttpRequest解析为路径 `path[]`和查询串 `query[]`。
+获取一个HttpRequest的相关数据。
 
-- `path[]`：滤除了 DIDA_WWW 外的部分。
-- `query[]`：等效为 $_GET。
+### 基本属性，初始化时即获取
 
-另外，还可以请求如下属性：
+- `method`：请求方式。
+    > 正常为 `GET`,`POST`,`PUT`,`PATCH`,`DELETE`,`OPTIONS`,`HEAD` 之一，除此之外就抛异常。
+    > 可用 `HttpRequest::GET_METHOD`, `HttpRequest::POST_METHOD`常量指代对应方法。
+- `path[]`：path数组，且已经滤除了 DIDA_WWW。
 
-- `method`：标准的 Http Method，正常为 `GET`,`POST`,`PUT`,`PATCH`,`DELETE`,`OPTIONS`,`HEAD` 之一。除此之外就抛异常。
+### 扩展属性，需要用到时再获取
+
+- `get[]`：$_GET。
+- `post[]`：$_POST。
 - `isAjax`：是否是Ajax请求。
 
 ### 附1：HTTP请求是不包含fragment的
