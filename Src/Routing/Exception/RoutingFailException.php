@@ -10,10 +10,10 @@ namespace Dida\Routing\Exception;
 use \Dida\Exception;
 
 /**
- * NotFoundException
+ * RoutingFailException
  *
- * 1. 如果遍历所有的路由规则后，都无法匹配这个url，返回404错误
+ * 1. 如果遍历所有的路由规则后，都无法匹配，则返回此异常
  */
-class NotFoundException extends Exception
+class RoutingFailException extends Exception
 {
 }

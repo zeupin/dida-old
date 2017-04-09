@@ -33,12 +33,7 @@ class Router
             }
         }
 
-        $this->notFound();
-    }
-
-
-    public function notFound()
-    {
-        throw new NotFoundException('404 Not Found');
+        // 路由失败，抛出 RoutingFailException
+        throw new RoutingFailException('404 Not Found');
     }
 }
