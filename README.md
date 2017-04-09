@@ -95,7 +95,7 @@
 
 	    * 2) 调用 `$app->init()`，执行和app无关部分的初始化。
             > 1. 先调用 `Foundation::init()` 执行基础环境初始化。
-            > 2. 生成 **基本对象**：`config`, `request`, `response`。
+            > 2. 生成 **基本对象**：`config, request, response, eventbus`。
             > 3. **Middleware中间件环境初始化** 。
 
         * 3) 调用 `$app->bootstrap()`，执行和app有关部分的初始化。
@@ -106,7 +106,7 @@
         * 4) 调用 `$app->run()`，准备工作就绪，正式处理用户请求。
             > 此时工作环境已经ready，可以正式处理Reuqest了。
 
-7. **Request** 把原始输入处理成 `path[], query[], fragment`。
+7. **Request** 把原始输入处理成 `method, path[]`。
 
 8. **Routing** 把Request解析到对应的`controller, action`。
 

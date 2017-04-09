@@ -12,6 +12,8 @@ use \Dida\Config;
 use \Dida\Request\ConsoleRequest;
 use \Dida\Request\HttpRequest;
 use \Dida\Response;
+use \Dida\Event\EventBus;
+use \Dida\Exception\PropertyGetException;
 
 /**
  * Application 类
@@ -22,6 +24,7 @@ final class Application extends Container
     protected $config = null;    // 配置
     protected $request = null;   // 请求
     protected $response = null;  // 应答
+    protected $eventbus = null;  // 事件总线
 
     /**
      * 启动
@@ -51,6 +54,7 @@ final class Application extends Container
         $this->config = new Config;
         $this->response = new Response;
         $this->request = (DIDA_IS_CLI) ? (new ConsoleRequest) : (new HttpRequest);
+        $this->eventbus = new EventBus;
     }
 
 
@@ -128,8 +132,16 @@ final class Application extends Container
                 return $this->config;
             case 'response':
                 return $this->response;
+            case 'request':
+                return $this->request;
+            case 'eventbus':
+                return $this->eventbus;
             default:
-                return $this->get($id);
+                if ($this->has($id)) {
+                    return $this->get($id);
+                } else {
+                    throw new PropertyGetException($id);
+                }
         }
     }
 

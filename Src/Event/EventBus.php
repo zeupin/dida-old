@@ -4,32 +4,24 @@
  * http://dida.zeupin.com
  */
 
-namespace Dida;
+namespace Dida\Event;
 
 use \Dida\Event\Exception\EventNotFoundException;
 
 /**
  * EventBus 事件总线
+ *
+ * 有两种事件类型：系统事件和用户事件，区别在于系统事件不可删除。
  */
 final class EventBus
 {
-    const SYSTEM_EVENT = 0;     // 系统预定义事件
-    const USER_EVENT = 1;       // 用户自定义事件
+    const SYSTEM_EVENT = 1;     // 系统事件
+    const USER_EVENT = 2;       // 用户事件
 
     /*
-     * 预定义的系统事件
+     * 所有事件
      */
-    private $events = [
-        'dida_ready'      => self::SYSTEM_EVENT,
-        'before_request'  => self::SYSTEM_EVENT,
-        'after_request'   => self::SYSTEM_EVENT,
-        'before_route'    => self::SYSTEM_EVENT,
-        'after_route'     => self::SYSTEM_EVENT,
-        'before_action'   => self::SYSTEM_EVENT,
-        'after_action'    => self::SYSTEM_EVENT,
-        'before_response' => self::SYSTEM_EVENT,
-        'after_response'  => self::SYSTEM_EVENT,
-    ];
+    protected $events = [];
 
     /*
      * 挂接在事件上的回调函数
@@ -39,39 +31,59 @@ final class EventBus
 
 
     /**
+     * 新增一个系统事件
+     *
+     * @param string $event 事件名称
+     * @return bool 成功返回true，失败返回false
+     */
+    public function addSystemEvent($event)
+    {
+        if (isset($this->events[$event])) {
+            return ($this->events[$event] == self::SYSTEM_EVENT);
+        } else {
+            $this->events[$event] = self::SYSTEM_EVENT;
+            return true;
+        }
+    }
+
+
+    /**
      * 新增一个用户事件
      *
      * @param string $event 事件名称
      */
-    public function addEvent($event)
+    public function addUserEvent($event)
     {
-        if (!array_key_exists($event, $this->events)) {
+        if (isset($this->events[$event])) {
+            return ($this->events[$event] == self::USER_EVENT);
+        } else {
             $this->events[$event] = self::USER_EVENT;
+            return true;
         }
-        return $this;
     }
 
 
     /**
      * 删除一个用户事件，以及所有已挂接到这个事件上的回调函数
-     * 注：系统事件不可删除，只能删除用户事件。
      *
      * @param string $event 事件名称
+     * @return bool 删除用户事件是否完成。
      */
-    public function removeEvent($event)
+    public function removeUserEvent($event)
     {
-        // 删除此事件的所有hooks
-        unset($this->hooks[$event]);
-
-        // 如果此事件是用户事件，则删除之
-        if (array_key_exists($event, $this->events)) {
+        if (isset($this->events[$event])) {
             if ($this->events[$event] == self::USER_EVENT) {
+                // 删除此事件和所有hooks
                 unset($this->events[$event]);
+                unset($this->hooks[$event]);
+                return true;
+            } else {
+                // 事件未删除
+                return false;
             }
+        } else {
+            return true;
         }
-
-        // return
-        return $this;
     }
 
 
@@ -82,7 +94,7 @@ final class EventBus
      */
     public function hasEvent($event)
     {
-        return array_key_exists($event, $this->events);
+        return isset($this->events[$event]);
     }
 
 
