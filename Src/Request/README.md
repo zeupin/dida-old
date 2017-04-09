@@ -2,7 +2,7 @@
 
 ## HttpRequest
 
-把一个HttpRequest解析为路径 `path[]`和查询串`query[]`。
+把一个HttpRequest解析为路径 `path[]`和查询串 `query[]`。
 
 - `path[]`：滤除了 DIDA_WWW 外的部分。
 - `query[]`：等效为 $_GET。
@@ -14,7 +14,9 @@
 
 ### 附1：HTTP请求是不包含fragment的
 
-虽然PHP的 `parse_url()` 函数能否解析url中的书签部分(fragment)，但是实际上，标准的HTTP请求是不包括 `#` 的。`#` 是用来指导浏览器动作的，对服务器端完全无用，HTTP请求中并不包括`#`。
+虽然可以用PHP的原生函数 `parse_url()` 解析url中的书签部分(fragment)，但是实际上，标准的HTTP请求是不包括 `#` 的。
+
+`#` 是用来指导浏览器动作的，对服务器端完全无用，HTTP请求中并不包括`#`。
 
 比如，访问下面的网址：
 ```
@@ -31,4 +33,4 @@ Host: www.example.com
 
 因此，在 `$_SERVER['REQUEST_URI']` 变量中，也是不包含 #fragment 部分的。
 
-参考文章：<http://www.cnblogs.com/kaituorensheng/p/3776527.html>
+参考：<http://www.cnblogs.com/kaituorensheng/p/3776527.html>

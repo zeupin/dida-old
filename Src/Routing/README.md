@@ -1,6 +1,6 @@
 # Routing 路由
 
-Routing的主要任务就是：
+Routing的主要任务是：
 
 1. 把 Request ，按照既定规则，解析为[controller, action]。
 2. 询问 controller ：action 是否存在。
