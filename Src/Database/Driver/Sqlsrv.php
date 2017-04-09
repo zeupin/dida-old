@@ -6,6 +6,8 @@
 
 namespace Dida\Database\Driver;
 
+use \Dida\Database\Exception\DatabaseConnectionException;
+
 /**
  * MS SQL Server驱动
  */
@@ -37,7 +39,7 @@ class Sqlserver extends Driver
             !isset($config['user']) ||
             !isset($config['password']) ||
             !isset($config['dbname'])) {
-            throw new \Dida\DatabaseConnectionException();
+            throw new DatabaseConnectionException;
             return false;
         }
         $server = $config['server'];
@@ -82,7 +84,7 @@ class Sqlserver extends Driver
             !isset($config['user']) ||
             !isset($config['password']) ||
             !isset($config['dbname'])) {
-            throw new \Dida\DatabaseConnectionException();
+            throw new DatabaseConnectionException;
             return false;
         }
         $host = $config['host'];

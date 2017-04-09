@@ -4,7 +4,9 @@
  * http://dida.zeupin.com
  */
 
-namespace Dida;
+namespace Dida\Database\Exception;
+
+use \Dida\Exception;
 
 /**
  * 数据库连接异常

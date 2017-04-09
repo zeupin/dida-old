@@ -7,6 +7,7 @@
 namespace Dida\Database\Driver;
 
 use PDO;
+use \Dida\Database\Exception\DatabaseConnectionException;
 
 /**
  * 数据库Driver抽象类
@@ -44,7 +45,7 @@ abstract class Driver
             try {
                 $this->pdo = new \PDO($this->_dsn, $this->_user, $this->_password, $this->_options);
             } catch (PDOException $e) {
-                throw new \Dida\DatabaseConnectionException();
+                throw new DatabaseConnectionException;
             }
         }
     }

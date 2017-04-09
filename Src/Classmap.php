@@ -9,7 +9,6 @@ return [
     'Dida\\Container'           => 'Container/Container.php',
     'Dida\\Db'                  => 'Db/DbInterface.php',
     'Dida\\Debug'               => 'Debug/Debug.php',
-    'Dida\\Dispatcher'          => 'Dispatcher/Dispatcher.php',
     'Dida\\GetSetTrait'         => 'Traits/GetSetTrait.php',
     'Dida\\Html\\Element'       => 'Html/Element.php',
     'Dida\\Event'               => 'Event/Event.php',
@@ -21,14 +20,7 @@ return [
     'Dida\\SingletonTrait'      => 'Traits/SingletonTrait.php',
     'Dida\\Staticall'           => 'Staticall/Staticall.php',
     'Dida\\Validator'           => 'Validator/Validator.php',
-    'Dida\\Widget'              => 'Widget/Widget.php',
 
     /* 异常 */
-    'Dida\ActionNotFoundException'     => 'Exception\ActionNotFoundException.php',
-    'Dida\DatabaseConnectionException' => 'Exception\DatabaseConnectionException.php',
-    'Dida\EventNotFoundException'      => 'Exception\EventNotFoundException.php',
-    'Dida\InvalidDispatchException'    => 'Exception\InvalidDispatchException.php',
     'Dida\MethodNotFoundException'     => 'Exception\MethodNotFoundException.php',
-    'Dida\PropertyGetException'        => 'Exception\PropertyGetException.php',
-    'Dida\PropertySetException'        => 'Exception\PropertySetException.php',
 ];

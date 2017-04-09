@@ -6,6 +6,8 @@
 
 namespace Dida\Database\Driver;
 
+use \Dida\Database\Exception\DatabaseConnectionException;
+
 /**
  * MySQL/MariaDB 驱动
  */
@@ -39,7 +41,7 @@ class Mysql extends Driver
         if (!isset($config['user']) ||
             !isset($config['password']) ||
             !isset($config['dbname'])) {
-            throw new \Dida\DatabaseConnectionException();
+            throw new DatabaseConnectionException;
         }
         $user = $config['user'];
         $password = $config['password'];
@@ -88,7 +90,7 @@ class Mysql extends Driver
             !isset($config['user']) ||
             !isset($config['password']) ||
             !isset($config['dbname'])) {
-            throw new \Dida\DatabaseConnectionException();
+            throw new DatabaseConnectionException;
             return false;
         }
         $socket = $config['socket'];

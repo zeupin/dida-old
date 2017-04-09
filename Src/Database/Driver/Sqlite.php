@@ -6,6 +6,8 @@
 
 namespace Dida\Database\Driver;
 
+use \Dida\Database\Exception\DatabaseConnectionException;
+
 /**
  * Sqlite3 驱动
  */
@@ -21,7 +23,7 @@ class Sqlite extends Driver
     {
         /* 必填参数 */
         if (!isset($config['file'])) {
-            throw new \Dida\DatabaseConnectionException();
+            throw new DatabaseConnectionException;
             return false;
         }
         $file = str_replace('\\', '/', $config['file']);
