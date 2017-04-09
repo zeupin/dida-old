@@ -9,7 +9,7 @@ define('DIDA_COMPOSER_ROOT', realpath(__DIR__ . '/../composer') . '/');
 define('DIDA_APP_ROOT', realpath(__DIR__ . '/../Builder') . '/');
 define('DIDA_VAR_ROOT', realpath(__DIR__ . '/../Var') . '/');
 define('DIDA_WEB_ROOT', __DIR__ . '/');
-define('DIDA_ENVIRON', 'dev');
+define('DIDA_ENV', 'dev');
 
 /* 选填的常量 */
 define('DIDA_WWW', '/');

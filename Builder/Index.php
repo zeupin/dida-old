@@ -17,8 +17,6 @@ foreach ($columns as $column) {
     echo sprintf('%s --%s<br>', $column->getName(), $column->getType());
 }
 
-
-
-var_dump(app()->get('request'));
-
-var_dump($_GET);
+for($i=0; $i<20; $i++) {
+  echo microtime().PHP_EOL;
+}

@@ -62,11 +62,11 @@ final class Application extends Container
 
 
     /**
-     * 根据不同的DIDA_ENVIRON载入不同的配置文件
+     * 根据不同的DIDA_ENV载入不同的配置文件
      */
     private function loadAppConfig()
     {
-        $target = DIDA_APP_ROOT . 'Config/App.' . DIDA_ENVIRON . '.php';
+        $target = DIDA_APP_ROOT . 'Config/App.' . DIDA_ENV . '.php';
         if (file_exists($target) && is_file($target)) {
             $this->config->load($target);
         }

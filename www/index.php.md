@@ -9,7 +9,7 @@ define('DIDA_COMPOSER_ROOT',  realpath(__DIR__ . '/../vendor') . '/');
 define('DIDA_APP_ROOT',       realpath(__DIR__ . '/../App') . '/');
 define('DIDA_VAR_ROOT',       realpath(__DIR__ . '/../Var') . '/');
 define('DIDA_WEB_ROOT',       __DIR__ . '/');
-define('DIDA_ENVIRON',        'dev');
+define('DIDA_ENV',            'dev');
 
 /* 选填的常量 */
 define('DIDA_WWW',                '/');
@@ -40,7 +40,7 @@ DIDA_VAR_ROOT           指明Var目录的文件路径。
 DIDA_WEB_ROOT           指明Web目录的文件路径。
                             一般就是入口文件的所在目录。
 
-DIDA_ENVIRON            指明APP的当前运行环境。
+DIDA_ENV                指明APP的当前运行环境。
                             其值一般可为：dev（开发环境），production（生产环境），test（测试环境）等。
                             App启动时，会根据这个常量，加载DIDA_APP_ROOT/Config/目录中的不同的配置文件。
                             如：开发环境会加载App.dev.php，生产环境加载App.live.php，等等。
