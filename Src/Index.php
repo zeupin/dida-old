@@ -4,7 +4,7 @@
  * http://dida.zeupin.com
  */
 
-use \Dida\Loader;
+use \Dida\Boot\Loader;
 
 /* 开始计时 */
 define('DIDA_START_TIME', microtime(true));
@@ -13,7 +13,7 @@ define('DIDA_START_TIME', microtime(true));
 require __DIR__ . '/Constants.php';
 
 /* 加载Dida的autoload机制 */
-require DIDA_ROOT . 'Loader/Loader.php';
+require DIDA_ROOT . 'Boot/Loader.php';
 Loader::init();
 Loader::addClassmap(DIDA_ROOT . 'Classmap.php', DIDA_ROOT);    // 注册所有Dida类文件的位置对照表
 Loader::addNamespace('Dida', DIDA_ROOT);                       // 登记Dida命名空间

@@ -6,6 +6,8 @@
 
 namespace Dida;
 
+use \Dida\Boot\Foundation;
+
 /**
  * Application 类
  */
