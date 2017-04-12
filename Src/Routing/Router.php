@@ -15,12 +15,12 @@ use \Dida\Routing\Exception\ActionNotFoundException;
  */
 final class Router
 {
-    protected static $routes = [];
+    protected $routes = [];
 
     /* 匹配到的路由 */
-    protected static $activeRoute = null;
-    protected static $activeController = null;
-    protected static $activeAction = null;
+    protected $activeRoute = null;
+    protected $activeController = null;
+    protected $activeAction = null;
 
 
     /**
@@ -30,7 +30,7 @@ final class Router
      */
     public static function addRoute(Route $route)
     {
-        self::$routes[] = $route;
+        $this->routes[] = $route;
     }
 
 
@@ -43,14 +43,14 @@ final class Router
      */
     public static function start(Request $request)
     {
-        foreach (self::$routes as $route) {
+        foreach ($this->routes as $route) {
             $route->setRequest($request);
             if ($route->match()) {
-                self::$activeRoute = $route;
-                self::$activeController = $route->controller;
-                self::$activeAction = $route->action;
+                $this->activeRoute = $route;
+                $this->activeController = $route->controller;
+                $this->activeAction = $route->action;
                 // dispatch
-                self::$dispatch(self::$activeController, self::$activeAction);
+                self::dispatch($this->activeController, $this->activeAction);
                 return;
             }
         }
