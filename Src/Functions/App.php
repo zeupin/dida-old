@@ -17,6 +17,6 @@ function app($service_id = null)
     if (\Dida::$app->has($service_id)) {
         return \Dida::$app->get($service_id);
     } else {
-        return null;
+        throw new \Dida\Exception\PropertyGetException($service_id);
     }
 }
