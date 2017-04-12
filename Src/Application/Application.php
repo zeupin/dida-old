@@ -20,7 +20,7 @@ use \Dida\Exception\PropertyGetException;
  */
 final class Application extends Container
 {
-    /* 公有变量 */
+    /* 属性变量 */
     protected $config = null;    // 配置
     protected $request = null;   // 请求
     protected $response = null;  // 应答
