@@ -57,24 +57,4 @@ class DefaultRoute extends Route
         $this->matched = false;
         return false;
     }
-
-
-    /**
-     *
-     * @param string $controller
-     * @param string $action
-     * @param array $parameters
-     *
-     * @return string
-     */
-    public static function assemble($controller, $action, array $parameters = array())
-    {
-        $r = [];
-        $r[] = "reqr={$controller}/{$action}";
-        foreach ($parameters as $k => $v) {
-            $r[] = "$k=$v";
-        }
-
-        return implode('&', $r);
-    }
 }
