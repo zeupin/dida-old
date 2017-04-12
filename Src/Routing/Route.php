@@ -7,6 +7,7 @@
 namespace Dida\Routing;
 
 use \Dida\Exception\PropertyGetException;
+use \Dida\Exception\ValueNotSetException;
 use \Dida\Exception\FileNotFoundException;
 
 /**
@@ -22,8 +23,9 @@ abstract class Route
     /*
      * 要输出的变量
      */
-    protected $controller = '';     // Controller的FQCN名称
-    protected $action = '';         // Action的名称
+    protected $matched = false;     // 是否匹配成功
+    protected $controller = null;   // controller的类全名，如：Foo\Bar\BazController
+    protected $action = null;       // action
 
     /*
      * 内部变量
@@ -34,15 +36,44 @@ abstract class Route
     /**
      * 对Request进行路由匹配
      *
-     * @return array|bool 匹配成功返回[controller, action],失败返回false
+     * @return bool 匹配成功返回true,失败返回false
      */
     abstract public function match();
 
 
     /**
+     * 当匹配成功后，返回controller和action
+     *
+     * @param string $name
+     *
+     * @throws ValueNotSetException
+     * @throws PropertyGetException
+     */
+    public function __get($name)
+    {
+        switch ($name) {
+            case 'controller':
+                if ($this->matched) {
+                    return $this->controller;
+                } else {
+                    throw new ValueNotSetException($name);
+                }
+            case 'action':
+                if ($this->matched) {
+                    return $this->action;
+                } else {
+                    throw new ValueNotSetException($name);
+                }
+            default:
+                throw new PropertyGetException($name);
+        }
+    }
+
+
+    /**
      * 设置要匹配的Request
      */
-    public function setRequest(Request $request)
+    public function setRequest(Request &$request)
     {
         $this->request = $request;
         $this->matched = false;

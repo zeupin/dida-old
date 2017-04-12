@@ -7,6 +7,7 @@
 namespace Dida\MVC;
 
 use \Dida\Request;
+use \Dida\Routing\Router;
 use \Dida\Routing\Exception\ActionNotFoundException;
 
 /**
@@ -18,29 +19,37 @@ abstract class Controller
 
 
     /**
-     * 检查指定的action是否存在
+     * 检查指定的action是否存在。
+     *
+     * 默认是检查当前Controller有没有对应的Action方法。
+     * 如果和上述默认设置不一样，可以在继承时进行覆盖。
      *
      * @param string $action
      */
     public static function actionExists($action)
     {
-        return method_exists(get_called_class(), $action);
+        return method_exists(get_called_class(), $action . 'Action');
     }
 
 
     /**
      * 执行指定的Action
      *
+     * 默认是执行当前Controller实例中的action方法。
+     * 如果和上述默认方法不一致，可以在继承时进行覆盖。
+     *
      * @param string $action
-     * @param array $parameters 执行时的附带参数
+     * @param array $parameters
      */
     public function execute($action, $parameters = [])
     {
-        if (self::actionExists($action)) {
-            return call_user_func_array([$this, $action], $parameters);
-        } else {
+        // 如果action不存在，直接抛异常
+        if (!self::actionExists($action)) {
             throw new ActionNotFoundException(get_called_class() . '->' . $action);
         }
+
+        // 调用$this的action方法
+        return call_user_func_array([$this, $action . 'Action'], $parameters);
     }
 
 
@@ -65,11 +74,14 @@ abstract class Controller
      */
     public function forward($controller, $action, $parameters = [])
     {
+        Router::dispatch($controller, $action, $parameters);
     }
 
 
     /**
      * 重定向到另外一个url
+     *
+     * @param string $url
      */
     public function redirect($url)
     {
