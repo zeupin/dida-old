@@ -7,6 +7,7 @@
 namespace Dida\MVC;
 
 use \Dida\Request;
+use \Dida\Routing\Exception\ActionNotFoundException;
 
 /**
  * Controller 基类
@@ -18,10 +19,28 @@ abstract class Controller
 
     /**
      * 检查指定的action是否存在
+     *
+     * @param string $action
      */
     public static function actionExists($action)
     {
         return method_exists(get_called_class(), $action);
+    }
+
+
+    /**
+     * 执行指定的Action
+     *
+     * @param string $action
+     * @param array $parameters 执行时的附带参数
+     */
+    public function execute($action, $parameters = [])
+    {
+        if (self::actionExists($action)) {
+            return call_user_func_array([$this, $action], $parameters);
+        } else {
+            throw new ActionNotFoundException(get_called_class() . '->' . $action);
+        }
     }
 
 
