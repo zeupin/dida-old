@@ -64,6 +64,8 @@ abstract class Route
                 } else {
                     throw new ValueNotSetException($name);
                 }
+            case 'matched':
+                return $this->matched;
             default:
                 throw new PropertyGetException($name);
         }

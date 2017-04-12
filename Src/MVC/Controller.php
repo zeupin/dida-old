@@ -35,8 +35,8 @@ abstract class Controller
     /**
      * 执行指定的Action
      *
-     * 默认是执行当前Controller实例中的action方法。
-     * 如果和上述默认方法不一致，可以在继承时进行覆盖。
+     * 1. 默认是执行当前Controller实例中的action方法。如果和上述默认方法不一致，可以在继承时进行覆盖。
+     * 2. 一般Controller级别的权限认证也在这里做。
      *
      * @param string $action
      * @param array $parameters
