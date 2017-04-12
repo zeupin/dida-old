@@ -6,26 +6,31 @@
 
 namespace Dida\Routing;
 
-use Exception\NotFoundException;
+use \Dida\Routing\InvalidDispatchException;
+use \Dida\Routing\Exception\ControllerNotFoundException;
+use \Dida\Routing\Exception\ActionNotFoundException;
 
 /**
  * Router 类
  */
-class Router
+final class Router
 {
-    protected $routes = [];
+    protected static $routes = [];
+
+    /* 匹配到的路由 */
+    protected static $activeRoute = null;
+    protected static $activeController = null;
+    protected static $activeAction = null;
 
 
     /**
      * 新增一个路由规则
      *
      * @param \Dida\Routing\Route $route
-     * @return $this 链式调用
      */
-    public function addRoute(Route $route)
+    public static function addRoute(Route $route)
     {
-        $this->routes[] = $route;
-        return $this;
+        self::$routes[] = $route;
     }
 
 
@@ -33,15 +38,19 @@ class Router
      * 遍历所有的路由规则，如果找到，则执行
      *
      * @param \Dida\Routing\Request $request
-     * @return type
+     *
      * @throws RoutingFailException
      */
-    public function route(Request $request)
+    public static function start(Request $request)
     {
-        foreach ($this->routes as $route) {
+        foreach (self::$routes as $route) {
             $route->setRequest($request);
             if ($route->match()) {
-                $route->dispatch();
+                self::$activeRoute = $route;
+                self::$activeController = $route->controller;
+                self::$activeAction = $route->action;
+                // dispatch
+                self::$dispatch(self::$activeController, self::$activeAction);
                 return;
             }
         }
@@ -52,17 +61,25 @@ class Router
 
 
     /**
-     * 分派任务
+     * 分派Action
+     *
+     * @param string $controller
+     * @param string $action
+     *
+     * @throws ActionNotFoundException
+     * @throws ControllerNotFoundException
      */
-    public function dispatch($controller, $action)
+    public static function dispatch($controller, $action, $parameters = [])
     {
-        if ($this->matched) {
-            app()->set('controller', $this->controller);
-            $callback = [app()->get('controller'), $this->action];
-            call_user_func_array($callback, $this->parameters);
-            return;
+        if (class_exists($controller, true)) {
+            if ($controller::actionExists($action)) {
+                $obj = new $controller;
+                $obj->execute($action, $parameters);
+            } else {
+                throw new ActionNotFoundException($controller . '->' . $action);
+            }
         } else {
-            throw new \Dida\Exception\InvalidDispatchException();
+            throw new ControllerNotFoundException($controller);
         }
     }
 }
