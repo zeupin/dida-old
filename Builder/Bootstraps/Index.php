@@ -3,18 +3,16 @@
 namespace Dida\Builder;
 
 use \Dida;
+use \Dida\Routing\Router;
+use \Dida\Routing\DefaultRoute;
 
-Dida::$app->request = function () {
-    return new \Dida\Request\HttpRequest();
-};
-
+/* 设置路由规则 */
 Dida::$app->router = function () {
     /* 生成 Router实例 */
-    $router = new \Dida\Routing\Router();
+    $router = new Router;
 
     /* 定义默认路由规则 */
-    $route2 = new \Dida\Routing\DefaultRoute;
-    $router->addRoute($route2);
+    $router->addRoute(new DefaultRoute);
 
     /* 返回生成的路由器实例 */
     return $router;
