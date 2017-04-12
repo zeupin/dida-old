@@ -47,4 +47,15 @@ class String
         }
         return implode('', $array);
     }
+
+
+    /**
+     * 检查给出的name是否是个有效的名字
+     * 有效的名字是指以英文字母或下划线开头，且全词只含有英文字母，数字和下划线的单词
+     * @param string $name
+     */
+    public static function isValidName($name)
+    {
+        return preg_match('/^[A-Za-z_]{1}[A-Za-z0-9_]{0,}$/', $name) > 0;
+    }
 }
