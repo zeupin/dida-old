@@ -49,4 +49,20 @@ class Router
         // 路由失败，抛出 RoutingFailException
         throw new RoutingFailException;
     }
+
+
+    /**
+     * 分派任务
+     */
+    public function dispatch($controller, $action)
+    {
+        if ($this->matched) {
+            app()->set('controller', $this->controller);
+            $callback = [app()->get('controller'), $this->action];
+            call_user_func_array($callback, $this->parameters);
+            return;
+        } else {
+            throw new \Dida\Exception\InvalidDispatchException();
+        }
+    }
 }

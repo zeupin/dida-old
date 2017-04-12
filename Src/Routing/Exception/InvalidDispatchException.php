@@ -4,10 +4,12 @@
  * http://dida.zeupin.com
  */
 
-namespace Dida;
+namespace Dida\Routing;
+
+use \Dida\Exception;
 
 /**
- * 未找到指定事件
+ * 无效的dispatch
  */
 class InvalidDispatchException extends Exception
 {

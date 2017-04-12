@@ -6,6 +6,9 @@
 
 namespace Dida\Routing;
 
+use \Dida\Exception\PropertyGetException;
+use \Dida\Exception\FileNotFoundException;
+
 /**
  * Route 类
  */
@@ -26,31 +29,14 @@ abstract class Route
      * 内部变量
      */
     protected $routemap = [];
-    protected $matched = false;
 
 
     /**
      * 对Request进行路由匹配
      *
-     * @return bool 匹配成功返回true，否则返回false
+     * @return array|bool 匹配成功返回[controller, action],失败返回false
      */
     abstract public function match();
-
-
-    /**
-     * 分派任务
-     */
-    public function dispatch()
-    {
-        if ($this->matched) {
-            app()->set('controller', $this->controller);
-            $callback = [app()->get('controller'), $this->action];
-            call_user_func_array($callback, $this->parameters);
-            return;
-        } else {
-            throw new \Dida\Exception\InvalidDispatchException();
-        }
-    }
 
 
     /**
@@ -73,52 +59,14 @@ abstract class Route
     public function loadRouteMap($routemapfile)
     {
         if (file_exists($routemapfile) && is_file($routemapfile)) {
-            $routemap = require($routemapfile);
+            $routemap = include($routemapfile);
             if (!is_array($routemap)) {
                 $this->routemap = [];
                 return false;
             }
             $this->routemap = $routemap;
-            return true;
         } else {
-            $this->routemap = [];
-            return false;
+            throw new FileNotFoundException($routemapfile);
         }
-    }
-
-
-    /**
-     * 把一个横线分隔的字符串按照PascalCase模式转换
-     * 例如：'foo-bar-baz' 会转化为 FooBarBaz
-     *
-     * @param string $string
-     */
-    public function usePascalCase($string)
-    {
-        $array = explode('-', $string);
-        foreach ($array as $k => $v) {
-            $array[$k] = ucfirst($v);
-        }
-        return implode('', $array);
-    }
-
-
-    /**
-     * 把一个横线分隔的字符串按照PascalCase模式转换
-     * 例如：'foo-bar-baz' 会转化为 fooBarBaz
-     *
-     * @param string $string
-     */
-    public function useCamelCase($string)
-    {
-        $array = explode('-', $string);
-        foreach ($array as $k => $v) {
-            if ($k === 0) {
-                $array[$k] = lcfirst($v);
-            } else {
-                $array[$k] = ucfirst($v);
-            }
-        }
-        return implode('', $array);
     }
 }
