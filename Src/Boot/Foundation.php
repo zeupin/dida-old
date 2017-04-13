@@ -68,6 +68,6 @@ final class Foundation
      */
     private static function loadFunctions()
     {
-        require DIDA_ROOT . 'Functions/Index.php';
+        include DIDA_ROOT . 'Functions/Index.php';
     }
 }
