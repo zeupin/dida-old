@@ -94,7 +94,7 @@ final class Application extends Container
         $target = DIDA_APP_ROOT . 'Functions/Index.php';
         if (file_exists($target) && is_file($target)) {
             $app = $this;
-            require $target;
+            include $target;
         }
     }
 
@@ -107,7 +107,7 @@ final class Application extends Container
         $target = DIDA_APP_ROOT . 'Bootstraps/Index.php';
         if (file_exists($target) && is_file($target)) {
             $app = $this;
-            require $target;
+            include $target;
         }
     }
 
