@@ -4,6 +4,7 @@
  * http://dida.zeupin.com
  */
 
+use \Dida\Boot\Foundation;
 use \Dida\Application;
 
 /**
@@ -16,7 +17,14 @@ final class Dida
 
     public static function start()
     {
+        // 基础环境初始化
+        Foundation::init();
+
         self::$app = new Application;
-        self::$app->start();
+        try {
+            self::$app->start();
+        } catch (\Exception $e) {
+            include DIDA_ROOT . 'Exception/View/Html.php';
+        }
     }
 }

@@ -7,7 +7,6 @@
 namespace Dida;
 
 use \Dida\Container;
-use \Dida\Boot\Foundation;
 use \Dida\Config;
 use \Dida\Request\ConsoleRequest;
 use \Dida\Request\HttpRequest;
@@ -47,9 +46,6 @@ final class Application extends Container
      */
     private function init()
     {
-        // 基础环境初始化
-        Foundation::init();
-
         // 基础变量
         $this->config = new Config;
         $this->response = new Response;
@@ -118,11 +114,7 @@ final class Application extends Container
     private function run()
     {
         $app = $this;
-        try {
-            require DIDA_APP_ROOT . 'Index.php';
-        } catch (\Exception $e) {
-            include DIDA_ROOT . 'Exception/View/Html.php';
-        }
+        require DIDA_APP_ROOT . 'Index.php';
     }
 
 
