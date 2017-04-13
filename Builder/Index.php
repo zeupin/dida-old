@@ -8,9 +8,6 @@ header("Content-type: text/html; charset=utf-8");
 $app = app();
 $conn = $app->db;
 
-var_dump(app()->request->path);
-die();
-
 //$conn->getDatabasePlatform()->registerDoctrineTypeMapping('enum', 'integer');
 $sm = $conn->getSchemaManager();
 //$tables = $sm->listViews();
@@ -18,10 +15,4 @@ $sm = $conn->getSchemaManager();
 $columns = $sm->listTableDetails('user');
 foreach ($columns as $column) {
     echo sprintf('%s --%s<br>', $column->getName(), $column->getType());
-}
-
-throw new \Dida\Exception\PropertyGetException('hi');
-
-for ($i=0; $i<20; $i++) {
-    echo microtime().PHP_EOL;
 }
