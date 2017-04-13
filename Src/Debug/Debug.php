@@ -24,32 +24,43 @@ class Debug
     public static function halt($var = null)
     {
         if ($var !== null) {
-            echo self::dumpVar($var);
+            echo self::varDump($var);
         }
         die();
     }
 
 
     /**
-     * 导出一个变量的定义。
+     * 导出一个变量的值，是内置函数var_dump()的增强版
      *
-     * @param mixed  $var
-     * @param string $varname
-     *
-     * @return string
+     * @param mixed $var
+     * @return type
      */
-    public static function dumpVar($var, $varname = null)
+    public static function varDump($var)
     {
-        $begin = '';
-        $end = '';
+        return self::format($var);
+    }
+
+
+    /**
+     * 输出或返回一个变量的字符串表示，是内置函数var_export()的增强版
+     *
+     * @param mixed $var
+     * @param string $varname
+     */
+    public static function varExport($var, $varname = null)
+    {
         if (is_string($varname) && $varname !== '') {
             $begin = $varname . ' = ';
             $end = ';' . PHP_EOL;
+        } else {
+            $begin = '';
+            $end = '';
         }
 
         $s = self::format($var, 0);
 
-        return "{$begin}{$s}{$end}";
+        return sprintf('%s%s%s', $begin, $s, $end);
     }
 
 
@@ -68,31 +79,48 @@ class Debug
     }
 
 
+    /**
+     * 格式化输出一个数组
+     *
+     * @param array $array
+     * @param int $leading 前导空格的数量
+     * @return string
+     */
     protected static function formatArray($array, $leading = 0)
     {
-        $glue = PHP_EOL;
-        $spaces = str_repeat(' ', $leading);    // 前导空格
-        
-        // 找出最大字符长度的key
+        // 前导空格
+        $leadingspaces = str_repeat(' ', $leading);
+
+        // 找出名称最长的key
         $maxlen = 0;
         $keys = array_keys($array);
+        $is_string_key = false;
         foreach ($keys as $key) {
+            if (is_string($key)) {
+                $is_string_key = true;
+            }
             $len = mb_strwidth($key);
             if ($len > $maxlen) {
                 $maxlen = $len;
             }
+        }
+        if ($is_string_key) {
+            $maxlen = $maxlen + 2;
         }
 
         // 生成数组定义个每一行
         $s = [];
         $s[] = '['; // 第一行无需前导空格
         foreach ($array as $key => $value) {
-            $key = var_export($key, true);
-            $value = self::format($value, $leading + $maxlen + 10);
-            $s[] = $spaces . str_pad('', 4) . str_pad($key, $maxlen + 2) . ' => ' . $value . ',';
+            $key = (is_string($key)) ? "'$key'" : $key;
+            if (is_array($value)) {
+                $value = self::formatArray($value, $leading+$maxlen+8);
+            }
+            //$s[] = $leadingspaces . str_pad('', 4) . str_pad($key, $maxlen + 2) . ' => ' . $value . ',';
+            $s[] = sprintf("%{$leading}s    %-{$maxlen}s => %s,", '', $key, $value);
         }
-        $s[] = $spaces . ']';
+        $s[] = $leadingspaces . ']';
 
-        return implode($glue, $s);
+        return implode(PHP_EOL, $s);
     }
 }
