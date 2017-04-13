@@ -12,17 +12,21 @@ namespace Dida;
 class Debug
 {
     /**
-     * 停止执行后面的程序。
-     * 还可以顺带输出一个需要跟踪的变量值。
-     *
-     * @param mixed  $var  需要跟踪的变量
+     * 显示一个需要跟踪的变量，然后停止运行
      */
-    public static function halt($var = null)
+    public static function halt($var, $varname = null)
     {
-        if ($var !== null) {
-            echo self::varDump($var);
-        }
-        die();
+        echo '<pre>' . htmlspecialchars(self::varExport($var, $varname)) . '</pre>';
+        exit();
+    }
+
+
+    /**
+     * 显示一个需要跟踪的变量
+     */
+    public static function variable($var, $varname = null)
+    {
+        echo '<pre>' . htmlspecialchars(self::varExport($var, $varname)) . '</pre>';
     }
 
 
