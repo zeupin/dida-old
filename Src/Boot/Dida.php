@@ -20,6 +20,7 @@ final class Dida
         // 基础环境初始化
         Foundation::init();
 
+        // 生成并启动Application实例
         self::$app = new Application;
         try {
             self::$app->start();
