@@ -11,10 +11,6 @@ namespace Dida;
  */
 class Debug
 {
-    const VAR_DUMP_MODE = 'var_dump';
-    const PRINT_R_MODE = 'print_r';
-
-
     /**
      * 停止执行后面的程序。
      * 还可以顺带输出一个需要跟踪的变量值。
@@ -31,56 +27,61 @@ class Debug
 
 
     /**
-     * 导出一个变量的值，是内置函数var_dump()的增强版
-     *
-     * @param mixed $var
-     * @return type
+     * 导出变量
      */
     public static function varDump($var)
     {
-        return self::format($var);
+        return self::formatVar($var);
     }
 
 
     /**
-     * 输出或返回一个变量的字符串表示，是内置函数var_export()的增强版
+     * 输出或返回一个变量的字符串表示
      *
-     * @param mixed $var
-     * @param string $varname
+     * @param mixed $var 变量
+     * @param string $varname 变量名
      */
     public static function varExport($var, $varname = null)
     {
-        if (is_string($varname) && $varname !== '') {
-            $begin = $varname . ' = ';
-            $end = ';' . PHP_EOL;
-        } else {
-            $begin = '';
-            $end = '';
+        // 如果不设置变量名，则等效于self::varDump()
+        if (!is_string($varname) || $varname === '') {
+            return self::formatVar($var);
         }
 
-        $s = self::format($var, 0);
+        // 变量名 = 变量值;
+        $begin = $varname . ' = ';
+        $leading = strlen($begin);
+        $v = self::formatVar($var, $leading);
+        $end = ';' . PHP_EOL;
 
-        return sprintf('%s%s%s', $begin, $s, $end);
-    }
-
-
-    protected static function format($var, $leading = 0)
-    {
-        if (is_array($var)) {
-            if (empty($var)) {
-                return '[]';
-            }
-            return self::formatArray($var, $leading);
-        } elseif (is_null($var)) {
-            return 'null';
-        } else {
-            return var_export($var, true);
-        }
+        return $begin . $v . $end;
     }
 
 
     /**
-     * 格式化输出一个数组
+     * 把一个变量的值，用可读性良好的格式进行输出
+     *
+     * @return string
+     */
+    protected static function formatVar($var, $leading = 0)
+    {
+        // 为 null
+        if (is_null($var)) {
+            return 'null';
+        }
+
+        // 为数组
+        if (is_array($var)) {
+            return self::formatArray($var, $leading);
+        }
+
+        // 其它类型
+        return var_export($var, true);
+    }
+
+
+    /**
+     * 把一个数组的值，用可读性良好的格式进行输出
      *
      * @param array $array
      * @param int $leading 前导空格的数量
@@ -88,6 +89,11 @@ class Debug
      */
     protected static function formatArray($array, $leading = 0)
     {
+        // 如果是空数组，直接返回[]
+        if (empty($array)) {
+            return '[]';
+        }
+
         // 前导空格
         $leadingspaces = str_repeat(' ', $leading);
 
@@ -113,13 +119,10 @@ class Debug
         $s[] = '['; // 第一行无需前导空格
         foreach ($array as $key => $value) {
             $key = (is_string($key)) ? "'$key'" : $key;
-            if (is_array($value)) {
-                $value = self::formatArray($value, $leading+$maxlen+8);
-            }
-            //$s[] = $leadingspaces . str_pad('', 4) . str_pad($key, $maxlen + 2) . ' => ' . $value . ',';
-            $s[] = sprintf("%{$leading}s    %-{$maxlen}s => %s,", '', $key, $value);
+            $value = self::formatVar($value, $leading + $maxlen + 8);
+            $s[] = sprintf("%s    %-{$maxlen}s => %s,", $leadingspaces, $key, $value);
         }
-        $s[] = $leadingspaces . ']';
+        $s[] = $leadingspaces . ']';    // 最后一行
 
         return implode(PHP_EOL, $s);
     }
