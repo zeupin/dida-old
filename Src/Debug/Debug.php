@@ -13,10 +13,13 @@ class Debug
 {
     /**
      * 显示一个需要跟踪的变量，然后停止运行
+     *
+     * 如果是想不显示变量就直接停止的话，建议用PHP自带的die()或者exit()。
+     * 本类主要目的是Debug用途，函数设计时，重点考虑的是Debug时的方便。
      */
     public static function halt($var, $varname = null)
     {
-        echo '<pre>' . htmlspecialchars(self::varExport($var, $varname)) . '</pre>';
+        self::variable($var, $varname);
         exit();
     }
 
@@ -26,6 +29,9 @@ class Debug
      */
     public static function variable($var, $varname = null)
     {
+        if (!headers_sent()) {
+            header('Content-Type: text/html; charset=utf-8');
+        }
         echo '<pre>' . htmlspecialchars(self::varExport($var, $varname)) . '</pre>';
     }
 
