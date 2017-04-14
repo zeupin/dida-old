@@ -33,6 +33,7 @@ class HttpRequest extends Request
     protected $get = null;          // $_GET
     protected $post = null;         // $_POST
     protected $isAjax = null;
+    protected $clientIP = null;     // 客户端IP
 
 
     public function __construct()
@@ -58,6 +59,8 @@ class HttpRequest extends Request
                 return $this->post();
             case 'isAjax':
                 return $this->isAjax();
+            case 'clientIP':
+                return $this->clientIP();
         }
     }
 
@@ -210,6 +213,37 @@ class HttpRequest extends Request
                 $this->isAjax = true;
             }
         }
-        return $this->isAjax;   // 返回结果
+
+        // 返回结果
+        return $this->isAjax;
+    }
+
+
+    /**
+     * 获取客户端IP
+     *
+     * @return string|bool 正常返回读取的ip，异常返回false
+     */
+    public function clientIP()
+    {
+        // 不重复处理
+        if ($this->clientIP !== null) {
+            return $this->clientIP;
+        }
+
+        // 第一次运行
+        if (isset($_SERVER["HTTP_X_FORWARDED_FOR"])) {
+            $ip = $_SERVER["HTTP_X_FORWARDED_FOR"];
+        } elseif (isset($_SERVER["HTTP_CLIENT_IP"])) {
+            $ip = $_SERVER["HTTP_CLIENT_IP"];
+        } elseif (isset($_SERVER["REMOTE_ADDR"])) {
+            $ip = $_SERVER["REMOTE_ADDR"];
+        } else {
+            $ip = false; // ip未定义
+        }
+
+        // 返回结果
+        $this->clientIP = $ip;
+        return $ip;
     }
 }
