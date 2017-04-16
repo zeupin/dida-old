@@ -4,7 +4,7 @@
  * http://dida.zeupin.com
  */
 
-namespace Dida;
+namespace Dida\Application;
 
 use \Dida\Container\Container;
 use \Dida\Config;

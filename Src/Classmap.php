@@ -4,9 +4,7 @@
  * http://dida.zeupin.com
  */
 return [
-    'Dida\\Application'         => 'Application/Application.php',
     'Dida\\Config'              => 'Config/Config.php',
-    'Dida\\Container'           => 'Container/Container.php',
     'Dida\\Db'                  => 'Db/DbInterface.php',
     'Dida\\Debug'               => 'Debug/Debug.php',
     'Dida\\GetSetTrait'         => 'Traits/GetSetTrait.php',

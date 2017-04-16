@@ -5,7 +5,7 @@
  */
 
 use \Dida\Boot\Foundation;
-use \Dida\Application;
+use \Dida\Application\Application;
 
 /**
  * Dida
