@@ -4,19 +4,20 @@
  * http://dida.zeupin.com
  */
 
-namespace Dida;
+namespace Dida\Container;
 
+use \ArrayAccess;
 use \Dida\Container\Exception\InvalidServiceException;
 use \Dida\Container\Exception\ServiceNotFoundException;
 use \Dida\Container\Exception\SingletonException;
 
 /**
- * Container 容器类，主要用于依赖注入和服务定位用途。
+ * Container 容器类，主要用于依赖注入和服务定位。
  *
  * 从运行效率考虑，Container设计为只包含服务定义，不包含配置定义。
  * 不然，每次想引用一个service，都要从几十个conf中逐个找下来，会滞碍运行速度。
  */
-class Container implements \ArrayAccess
+class Container implements ArrayAccess
 {
     /* 类型常量 */
     const CLASSNAME_TYPE = 'classname';     // 类名字符串
