@@ -4,7 +4,7 @@
  * http://dida.zeupin.com
  */
 
-namespace Dida\Container;
+namespace Dida;
 
 use \ArrayAccess;
 use \Dida\Container\Exception\InvalidServiceException;

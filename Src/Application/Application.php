@@ -6,7 +6,7 @@
 
 namespace Dida\Application;
 
-use \Dida\Container\Container;
+use \Dida\Container;
 use \Dida\Config;
 use \Dida\Request\ConsoleRequest;
 use \Dida\Request\HttpRequest;
