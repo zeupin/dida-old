@@ -4,12 +4,10 @@
  * http://dida.zeupin.com
  */
 return [
-    'Dida\\Config'              => 'Config/Config.php',
     'Dida\\Db'                  => 'Db/DbInterface.php',
     'Dida\\Debug'               => 'Debug/Debug.php',
     'Dida\\GetSetTrait'         => 'Traits/GetSetTrait.php',
     'Dida\\Html\\Element'       => 'Html/Element.php',
-    'Dida\\Event'               => 'Event/Event.php',
     'Dida\\Exception'           => 'Exception/Exception.php',
     'Dida\\Middleware'          => 'Middleware/Middleware.php',
     'Dida\\Request'             => 'Request/Request.php',

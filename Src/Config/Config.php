@@ -6,10 +6,12 @@
 
 namespace Dida;
 
+use \ArrayAccess;
+
 /**
  * Config 类
  */
-class Config implements \ArrayAccess
+class Config implements ArrayAccess
 {
     protected $items = [];
 
