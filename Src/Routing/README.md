@@ -1,17 +1,18 @@
 # Routing 路由
 
-Routing 主要用 `Router` 和 `Route` 这两个类来实现功能。
-
 Routing 的主要工作是：
-1. 把 Request ，按照既定规则，解析为[controller, action]。
-2. 询问 controller ：action 是否存在。
-3. 如果 action 存在，则执行 dispatch()。
+1. 把 HttpRequest ，按照既定规则，解析为 `[controller, action]` 。
+2. 检查 `controller` 是否存在？
+3. 调用 `controller::actionExists()`，`action` 是否存在？
+4. 如果 `action` 存在，则执行 `dispatch()` 操作。
 
 Routing 只负责从 Request 中解析出 controller 和 action ，而：
 1. 不负责获取controller或者action的具体执行参数（parameters）。
     > 这个属于业务代码，应该在controller或者action里面去完成。
 2. 不负责检查用户的执行权限。
     > 这个属于业务代码，应该在controller或者action里面中去完成。
+
+Routing 主要用 `Router` 和 `Route` 这两个类来实现功能。
 
 ## Router 路由器类
 
@@ -23,8 +24,10 @@ Dida::$app->router = function () {
     /* 生成 Router实例 */
     $router = new Router;
 
-    /* 定义默认路由规则 */
-    $router->addRoute(new DefaultRoute);
+    /* 设置若干路由规则 */
+    $router->addRoute(new 路由规则1);
+    $router->addRoute(new 路由规则2);
+    $router->addRoute(new 路由规则N);
 
     /* 返回生成的路由器实例 */
     return $router;
