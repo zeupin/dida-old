@@ -4,15 +4,16 @@
  * http://dida.zeupin.com
  */
 
-namespace Dida;
+namespace Dida\Traits;
+
+use \Dida\Exception\PropertyGetException;
+use \Dida\Exception\PropertySetException;
 
 /**
  * Get/Set Trait
  */
-trait GetSetTrait
+trait PropertyGetSetTrait
 {
-
-
     /**
      * 如果某个属性不可见，检查是否有对应的Getter
      *
@@ -23,6 +24,9 @@ trait GetSetTrait
         if (method_exists($this, $name . 'Get')) {
             return call_user_func([$this, $name . 'Get']);
         }
+
+        // 没有找到的话，抛异常
+        throw new PropertyGetException(get_called_class() . '->' . $name);
     }
 
 
@@ -36,6 +40,10 @@ trait GetSetTrait
     {
         if (method_exists($this, $name . 'Set')) {
             call_user_func_array([$this, $name . 'Set'], [$value]);
+            return;
         }
+
+        // 没有找到的话，抛异常
+        throw new PropertySetException(get_called_class() . '->' . $name);
     }
 }

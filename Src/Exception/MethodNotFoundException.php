@@ -4,7 +4,9 @@
  * http://dida.zeupin.com
  */
 
-namespace Dida;
+namespace Dida\Exception;
+
+use \Dida\Exception;
 
 /**
  * 方法不存在

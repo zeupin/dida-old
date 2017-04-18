@@ -4,7 +4,7 @@
  * http://dida.zeupin.com
  */
 
-namespace Dida;
+namespace Dida\Traits;
 
 /**
  * SingletonTrait 单例模式特性
