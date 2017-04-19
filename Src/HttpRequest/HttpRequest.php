@@ -7,9 +7,9 @@
 namespace Dida\Request;
 
 use \Dida\Request;
-use \Dida\Request\Exception\InvalidUrlException;
-use \Dida\Request\Exception\InvalidHttpMethodException;
-use \Dida\Request\Exception\InvalidQueryException;
+use \Dida\HttpRequest\Exception\InvalidUrlException;
+use \Dida\HttpRequest\Exception\InvalidRequestMethodException;
+use \Dida\HttpRequest\Exception\InvalidQueryException;
 
 /**
  * HttpRequest 类
@@ -98,7 +98,7 @@ class HttpRequest extends Request
                 $this->method = $method;
                 break;
             default:
-                throw new InvalidHttpMethodException;
+                throw new InvalidRequestMethodException;
         }
         return $this->method;
     }

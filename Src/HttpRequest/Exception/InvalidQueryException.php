@@ -4,7 +4,7 @@
  * http://dida.zeupin.com
  */
 
-namespace Dida\Request\Exception;
+namespace Dida\HttpRequest\Exception;
 
 use \Dida\Exception;
 
