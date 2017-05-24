@@ -4,18 +4,22 @@
  * http://dida.zeupin.com
  */
 
-namespace Dida\Request;
+namespace Dida;
 
 use \Dida\Request;
 use \Dida\HttpRequest\Exception\InvalidUrlException;
 use \Dida\HttpRequest\Exception\InvalidRequestMethodException;
 use \Dida\HttpRequest\Exception\InvalidQueryException;
+use \Dida\Exception\PropertyGetException;
 
 /**
  * HttpRequest 类
  */
 class HttpRequest extends Request
 {
+    /* traits */
+    use Traits\PropertyGetSetTrait;
+
     /* 常量 */
     const GET_METHOD = 'GET';
     const POST_METHOD = 'POST';
@@ -30,38 +34,18 @@ class HttpRequest extends Request
     protected $path = null;
 
     /* 扩展属性，需要用到时再获取 */
-    protected $get = null;          // $_GET
+    protected $query = null;        // $_GET
     protected $post = null;         // $_POST
-    protected $isAjax = null;
+    protected $isAjax = null;       // 是否是Ajax访问
     protected $clientIP = null;     // 客户端IP
+    protected $host = null;         // 主机名
+    protected $scheme = null;       // 协议名（全小写）,http,https等
 
 
     public function __construct()
     {
-        $this->method();
-        $this->path();
-    }
-
-
-    /**
-     * 伪属性
-     */
-    public function __get($name)
-    {
-        switch ($name) {
-            case 'method':
-                return $this->method;
-            case 'path':
-                return $this->path;
-            case 'get':
-                return $this->get();
-            case 'post':
-                return $this->post();
-            case 'isAjax':
-                return $this->isAjax();
-            case 'clientIP':
-                return $this->clientIP();
-        }
+        $this->methodGet();
+        $this->pathGet();
     }
 
 
@@ -70,7 +54,7 @@ class HttpRequest extends Request
      *
      * @return string 正常为GET,POST,PUT,PATCH,DELETE,OPTIONS,HEAD之一。如果非法，则为空字符串。
      */
-    public function method()
+    public function methodGet()
     {
         // 如果已经有值，直接引用
         if ($this->method !== null) {
@@ -109,7 +93,7 @@ class HttpRequest extends Request
      *
      * @return array
      */
-    public function path()
+    public function pathGet()
     {
         // 不重复处理
         if (is_array($this->path)) {
@@ -155,22 +139,22 @@ class HttpRequest extends Request
 
 
     /**
-     * 获取$_GET
+     * 获取查询串 $_GET
      *
      * @return array
      */
-    public function get()
+    public function queryGet()
     {
         // 不重复处理
-        if (is_array($this->get)) {
-            return $this->get;
+        if (is_array($this->query)) {
+            return $this->query;
         }
 
         // 第一次运行，从$_GET把数据搬过来
         foreach ($_GET as $k => $v) {
-            $this->get[$k] = $v;
+            $this->query[$k] = $v;
         }
-        return $this->get;
+        return $this->query;
     }
 
 
@@ -179,7 +163,7 @@ class HttpRequest extends Request
      *
      * @return array
      */
-    public function post()
+    public function postGet()
     {
         // 不重复处理
         if (is_array($this->post)) {
@@ -220,11 +204,21 @@ class HttpRequest extends Request
 
 
     /**
+     * isAjax() 函数的属性访问方式
+     * @return type
+     */
+    public function isAjaxGet()
+    {
+        return isAjax();
+    }
+
+
+    /**
      * 获取客户端IP
      *
      * @return string|bool 正常返回读取的ip，异常返回false
      */
-    public function clientIP()
+    public function clientIPGet()
     {
         // 不重复处理
         if ($this->clientIP !== null) {
@@ -245,5 +239,51 @@ class HttpRequest extends Request
         // 返回结果
         $this->clientIP = $ip;
         return $ip;
+    }
+
+
+    /**
+     * 获取主机名
+     */
+    public function hostGet()
+    {
+        // 不重复处理
+        if ($this->host !== null) {
+            return $this->host;
+        }
+
+        // 第一次运行
+        if (isset($_SERVER['HTTP_HOST'])) {
+            $host = $_SERVER['HTTP_HOST'];
+        } else {
+            $host = '';
+        }
+
+        // 返回结果
+        $this->host = $host;
+        return $host;
+    }
+
+
+    /**
+     * 获取协议名
+     */
+    public function schemeGet()
+    {
+        // 不重复处理
+        if ($this->scheme !== null) {
+            return $this->scheme;
+        }
+
+        // 第一次运行
+        if (isset($_SERVER['REQUEST_SCHEME'])) {
+            $scheme = $_SERVER['REQUEST_SCHEME'];
+        } else {
+            $scheme = '';
+        }
+
+        // 返回结果
+        $this->scheme = $scheme;
+        return $scheme;
     }
 }

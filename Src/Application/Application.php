@@ -9,7 +9,7 @@ namespace Dida\Application;
 use \Dida\Container;
 use \Dida\Config;
 use \Dida\Request\ConsoleRequest;
-use \Dida\Request\HttpRequest;
+use \Dida\HttpRequest;
 use \Dida\Response;
 use \Dida\Event\EventBus;
 use \Dida\Exception\PropertyGetException;
