@@ -13,6 +13,7 @@ use \Dida\HttpRequest;
 use \Dida\Response;
 use \Dida\Event\EventBus;
 use \Dida\Exception\PropertyGetException;
+use \Dida\Exception\FileNotFoundException;
 
 /**
  * Application 类
@@ -114,7 +115,11 @@ final class Application extends Container
     private function run()
     {
         $app = $this;
-        require DIDA_APP_ROOT . 'Index.php';
+        $APP_ENTRY_FILE = DIDA_APP_ROOT . 'Index.php';
+        if (!file_exists($APP_ENTRY_FILE)) {
+            throw new FileNotFoundException($APP_ENTRY_FILE);
+        }
+        require $APP_ENTRY_FILE;
     }
 
 
