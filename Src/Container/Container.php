@@ -237,7 +237,7 @@ class Container implements ArrayAccess
     public function remove($id)
     {
         unset($this->_keys[$id]);
-        unset($this->_classnames[$id], $this->_closures, $this->_instances[$id], $this->_singletons[$id]);
+        unset($this->_classnames[$id], $this->_closures[$id], $this->_instances[$id], $this->_singletons[$id]);
     }
 
 
