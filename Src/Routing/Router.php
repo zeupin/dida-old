@@ -21,6 +21,7 @@ final class Router
     protected $activeRoute = null;
     protected $activeController = null;
     protected $activeAction = null;
+    protected $activeParameters = [];
 
 
     /**
@@ -28,7 +29,7 @@ final class Router
      *
      * @param \Dida\Routing\Route $route
      */
-    public static function addRoute(Route $route)
+    public function addRoute(Route $route)
     {
         $this->routes[] = $route;
     }
@@ -37,11 +38,11 @@ final class Router
     /**
      * 遍历所有的路由规则，如果找到，则执行
      *
-     * @param \Dida\Routing\Request $request
+     * @param \Dida\Request\Request $request
      *
      * @throws RoutingFailException
      */
-    public static function start(Request $request)
+    public function start($request)
     {
         foreach ($this->routes as $route) {
             $route->setRequest($request);
@@ -49,8 +50,9 @@ final class Router
                 $this->activeRoute = $route;
                 $this->activeController = $route->controller;
                 $this->activeAction = $route->action;
+                $this->activeParameters = $route->parameters;
                 // dispatch
-                self::dispatch($this->activeController, $this->activeAction);
+                $this->dispatch($this->activeController, $this->activeAction, $this->activeParameters);
                 return;
             }
         }
@@ -69,7 +71,7 @@ final class Router
      * @throws ActionNotFoundException
      * @throws ControllerNotFoundException
      */
-    public static function dispatch($controller, $action, $parameters = [])
+    public function dispatch($controller, $action, $parameters = [])
     {
         if (class_exists($controller, true)) {
             if ($controller::actionExists($action)) {
