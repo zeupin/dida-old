@@ -6,7 +6,8 @@
 
 namespace Dida\Routing;
 
-use \Dida\Routing\InvalidDispatchException;
+use \Dida\Routing\Exception\RoutingFailException;
+use \Dida\Routing\Exception\InvalidDispatchException;
 use \Dida\Routing\Exception\ControllerNotFoundException;
 use \Dida\Routing\Exception\ActionNotFoundException;
 
