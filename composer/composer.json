@@ -1,7 +1,6 @@
 {
     "require": {
         "twig/twig": "~1.0",
-        "doctrine/dbal": "^2.5.5",
         "catfan/medoo": "^1.4"
     }
 }
