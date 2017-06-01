@@ -4,12 +4,12 @@
  * http://dida.zeupin.com
  */
 /* 必填的常量 */
-define('DIDA_ROOT', realpath(__DIR__ . '/../src') . '/');
-define('DIDA_COMPOSER_ROOT', realpath(__DIR__ . '/../composer') . '/');
-define('DIDA_APP_ROOT', realpath(__DIR__ . '/../Builder') . '/');
-define('DIDA_VAR_ROOT', realpath(__DIR__ . '/../Var') . '/');
-define('DIDA_WEB_ROOT', __DIR__ . '/');
-define('DIDA_ENV', 'dev');
+define('DIDA_ROOT',           __DIR__ . '/../src/');
+define('DIDA_COMPOSER_ROOT',  __DIR__ . '/../vendor/');
+define('DIDA_APP_ROOT',       __DIR__ . '/../App/');
+define('DIDA_VAR_ROOT',       __DIR__ . '/../Var/');
+define('DIDA_WEB_ROOT',       __DIR__ . '/');
+define('DIDA_ENV',            'dev');
 
 /* 选填的常量 */
 define('DIDA_WWW', '/');

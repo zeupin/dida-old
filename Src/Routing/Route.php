@@ -26,6 +26,7 @@ abstract class Route
     protected $matched = false;     // 是否匹配成功
     protected $controller = null;   // controller的类全名，如：Foo\Bar\BazController
     protected $action = null;       // action
+    protected $parameters = [];     // parameters
 
     /*
      * 内部变量
@@ -64,6 +65,12 @@ abstract class Route
                 } else {
                     throw new ValueNotSetException($name);
                 }
+            case 'parameters':
+                if ($this->matched) {
+                    return $this->parameters;
+                } else {
+                    throw new ValueNotSetException($name);
+                }
             case 'matched':
                 return $this->matched;
             default:
@@ -75,7 +82,7 @@ abstract class Route
     /**
      * 设置要匹配的Request
      */
-    public function setRequest(Request &$request)
+    public function setRequest(&$request)
     {
         $this->request = $request;
         $this->matched = false;

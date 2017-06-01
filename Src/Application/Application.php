@@ -13,6 +13,7 @@ use \Dida\HttpRequest;
 use \Dida\Response;
 use \Dida\Event\EventBus;
 use \Dida\Exception\PropertyGetException;
+use \Dida\Exception\FileNotFoundException;
 
 /**
  * Application 类
@@ -59,50 +60,23 @@ final class Application extends Container
      */
     private function bootstrap()
     {
-        // 载入App配置
-        $this->loadAppConfig();
+        $app = $this;
 
-        // 载入App函数库
-        $this->loadAppFunctions();
-
-        // 依次载入App的bootstraps
-        $this->loadAppBootstraps();
-    }
-
-
-    /**
-     * 根据不同的DIDA_ENV载入不同的配置文件
-     */
-    private function loadAppConfig()
-    {
+        // 载入App配置： [AppRoot]/Config/App.***.php
         $target = DIDA_APP_ROOT . 'Config/App.' . DIDA_ENV . '.php';
         if (file_exists($target) && is_file($target)) {
             $this->config->load($target);
         }
-    }
 
-
-    /**
-     * 载入app级别的函数库
-     */
-    private function loadAppFunctions()
-    {
+        // 载入app级别的函数库：[AppRoot]/Functions/Index.php
         $target = DIDA_APP_ROOT . 'Functions/Index.php';
         if (file_exists($target) && is_file($target)) {
-            $app = $this;
             include $target;
         }
-    }
 
-
-    /**
-     * 载入app的自举程序
-     */
-    private function loadAppBootstraps()
-    {
+        // 载入app的自举程序：[AppRoot]/Bootstraps/Index.php
         $target = DIDA_APP_ROOT . 'Bootstraps/Index.php';
         if (file_exists($target) && is_file($target)) {
-            $app = $this;
             include $target;
         }
     }
@@ -110,11 +84,17 @@ final class Application extends Container
 
     /**
      * 载入app的入口程序，正式开始处理app
+     *
+     * 载入 <App>/Index.php
      */
     private function run()
     {
         $app = $this;
-        require DIDA_APP_ROOT . 'Index.php';
+        $APP_ENTRY_FILE = DIDA_APP_ROOT . 'Index.php';
+        if (!file_exists($APP_ENTRY_FILE)) {
+            throw new FileNotFoundException($APP_ENTRY_FILE);
+        }
+        require $APP_ENTRY_FILE;
     }
 
 
