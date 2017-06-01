@@ -242,7 +242,7 @@ class Loader
             // 如果 $cls 中包含 \，则先把 $cls拆分成 $base + $name
             $array = explode('\\', $cls);
             $name = array_pop($array);
-            $base = implode('\\', $array);
+            $base = implode('/', $array);
             $target1 = "{$rootpath}/{$base}/{$name}.php";
             $target2 = "{$rootpath}/{$base}/{$name}/{$name}.php";
             if (file_exists($target1) && is_file($target1)) {
