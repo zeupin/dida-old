@@ -18,6 +18,20 @@ abstract class Controller
     protected $request = null;
 
 
+    public function __construct()
+    {
+        $this->init();
+    }
+
+
+    /**
+     * Controller的公共入口程序
+     */
+    public function init()
+    {
+    }
+
+
     /**
      * 检查指定的action是否存在。
      *
