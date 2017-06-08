@@ -52,6 +52,9 @@ final class Application extends Container
         $this->response = new Response;
         $this->request = (DIDA_IS_CLI) ? (new ConsoleRequest) : (new HttpRequest);
         $this->eventbus = new EventBus;
+        if (!DIDA_IS_CLI) {
+            $this->start_session();
+        }
     }
 
 
@@ -95,6 +98,15 @@ final class Application extends Container
             throw new FileNotFoundException($APP_ENTRY_FILE);
         }
         require $APP_ENTRY_FILE;
+    }
+
+
+    /**
+     * 启动session
+     */
+    private function start_session()
+    {
+        session_start();
     }
 
 
