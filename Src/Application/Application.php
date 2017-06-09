@@ -26,6 +26,7 @@ final class Application extends Container
     protected $response = null;  // 应答
     protected $eventbus = null;  // 事件总线
 
+    
     /**
      * 启动
      */
@@ -140,5 +141,16 @@ final class Application extends Container
     public function __set($id, $service)
     {
         $this->set($id, $service);
+    }
+
+
+    /**
+     * 重定向到另外一个url
+     *
+     * @param string $url
+     */
+    public function redirect($url)
+    {
+        header('Location:' . $url);
     }
 }
