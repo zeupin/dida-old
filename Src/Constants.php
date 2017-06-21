@@ -12,10 +12,10 @@
 // 路径常量
 $dida_system_constants = [
     'DIDA_ROOT',
-    'DIDA_COMPOSER_ROOT',
     'DIDA_APP_ROOT',
-    'DIDA_VAR_ROOT',
     'DIDA_WEB_ROOT',
+    'DIDA_VAR_ROOT',
+    'DIDA_COMPOSER_ROOT',
 ];
 
 foreach ($dida_system_constants as $const) {
@@ -24,18 +24,21 @@ foreach ($dida_system_constants as $const) {
     } elseif (!file_exists($$const) || !is_dir($$const)) {
         die("${$const}" . $$const . ", but this directory does not exist.");
     } else {
-        $path = realpath($$const) . DIRECTORY_SEPARATOR;
-        define($const, $path);
-        unset($$const);
+        $$const = realpath($$const) . DIRECTORY_SEPARATOR;
     }
 }
+
+define('DIDA_ROOT', $DIDA_ROOT);
+define('DIDA_APP_ROOT', $DIDA_APP_ROOT);
+define('DIDA_WEB_ROOT', $DIDA_WEB_ROOT);
+define('DIDA_VAR_ROOT', $DIDA_VAR_ROOT);
+define('DIDA_COMPOSER_ROOT', $DIDA_COMPOSER_ROOT);
 
 // DIDA_ENV
 if (!isset($DIDA_ENV)) {
     die('The necessary configure variable $DIDA_ENV is not set.');
 } else {
     define('DIDA_ENV', $DIDA_ENV);
-    unset($DIDA_ENV);
 }
 
 
