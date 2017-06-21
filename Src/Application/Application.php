@@ -26,7 +26,7 @@ final class Application extends Container
     protected $response = null;  // 应答
     protected $eventbus = null;  // 事件总线
 
-    
+
     /**
      * 启动
      */
@@ -96,9 +96,32 @@ final class Application extends Container
         $app = $this;
         $APP_ENTRY_FILE = DIDA_APP_ROOT . 'Index.php';
         if (!file_exists($APP_ENTRY_FILE)) {
+            // 如果App目录为空，则初始化App目录，并创建默认的目录结构
+            $this->initAppDirAndCreateSubFolders();
+
+            // 抛异常
             throw new FileNotFoundException($APP_ENTRY_FILE);
         }
         require $APP_ENTRY_FILE;
+    }
+
+
+    /**
+     * 如果App目录为空，则初始化App目录，并创建默认的目录结构
+     */
+    private function initAppDirAndCreateSubFolders()
+    {
+        $appdir = scandir(DIDA_APP_ROOT);
+        if (count($appdir) < 3) {
+            // 如果App目录是空目录，那么创建缺省的目录结构
+            @mkdir(DIDA_APP_ROOT . 'Bootstraps', 0777);
+            @mkdir(DIDA_APP_ROOT . 'Routes', 0777);
+            @mkdir(DIDA_APP_ROOT . 'Config', 0777);
+            @mkdir(DIDA_APP_ROOT . 'Controllers', 0777);
+            @mkdir(DIDA_APP_ROOT . 'Models', 0777);
+            @mkdir(DIDA_APP_ROOT . 'Views', 0777);
+            @mkdir(DIDA_APP_ROOT . 'Functions', 0777);
+        }
     }
 
 
