@@ -13,4 +13,11 @@ use \Dida\Exception;
  */
 class FileNotFoundException extends Exception
 {
+
+
+    public function __construct($file = "", $code = 0, \Exception $previous = null)
+    {
+        $message = '"' . $file . '" not found.';
+        parent::__construct($message, $code, $previous);
+    }
 }
