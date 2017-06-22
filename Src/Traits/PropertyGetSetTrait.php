@@ -21,8 +21,8 @@ trait PropertyGetSetTrait
      */
     public function __get($name)
     {
-        if (method_exists($this, $name . 'Get')) {
-            return call_user_func([$this, $name . 'Get']);
+        if (method_exists($this, $name . '__Get')) {
+            return call_user_func([$this, $name . '__Get']);
         }
 
         // 没有找到的话，抛异常
@@ -38,8 +38,8 @@ trait PropertyGetSetTrait
      */
     public function __set($name, $value)
     {
-        if (method_exists($this, $name . 'Set')) {
-            call_user_func_array([$this, $name . 'Set'], [$value]);
+        if (method_exists($this, $name . '__Set')) {
+            call_user_func_array([$this, $name . '__Set'], [$value]);
             return;
         }
 

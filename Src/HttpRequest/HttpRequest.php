@@ -44,8 +44,8 @@ class HttpRequest extends Request
 
     public function __construct()
     {
-        $this->methodGet();
-        $this->pathGet();
+        $this->method__Get();
+        $this->path__Get();
     }
 
 
@@ -54,7 +54,7 @@ class HttpRequest extends Request
      *
      * @return string 正常为GET,POST,PUT,PATCH,DELETE,OPTIONS,HEAD之一。如果非法，则为空字符串。
      */
-    public function methodGet()
+    protected function method__Get()
     {
         // 如果已经有值，直接引用
         if ($this->method !== null) {
@@ -93,7 +93,7 @@ class HttpRequest extends Request
      *
      * @return array
      */
-    public function pathGet()
+    protected function path__Get()
     {
         // 不重复处理
         if (is_array($this->path)) {
@@ -143,7 +143,7 @@ class HttpRequest extends Request
      *
      * @return array
      */
-    public function queryGet()
+    protected function query__Get()
     {
         // 不重复处理
         if (is_array($this->query)) {
@@ -163,7 +163,7 @@ class HttpRequest extends Request
      *
      * @return array
      */
-    public function postGet()
+    protected function post__Get()
     {
         // 不重复处理
         if (is_array($this->post)) {
@@ -207,7 +207,7 @@ class HttpRequest extends Request
      * isAjax() 函数的属性访问方式
      * @return type
      */
-    public function isAjaxGet()
+    protected function isAjax__Get()
     {
         return isAjax();
     }
@@ -218,7 +218,7 @@ class HttpRequest extends Request
      *
      * @return string|bool 正常返回读取的ip，异常返回false
      */
-    public function clientIPGet()
+    protected function clientIP__Get()
     {
         // 不重复处理
         if ($this->clientIP !== null) {
@@ -245,7 +245,7 @@ class HttpRequest extends Request
     /**
      * 获取主机名
      */
-    public function hostGet()
+    protected function host__Get()
     {
         // 不重复处理
         if ($this->host !== null) {
@@ -268,7 +268,7 @@ class HttpRequest extends Request
     /**
      * 获取协议名
      */
-    public function schemeGet()
+    protected function scheme__Get()
     {
         // 不重复处理
         if ($this->scheme !== null) {
