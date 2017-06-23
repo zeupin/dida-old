@@ -52,6 +52,9 @@ define('DIDA_WWW', isset($DIDA_WWW) ? $DIDA_WWW : '/');
 // DIDA_DEBUG 是否开启调试模式
 define('DIDA_DEBUG', isset($DIDA_DEBUG) ? $DIDA_DEBUG : false);
 
+// DIDA_DEFAULT_SCRIPT_NAME 缺省的php脚本
+define('DIDA_DEFAULT_SCRIPT_NAME', isset($DIDA_DEFAULT_SCRIPT_NAME) ? $DIDA_DEFAULT_SCRIPT_NAME : 'index.php');
+
 // DIDA_APP_NAMESPACE APP的名称空间
 define('DIDA_APP_NAMESPACE', isset($DIDA_APP_NAMESPACE) ? $DIDA_APP_NAMESPACE : 'App');
 
