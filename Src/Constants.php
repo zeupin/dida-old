@@ -34,36 +34,30 @@ define('DIDA_WEB_ROOT', $DIDA_WEB_ROOT);
 define('DIDA_VAR_ROOT', $DIDA_VAR_ROOT);
 define('DIDA_COMPOSER_ROOT', $DIDA_COMPOSER_ROOT);
 
-// DIDA_ENV
-if (!isset($DIDA_ENV)) {
-    die('The necessary configure variable $DIDA_ENV is not set.');
-} else {
-    define('DIDA_ENV', $DIDA_ENV);
-}
-
-
 /**
  * 选填的常量
  */
 
-// DIDA_WWW
+// DIDA_WWW  --WWW的根目录
 define('DIDA_WWW', isset($DIDA_WWW) ? $DIDA_WWW : '/');
 
-// DIDA_DEBUG 是否开启调试模式
+// DIDA_DEBUG  --是否开启调试模式
 define('DIDA_DEBUG', isset($DIDA_DEBUG) ? $DIDA_DEBUG : false);
 
-// DIDA_DEFAULT_SCRIPT_NAME 缺省的php脚本
+// DIDA_DEFAULT_SCRIPT_NAME  --缺省的php脚本
 define('DIDA_DEFAULT_SCRIPT_NAME', isset($DIDA_DEFAULT_SCRIPT_NAME) ? $DIDA_DEFAULT_SCRIPT_NAME : 'index.php');
 
-// DIDA_APP_NAMESPACE APP的名称空间
+// DIDA_APP_NAMESPACE  --APP的名称空间
 define('DIDA_APP_NAMESPACE', isset($DIDA_APP_NAMESPACE) ? $DIDA_APP_NAMESPACE : 'App');
 
-// DIDA_DEFAULT_CONTROLLER
+// DIDA_DEFAULT_CONTROLLER  --默认的Controller
 define('DIDA_DEFAULT_CONTROLLER', isset($DIDA_DEFAULT_CONTROLLER) ? $DIDA_DEFAULT_CONTROLLER : 'Index');
 
-// DIDA_DEFAULT_ACTION
+// DIDA_DEFAULT_ACTION  --默认的Action
 define('DIDA_DEFAULT_ACTION', isset($DIDA_DEFAULT_ACTION) ? $DIDA_DEFAULT_ACTION : 'index');
 
+// DIDA_ENV
+define('DIDA_ENV', isset($DIDA_ENV) ? $DIDA_ENV : 'dev');
 
 /**
  * 内置的常量
