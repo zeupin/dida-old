@@ -103,8 +103,8 @@ class HttpRequest extends Request
         /* 获取$path */
         $url = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
-        /* 快捷处理 */
-        if (($url === DIDA_WWW) || ($url . '/' === DIDA_WWW)) {
+        /* 对首页的快捷处理 */
+        if (($url === DIDA_WWW) || ($url . '/' === DIDA_WWW) || ($url === DIDA_WWW . DIDA_DEFAULT_SCRIPT_NAME)) {
             // 请求首页，因访问频率很高，独立出来，加快速度
             $this->path = [];
             return [];
