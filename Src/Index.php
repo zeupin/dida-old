@@ -18,8 +18,10 @@ Autoloader::addNamespace('Dida', DIDA_ROOT);                       // 登记Dida
 Autoloader::addNamespace(DIDA_APP_NAMESPACE, DIDA_APP_ROOT);       // 登记App命名空间
 
 /* 加载Composer的autoload机制，以获取海量第三方软件包的支持 */
-if (file_exists(DIDA_COMPOSER_ROOT . 'autoload.php')) {
-    require DIDA_COMPOSER_ROOT . 'autoload.php';
+if (defined('DIDA_COMPOSER_ROOT')) {
+    if (file_exists(DIDA_COMPOSER_ROOT . 'autoload.php')) {
+        require DIDA_COMPOSER_ROOT . 'autoload.php';
+    }
 }
 
 /* 生成app实例 */

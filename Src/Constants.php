@@ -15,7 +15,6 @@ $dida_system_constants = [
     'DIDA_APP_ROOT',
     'DIDA_WEB_ROOT',
     'DIDA_VAR_ROOT',
-    'DIDA_COMPOSER_ROOT',
 ];
 
 foreach ($dida_system_constants as $const) {
@@ -32,13 +31,12 @@ define('DIDA_ROOT', $DIDA_ROOT);
 define('DIDA_APP_ROOT', $DIDA_APP_ROOT);
 define('DIDA_WEB_ROOT', $DIDA_WEB_ROOT);
 define('DIDA_VAR_ROOT', $DIDA_VAR_ROOT);
-define('DIDA_COMPOSER_ROOT', $DIDA_COMPOSER_ROOT);
 
 /**
  * 选填的常量
  */
 
-// DIDA_WWW  --WWW的根目录
+// DIDA_WWW  --网站的根路径
 define('DIDA_WWW', isset($DIDA_WWW) ? $DIDA_WWW : '/');
 
 // DIDA_DEBUG  --是否开启调试模式
@@ -58,6 +56,13 @@ define('DIDA_DEFAULT_ACTION', isset($DIDA_DEFAULT_ACTION) ? $DIDA_DEFAULT_ACTION
 
 // DIDA_ENV
 define('DIDA_ENV', isset($DIDA_ENV) ? $DIDA_ENV : 'dev');
+
+// DIDA_COMPOSER_ROOT
+if (isset($DIDA_COMPOSER_ROOT)) {
+    if (file_exists($DIDA_COMPOSER_ROOT) && is_dir($DIDA_COMPOSER_ROOT)) {
+        define('DIDA_COMPOSER_ROOT', realpath($DIDA_COMPOSER_ROOT) . DIRECTORY_SEPARATOR);
+    }
+}
 
 /**
  * 内置的常量
