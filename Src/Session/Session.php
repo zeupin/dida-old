@@ -11,8 +11,6 @@ namespace Dida;
  */
 class Session implements \ArrayAccess
 {
-
-
     public function offsetExists($key)
     {
         return array_key_exists($key, $_SESSION);
