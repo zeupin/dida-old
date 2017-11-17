@@ -2,7 +2,7 @@
   "name": "zeupin/dida",
   "description": "Dida Framework",
   "type": "library",
-  "license": "Unknown",
+  "license": "MIT",
   "homepage": "https://github.com/zeupin/dida",
   "authors": [
     {
@@ -16,7 +16,7 @@
   },
   "autoload": {
     "psr-4": {
-      "Dida\\": "src/"
+      "Dida\\": "src/Dida"
     }
   }
 }

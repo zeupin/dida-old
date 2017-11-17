@@ -4,7 +4,7 @@
  * http://dida.zeupin.com
  */
 
-namespace Dida\Database\Schema;
+namespace Dida\Db\Schema;
 
 use \PDO;
 
@@ -26,7 +26,7 @@ class Mysql extends Schema
      * 返回所有表的表名
      * 基于information_schema
      */
-    public function listTableNames()
+    public function getTableList()
     {
         $sql = <<<'EOT'
 SELECT TABLE_NAME FROM information_schema.TABLES

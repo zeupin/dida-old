@@ -29,10 +29,14 @@ class Debug
      */
     public static function variable($var, $varname = null)
     {
-        if (!headers_sent()) {
-            header('Content-Type: text/html; charset=utf-8');
+        if (PHP_SAPI === 'cli') {
+            echo self::varExport($var, $varname);
+        } else {
+            if (!headers_sent()) {
+                header('Content-Type: text/html; charset=utf-8');
+            }
+            echo '<pre>' . htmlspecialchars(self::varExport($var, $varname)) . '</pre>';
         }
-        echo '<pre>' . htmlspecialchars(self::varExport($var, $varname)) . '</pre>';
     }
 
 

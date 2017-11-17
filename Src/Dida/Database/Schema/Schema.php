@@ -20,7 +20,7 @@ abstract class Schema
     /**
      * 返回所有表的表名
      */
-    abstract public function listTableNames();
+    abstract public function getTableList();
 
 
     /**
